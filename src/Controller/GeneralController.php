@@ -12,7 +12,7 @@ class GeneralController extends AbstractController
      */
     public function index()
     {
-        return $this->render('home/index.html.twig', [
+        return $this->render('index.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -22,7 +22,7 @@ class GeneralController extends AbstractController
      */
     public function prices()
     {
-        return $this->render('prices/index.html.twig', [
+        return $this->render('prices.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -32,7 +32,7 @@ class GeneralController extends AbstractController
      */
     public function contact()
     {
-        return $this->render('contact/index.html.twig', [
+        return $this->render('contact.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -42,7 +42,7 @@ class GeneralController extends AbstractController
      */
     public function localization()
     {
-        return $this->render('localization/index.html.twig', [
+        return $this->render('localization.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -52,7 +52,7 @@ class GeneralController extends AbstractController
      */
     public function events()
     {
-        return $this->render('events/index.html.twig', [
+        return $this->render('events.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -62,7 +62,7 @@ class GeneralController extends AbstractController
      */
     public function event($id)
     {
-        return $this->render('event/index.html.twig', [
+        return $this->render('event.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -72,7 +72,7 @@ class GeneralController extends AbstractController
      */
     public function createEvents()
     {
-        return $this->render('createEvents/index.html.twig', [
+        return $this->render('createEvents.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -82,7 +82,7 @@ class GeneralController extends AbstractController
      */
     public function facilities()
     {
-        return $this->render('facilities/index.html.twig', [
+        return $this->render('facilities.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
