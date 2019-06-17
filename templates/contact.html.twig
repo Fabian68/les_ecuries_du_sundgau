@@ -4,5 +4,11 @@
 
 {% endblock %}
 
+
 {% block javascript %}
+
+$pdf = new FPDF2File();
+$pdf->Open('C:\\Users\\severine\\Documents\\fichecontact.pdf');
+$pdf->Output();
+
 {% endblock %}
