@@ -12,7 +12,7 @@ class GeneralController extends AbstractController
      */
     public function index()
     {
-        return $this->render('base.html.twig', [
+        return $this->render('general/index.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
