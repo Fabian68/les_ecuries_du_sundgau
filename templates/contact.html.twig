@@ -1,14 +1,5 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-{% endblock %}
-
-
-{% block javascript %}
-
-$pdf = new FPDF2File();
-$pdf->Open('C:\\Users\\severine\\Documents\\fichecontact.pdf');
-$pdf->Output();
-
+<embed src="https://www.u-paris2.fr/sites/default/files/pdf.pdf" width="800px" height="2100px" />
 {% endblock %}
