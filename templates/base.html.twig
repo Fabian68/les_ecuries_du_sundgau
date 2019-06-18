@@ -20,9 +20,32 @@
             COLOR: white;
             font-family: serif;
         }
+        .facility{
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+        .map-layout{
+            width: 100%;
+            padding-top: 5%;
+        }
+        .facility-layout{
+            width: 100%;
+            padding: 5%;
+        }
+        @media screen and (min-width: 600px){
+            .map-layout{
+                float: left;
+                width: 35%;
+            }
+            .facility-layout{
+                float: right;
+                width: 65%;
+            }
+        }
         </style>
-        
+
         {% block stylesheets %}{% endblock %}
+        {% block scripts %}{% endblock %}
     </head>
     <h1>Les Écuries du Sundgau</h1>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
