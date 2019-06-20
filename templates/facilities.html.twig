@@ -3,8 +3,14 @@
 <script>
 
 function display(i){
-    var image = document.getElementsByClassName("displayScreen"); // ne marche pas, à changer.
-    image.src = "http://placehold.it/1111x500";
+    var image = document.getElementById("displayScreen");   
+    if(i == 1){
+        image.src = "http://placehold.it/1111x500";
+    } else if(i == 2) {
+        image.src = "http://placehold.it/2222x1000";
+    } else {
+        image.src = "http://placehold.it/3333x1500";
+    }
 }
 
 </script>
@@ -21,6 +27,6 @@ function display(i){
         </map>
         <img class="map-layout" usemap="#infographic" src="http://placehold.it/300x300" alt="MDN infographic" />
     
-    <img class="facility-layout" src="http://placehold.it/1600x900" id="displayScreen">
+    <img class="facility-layout" id="displayScreen" src="http://placehold.it/1600x900">
     </div>
 {% endblock %}

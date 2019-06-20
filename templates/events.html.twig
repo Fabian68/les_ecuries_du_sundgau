@@ -2,28 +2,32 @@
 
 {% block body %}
 
-<section class="evenements">
+<section class="events-layout">
 
     {% for event in events %}
-        <event>
-            <h2>{{ event.titre }}</h2>
-            <div class="date">
-            <p>
+        <event class="card mb-3">
+            <h2 class="card-header bg-light">{{ event.titre }}</h2>
+            <div class="card-subtitle bg-event-date">
+            <img class="corner-top-left" src="http://placehold.it/32x32">
+            <img class="corner-top-right" src="http://placehold.it/32x32">
+                <ul class="event-date-layout">
                 {% for date in event.dates %}
-                    {{ date.dateDebut | date('d/m/Y') }} de {{ date.dateDebut | date('H:i') }} à {{ date.dateFin | date('H:i') }}</br>
+                    <li>{{ date.dateDebut | date('d/m/Y') }} de {{ date.dateDebut | date('H:i') }} à {{ date.dateFin | date('H:i') }}</li>
                 {% endfor %}
-            </p>
+                </ul>
+            <img class="corner-bottom-left" src="http://placehold.it/32x32">
+            <img class="corner-bottom-right" src="http://placehold.it/32x32">
             </div>
-            <div class="content">
+            <div class="card-body">
                 <p>Tarifs:  Moins de 12 : {{ event.tarifMoinsDe12 }}€,  Plus de 12 :  {{ event.plusDe12 }}€,  proprietaire :  {{ event.proprietaire }}€</p>
                 <img src="{{ event.image }}" alt="">
                 </br>
                 {{ event.texte }}
                 </br>
                 <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary">Lire la suite</a>
-                <HR width="50%" size="10" noshade />
             </div>
         </event>
+        <HR width="50%" size="10" noshade />
     {% endfor %}
 
 </section>
