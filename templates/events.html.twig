@@ -2,25 +2,27 @@
 
 {% block body %}
 
-<section class="events-layout">
+<section class="events-layout big-screen mobile-layout">
 
     {% for event in events %}
         <event class="card mb-3">
-            <h2 class="card-header bg-light">{{ event.titre }}</h2>
+            <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
             <div class="card-subtitle bg-event-date">
             <img class="corner-top-left" src="http://placehold.it/32x32">
             <img class="corner-top-right" src="http://placehold.it/32x32">
                 <ul class="event-date-layout">
                 {% for date in event.dates %}
-                    <li>{{ date.dateDebut | date('d/m/Y') }} de {{ date.dateDebut | date('H:i') }} à {{ date.dateFin | date('H:i') }}</li>
+                    <li><div class="date-text">{{ date.dateDebut | date('d/m/Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H:i') }}</div> à <div class="date-text">{{ date.dateFin | date('H:i') }}</div></li>
                 {% endfor %}
                 </ul>
             <img class="corner-bottom-left" src="http://placehold.it/32x32">
             <img class="corner-bottom-right" src="http://placehold.it/32x32">
             </div>
             <div class="card-body">
-                <p>Tarifs:  Moins de 12 : {{ event.tarifMoinsDe12 }}€,  Plus de 12 :  {{ event.plusDe12 }}€,  proprietaire :  {{ event.proprietaire }}€</p>
-                <img src="{{ event.image }}" alt="">
+                <table><tr class="bg-light">
+                <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
+                </tr></table>
+                <img class="thumb-layout" src="{{ event.image }}" alt="">
                 </br>
                 {{ event.texte }}
                 </br>

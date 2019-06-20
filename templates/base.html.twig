@@ -16,6 +16,9 @@
         .navbar-dark .navbar-nav .nav-link {
             COLOR: yellow;
         }
+        .navbar-custom{
+            padding: 0.5rem 0.5rem;
+        }
         h1{
             COLOR: white;
             font-family: serif;
@@ -43,10 +46,18 @@
             }
         }
         .events-layout{
-            padding-top: 3em;
-            padding-left: 9em;
-            padding-right: 9em;
+            width: 46em;
+            padding: 3em;
+            margin-left: auto;
+            margin-right: auto;
         }
+        
+        @media screen and (min-width: 1000px){
+            .big-screen{
+                width: 70%;
+            }
+        }
+
         .bg-event-date{
             background-color: #f4f957 !important;
         }
@@ -62,17 +73,57 @@
         .corner-top-right{
             float: right;
         }
-        ul{
+        .event-date-layout{
+            list-style-type: none;
             margin-top: 1rem !important;
             margin-bottom: -1rem !important;
+        }
+        table{
+            margin-bottom: 0.5em;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .thumb-layout{
+            width: 100%;
+        }
+        td{
+            text-align: center;
+            padding: 0.5em;
+            display: table-cell;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .tarif-text{
+            width: 4em;
+        }
+        .date-text{
+            display: inline;
+            COLOR: #176aed;
+        }
+        @media screen and (max-width: 700px){
+            .mobile-layout{
+                font-size: 0.8em;
+                width: 100%;
+                padding:1em;
+                padding-left: 2em;
+                padding-right: 2em;
+            }
+            .mobile-title{
+                font-size: 2em;
+            }
+        }
+        .website-title{
+            padding: 0.05em;
+            padding-left: 0.5em;
         }
         </style>
 
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
     </head>
-    <h1>Les Écuries du Sundgau</h1>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <h1 class="website-title mobile-title">Les Écuries du Sundgau</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-custom">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
