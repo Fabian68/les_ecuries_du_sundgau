@@ -85,15 +85,6 @@ class GeneralController extends AbstractController
         return $this->render('facilities.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
-    }
-
-     /**
-      * @Route("/login", name="login")
-      */
-    public function loginPage(){
-        return $this->render('login.html.twig', [
-            'controller_name' => 'GeneralController',
-        ]);
     } 
     
      /**

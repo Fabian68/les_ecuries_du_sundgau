@@ -75,9 +75,15 @@
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+            {% if not app.user %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('login') }}">Se Connecter</a>
+                <a class="nav-link" href="{{ path('security_login') }}">Se Connecter</a>
             </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('security_logout') }}">Se Deconnecter</a>
+            </li>
+            {% endif %}
             </ul>
         </div>
     </nav>
