@@ -50,6 +50,12 @@ class Utilisateur implements UserInterface
      */
     public $confirm_motDePasse;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Galops", inversedBy="utilisateurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $galop;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,6 +129,18 @@ class Utilisateur implements UserInterface
 
     public function getRoles() {
         return ['ROLE_USER'];
+    }
+
+    public function getGalop(): ?Galops
+    {
+        return $this->galop;
+    }
+
+    public function setGalop(?Galops $galop): self
+    {
+        $this->galop = $galop;
+
+        return $this;
     }
 
 

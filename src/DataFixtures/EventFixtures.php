@@ -18,7 +18,7 @@ class EventFixtures extends Fixture
 
         //Ajout des galops
         $tableauGalops=array();
-        for ($i=1; $i <=7 ; $i++) { 
+        for ($i=-1; $i <=7 ; $i++) { 
             $galops=new Galops();
             $galops->setNiveau($i);
             $tableauGalops[]=$galops;
@@ -33,13 +33,13 @@ class EventFixtures extends Fixture
             $event->setTitre($faker->sentence());
             $event->setImage($faker->imageUrl(640,480));
             $event->setTexte($faker->paragraph());
-            $tarif = mt_rand(10,20);
-            $event->setTarifMoinsDe12($tarif/2);
+            $tarif = mt_rand(10,25);
+            $event->setTarifMoinsDe12($tarif/2.0);
             $event->setPlusDe12($tarif);
-            $event->setProprietaire($tarif/4);
+            $event->setProprietaire($tarif/4.0);
             $event->setNbMaxParticipants(mt_rand(20,150));
             //Ajout des dates et liaison
-            for ($j=0; $j <=mt_rand(1,5) ; $j++) { 
+            for ($j=0; $j <=mt_rand(1,4) ; $j++) { 
                 $maintenant = new \DateTime();
                 $maintenant->add(new \DateInterval('P'.$compteurJour.'D'));
                 $datesEvenements=new DatesEvenements();
@@ -52,8 +52,8 @@ class EventFixtures extends Fixture
             }
 
             //Ajout des galops au evenemets
-            for ($j=1; $j <=7 ; $j++) { 
-                if(mt_rand(0,1)==0){
+            for ($j=1; $j <=9 ; $j++) { 
+                if(mt_rand(0,3)>0){
                     $galot=$tableauGalops[$j-1];
                     $event->addGalops($galot);
                     $galot->addEvenement($event);

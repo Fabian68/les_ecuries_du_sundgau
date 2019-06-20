@@ -2,9 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Galops;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
@@ -16,6 +18,10 @@ class RegistrationType extends AbstractType
             ->add('email')
             ->add('prenom')
             ->add('nom')
+            ->add('galop', EntityType::class, [
+                'class'=> Galops::class,
+                'choice_label' => 'niveau'
+            ])
             ->add('motDePasse',PasswordType::class)
             ->add('confirm_motDePasse',PasswordType::class)
         ;

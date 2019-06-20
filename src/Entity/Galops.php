@@ -28,9 +28,15 @@ class Galops
      */
     private $evenements;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="galop")
+     */
+    private $utilisateurs;
+
     public function __construct()
     {
         $this->evenements = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,6 +79,37 @@ class Galops
         if ($this->evenements->contains($evenement)) {
             $this->evenements->removeElement($evenement);
             $evenement->removeGalops($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): self
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs[] = $utilisateur;
+            $utilisateur->setGalop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): self
+    {
+        if ($this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->removeElement($utilisateur);
+            // set the owning side to null (unless already changed)
+            if ($utilisateur->getGalop() === $this) {
+                $utilisateur->setGalop(null);
+            }
         }
 
         return $this;
