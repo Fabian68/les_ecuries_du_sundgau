@@ -1,1 +1,23 @@
 {% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <event>
+        <h2>{{ event.titre }}</h2>
+        <div class="date">
+            <p>
+                {% for date in event.dates %}
+                    {{ date.dateDebut | date('d/m/Y') }} de {{ date.dateDebut | date('H:i') }} à {{ date.dateFin | date('H:i') }}</br>
+                {% endfor %}
+            </p>
+            </div>
+        <div class="content">
+            <p>Tarifs:  Moins de 12 : {{ event.tarifMoinsDe12 }}€,  Plus de 12 :  {{ event.plusDe12 }}€,  proprietaire :  {{ event.proprietaire }}€</p>
+            <img src="{{ event.image }}" alt="">
+            </br>
+            {{ event.texte }}
+            </br>
+        </div>
+    </event>
+
+{% endblock %}
