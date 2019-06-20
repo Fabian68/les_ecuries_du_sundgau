@@ -44,7 +44,7 @@ class EventFixtures extends Fixture
                 $maintenant->add(new \DateInterval('P'.$compteurJour.'D'));
                 $datesEvenements=new DatesEvenements();
                 $datesEvenements->setDateDebut($maintenant);
-                $maintenant->add(new \DateInterval('PT6h'));
+                $maintenant->add(new \DateInterval('PT06H'));
                 $datesEvenements->setDateFin($maintenant);
                 $event->addDate($datesEvenements);
                 $compteurJour++;
