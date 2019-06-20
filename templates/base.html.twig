@@ -20,9 +20,32 @@
             COLOR: white;
             font-family: serif;
         }
+        .facility{
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+        .map-layout{
+            width: 100%;
+            padding-top: 5%;
+        }
+        .facility-layout{
+            width: 100%;
+            padding: 5%;
+        }
+        @media screen and (min-width: 600px){
+            .map-layout{
+                float: left;
+                width: 35%;
+            }
+            .facility-layout{
+                float: right;
+                width: 65%;
+            }
+        }
         </style>
-        
+
         {% block stylesheets %}{% endblock %}
+        {% block scripts %}{% endblock %}
     </head>
     <h1>Les Écuries du Sundgau</h1>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -33,33 +56,39 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('home') }}">Accueil<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ path('home') }}"><img src="http://placehold.it/32x32" alt="home"> Accueil<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('events') }}">Évènements</a>
+                <a class="nav-link" href="{{ path('events') }}"><img src="http://placehold.it/32x32" alt="events"> Évènements</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('prices') }}">Tarif</a>
+                <a class="nav-link" href="{{ path('prices') }}"><img src="http://placehold.it/32x32" alt="prices"> Tarif</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                <a class="nav-link" href="{{ path('contact') }}"><img src="http://placehold.it/32x32" alt="contact"> Contact</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('localization') }}">Localisation</a>
+                <a class="nav-link" href="{{ path('localization') }}"><img src="http://placehold.it/32x32" alt="localization"> Localisation</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('facilities') }}">Le Centre</a>
+                <a class="nav-link" href="{{ path('facilities') }}"><img src="http://placehold.it/32x32" alt="facilities"> Le Centre</a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+            {% if not app.user %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('facilities') }}">Se Connecter</a>
+                <a class="nav-link" href="{{ path('security_login') }}">Se Connecter</a>
             </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('security_logout') }}">Se Deconnecter</a>
+            </li>
+            {% endif %}
             </ul>
         </div>
     </nav>
     <body>
-        {% block body %}Modification pour github{% endblock %}
+        {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -96,8 +96,8 @@ class GeneralController extends AbstractController
         return $this->render('facilities.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
-    }
-
+    } 
+    
      /**
      * @Route("/test", name="test")
      */
