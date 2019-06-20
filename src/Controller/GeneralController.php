@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Event;
 
 class GeneralController extends AbstractController
 {
@@ -52,8 +53,13 @@ class GeneralController extends AbstractController
      */
     public function events()
     {
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+
+        $events = $repo->findAll();
+
         return $this->render('events.html.twig', [
             'controller_name' => 'GeneralController',
+            'events' => $events
         ]);
     }
 
@@ -62,8 +68,13 @@ class GeneralController extends AbstractController
      */
     public function event($id)
     {
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+
+        $event = $repo->find($id);
+
         return $this->render('event.html.twig', [
             'controller_name' => 'GeneralController',
+            'event' => $event
         ]);
     }
 
