@@ -13,8 +13,21 @@ class GeneralController extends AbstractController
      */
     public function index()
     {
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+
+        $recents = array();
+        $events = $repo->findAll();
+        $iter = 0;
+        foreach($events as $event){
+            if($iter<5){
+                array_push($recents, $event);
+            }
+            $iter++;
+        }
+
         return $this->render('general/index.html.twig', [
             'controller_name' => 'GeneralController',
+            'events' => $recents
         ]);
     }
 

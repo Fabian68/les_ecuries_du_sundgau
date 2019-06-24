@@ -1,22 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GeneralController!{% endblock %}
+{% block title %}Les écuries - Accueil{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    {% if app.user %}
-        <h1>Hello {{ app.user.username }}! ✅</h1>
-    {% endif %}
+<h1 class="website-title mobile-web-title">Les Écuries du Sundgau</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/severine/les_ecuries_du_sundgau/src/Controller/GeneralController.php'|file_link(0) }}">src/Controller/GeneralController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/severine/les_ecuries_du_sundgau/templates/general/index.html.twig'|file_link(0) }}">templates/general/index.html.twig</a></code></li>
-    </ul>
+<div class="custom-container">
+    <div class="card text-white bg-transparent-blue mb-3" style="max-width: 60rem;">
+    <div class="card-body">
+        <h4 class="card-title">Présentation</h4>
+        <p class="card-text">Ceci est un exemple de présentation.</br> Plusieurs paragraphes peuvent être représentés, présentant ainsi les écuries. Ce site web est encore en construction.</p>
+    </div>
+    </div>
 </div>
+
+<section class="events-layout big-screen mobile-layout">
+
+    {% for event in events %}
+        <event class="card mb-3">
+            <h2 class="card-header index-event-title mobile-title bg-light">{{ event.titre }}</h2>
+            <div class="card-subtitle bg-event-date">
+            <img class="corner-top-left" src="http://placehold.it/32x32">
+            <img class="corner-top-right" src="http://placehold.it/32x32">
+                <ul class="event-date-layout">
+                {% for date in event.dates %}
+                    <li><div class="date-text">{{ date.dateDebut | date('d/m/Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H:i') }}</div> à <div class="date-text">{{ date.dateFin | date('H:i') }}</div></li>
+                {% endfor %}
+                </ul>
+            <img class="corner-bottom-left" src="http://placehold.it/32x32">
+            <img class="corner-bottom-right" src="http://placehold.it/32x32">
+            </div>
+            <div class="card-body">
+                <table><tr class="bg-light">
+                <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
+                </tr></table>
+                <container class="index-event-content mobile-index-layout">
+                <div class="index-img-layout">
+                <img class="thumb-layout" src="{{ event.image }}" alt="">
+                </div>
+                <div class="index-text-layout">
+                {{ event.texte }}
+                </br>
+                </br>
+                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary index-more-button">Lire la suite</a>
+                </div>
+                </container>
+            </div>
+        </event>
+        <HR width="50%" size="10" noshade />
+    {% endfor %}
+
+</section>
+
 {% endblock %}

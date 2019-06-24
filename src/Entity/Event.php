@@ -214,4 +214,14 @@ class Event
 
         return $this;
     }
+
+    public function findRecent():array 
+    {
+        /** $qb = $this->createQueryBuilder('p')
+        *        ->andWhere('p.dateDebut > :date')
+        *        ->orderBy('p.dateDebut', 'DSC')
+        *        ->getQuery();
+        *        return $qb->execute();
+        */
+    }
 }
