@@ -28,8 +28,14 @@ class DatesEvenements
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="dates")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $event;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevoles")
+     */
+    private $eventBenevoles;
 
     public function getId(): ?int
     {
@@ -68,6 +74,18 @@ class DatesEvenements
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getEventBenevoles(): ?Event
+    {
+        return $this->eventBenevoles;
+    }
+
+    public function setEventBenevoles(?Event $eventBenevoles): self
+    {
+        $this->eventBenevoles = $eventBenevoles;
 
         return $this;
     }

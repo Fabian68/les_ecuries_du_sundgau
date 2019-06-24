@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -55,6 +57,22 @@ class Utilisateur implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $galop;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Repas", mappedBy="cuisine")
+     */
+    private $repas;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="utilisateurs")
+     */
+    private $participe;
+
+    public function __construct()
+    {
+        $this->repas = new ArrayCollection();
+        $this->participe = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -139,6 +157,60 @@ class Utilisateur implements UserInterface
     public function setGalop(?Galops $galop): self
     {
         $this->galop = $galop;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Repas[]
+     */
+    public function getRepas(): Collection
+    {
+        return $this->repas;
+    }
+
+    public function addRepa(Repas $repa): self
+    {
+        if (!$this->repas->contains($repa)) {
+            $this->repas[] = $repa;
+            $repa->addCuisine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepa(Repas $repa): self
+    {
+        if ($this->repas->contains($repa)) {
+            $this->repas->removeElement($repa);
+            $repa->removeCuisine($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getParticipe(): Collection
+    {
+        return $this->participe;
+    }
+
+    public function addParticipe(Event $participe): self
+    {
+        if (!$this->participe->contains($participe)) {
+            $this->participe[] = $participe;
+        }
+
+        return $this;
+    }
+
+    public function removeParticipe(Event $participe): self
+    {
+        if ($this->participe->contains($participe)) {
+            $this->participe->removeElement($participe);
+        }
 
         return $this;
     }

@@ -55,18 +55,47 @@ class Event
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $dates;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Galops", inversedBy="evenements")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $galops;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="eventBenevoles")
+     */
+    private $benevoles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Repas", inversedBy="repasEvent")
+     */
+    private $repas;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", mappedBy="participe")
+     */
+    private $utilisateurs;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nbBenevolesMatin;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nbBenevolesApresMidi;
 
     public function __construct()
     {
         $this->dates = new ArrayCollection();
         $this->galops = new ArrayCollection();
+        $this->benevoles = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,6 +240,101 @@ class Event
         if ($this->relation->contains($galops)) {
             $this->relation->removeElement($galops);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DatesEvenements[]
+     */
+    public function getBenevoles(): Collection
+    {
+        return $this->benevoles;
+    }
+
+    public function addBenevole(DatesEvenements $benevole): self
+    {
+        if (!$this->benevoles->contains($benevole)) {
+            $this->benevoles[] = $benevole;
+            $benevole->setEventBenevoles($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBenevole(DatesEvenements $benevole): self
+    {
+        if ($this->benevoles->contains($benevole)) {
+            $this->benevoles->removeElement($benevole);
+            // set the owning side to null (unless already changed)
+            if ($benevole->getEventBenevoles() === $this) {
+                $benevole->setEventBenevoles(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRepas(): ?Repas
+    {
+        return $this->repas;
+    }
+
+    public function setRepas(?Repas $repas): self
+    {
+        $this->repas = $repas;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): self
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs[] = $utilisateur;
+            $utilisateur->addParticipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): self
+    {
+        if ($this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->removeElement($utilisateur);
+            $utilisateur->removeParticipe($this);
+        }
+
+        return $this;
+    }
+
+    public function getNbBenevolesMatin(): ?int
+    {
+        return $this->nbBenevolesMatin;
+    }
+
+    public function setNbBenevolesMatin(int $nbBenevolesMatin): self
+    {
+        $this->nbBenevolesMatin = $nbBenevolesMatin;
+
+        return $this;
+    }
+
+    public function getNbBenevolesApresMidi(): ?int
+    {
+        return $this->nbBenevolesApresMidi;
+    }
+
+    public function setNbBenevolesApresMidi(int $nbBenevolesApresMidi): self
+    {
+        $this->nbBenevolesApresMidi = $nbBenevolesApresMidi;
 
         return $this;
     }

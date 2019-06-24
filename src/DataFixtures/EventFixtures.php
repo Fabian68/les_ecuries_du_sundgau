@@ -2,11 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Event;
+use App\Entity\Repas;
+use App\Entity\Galops;
+use App\Entity\DatesEvenements;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity\DatesEvenements;
-use App\Entity\Event;
-use App\Entity\Galops;
 
 class EventFixtures extends Fixture
 {
@@ -38,6 +39,14 @@ class EventFixtures extends Fixture
             $event->setPlusDe12($tarif);
             $event->setProprietaire($tarif/4.0);
             $event->setNbMaxParticipants(mt_rand(20,150));
+            $event->setNbBenevolesMatin(mt_rand(1,6));
+            $event->setNbBenevolesApresMidi(mt_rand(1,6));
+            if(mt_rand(0,1)==0){
+                $repas=new Repas();
+                $repas->setNombreBenevoles(mt_rand(1,6));
+                $manager->persist($repas);
+                $event->setRepas($repas);
+            }
             //Ajout des dates et liaison
             for ($j=0; $j <=mt_rand(1,4) ; $j++) { 
                 $maintenant = new \DateTime();

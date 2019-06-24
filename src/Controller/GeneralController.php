@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GeneralController extends AbstractController
 {
@@ -66,15 +69,32 @@ class GeneralController extends AbstractController
     /**
      * @Route("/evenement/{id}", name="event")
      */
-    public function event($id)
+    public function event($id,Request $request,ObjectManager $manager)
     {
+        
+       // $form->handleRequest($request);
+       $form = $this->createFormBuilder()
+       ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
+       ->getForm();
+
+
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $user=$this->getUser();
+            $event->addUtilisateur($user);
+            $user->addParticipe($event);
+            $manager->flush();
+            return $this->redirectToRoute('events');
+        }
 
         return $this->render('event.html.twig', [
             'controller_name' => 'GeneralController',
-            'event' => $event
+            'event' => $event,
+            'form'=> $form->createView()
         ]);
     }
 
