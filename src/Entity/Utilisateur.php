@@ -41,6 +41,11 @@ class Utilisateur implements UserInterface
      */
     private $nom;
 
+     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="8",minMessage="Votre mot de passe doit faire au moins 8 caractères")
@@ -145,8 +150,23 @@ class Utilisateur implements UserInterface
 
     }
 
-    public function getRoles() {
-        return ['ROLE_USER'];
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getGalop(): ?Galops
