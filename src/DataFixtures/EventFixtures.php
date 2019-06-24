@@ -19,7 +19,7 @@ class EventFixtures extends Fixture
 
         //Ajout des galops
         $tableauGalops=array();
-        for ($i=-1; $i <=7 ; $i++) { 
+        for ($i=0; $i <=7 ; $i++) { 
             $galops=new Galops();
             $galops->setNiveau($i);
             $tableauGalops[]=$galops;
@@ -61,7 +61,7 @@ class EventFixtures extends Fixture
             }
 
             //Ajout des galops au evenemets
-            for ($j=1; $j <=9 ; $j++) { 
+            for ($j=1; $j <=8 ; $j++) { 
                 if(mt_rand(0,3)>0){
                     $galot=$tableauGalops[$j-1];
                     $event->addGalops($galot);
