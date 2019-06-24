@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% if not app.user %}
-    <div>Vous devez vous connecter pour accèder a cet page ! </div>
+    {% if not app.user %}
+        <div>Vous devez vous connecter pour accèder a cet page ! </div>
     {% else %}
         <div>Modifier Galops</div>
         <div>Cree evenement ( a terme il faudra être admin pour accéder a sa ) </div>
