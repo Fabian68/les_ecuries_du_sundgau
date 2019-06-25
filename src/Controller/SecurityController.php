@@ -12,12 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class SecurityController extends AbstractController
+class SecurityController extends AbstractController 
 {
     /**
      * @Route("/inscription", name="security_registration")
      */
-    public function registration(Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder)
+    public function registration(Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder): Response
     {  
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationType::class,$user);

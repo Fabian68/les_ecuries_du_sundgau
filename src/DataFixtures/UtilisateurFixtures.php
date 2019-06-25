@@ -19,6 +19,7 @@ class UtilisateurFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $faker = \Faker\Factory::create('fr_FR');
         $galop = new Galops();
         $galop->setNiveau(-1);
         $manager->persist($galop);
@@ -29,6 +30,9 @@ class UtilisateurFixtures extends Fixture
         $utilisateur->setNom('Tschirhart');
         $utilisateur->setPrenom('Fabian');
         $utilisateur->setEmail('FabianTsch@gmail.com');
+        $utilisateur->setDateNaissance($faker->dateTimeInInterval($startDate = '-30 years', $interval = '+ 10 days', $timezone = null));
+        $utilisateur->setAdresse($faker->address);
+        $utilisateur->setTelephone($faker->serviceNumber);
         $utilisateur->setMotDePasse($this->passwordEncoder->encodePassword(
                          $utilisateur,
                          '12345678'
@@ -41,11 +45,13 @@ class UtilisateurFixtures extends Fixture
         $utilisateur->setNom('Blackquill');
         $utilisateur->setPrenom('Simon');
         $utilisateur->setEmail('Simon.blackquill@mail.fr');
+        $utilisateur->setDateNaissance($faker->dateTimeInInterval($startDate = '-30 years', $interval = '+ 10 days', $timezone = null));
+        $utilisateur->setAdresse($faker->address);
+        $utilisateur->setTelephone($faker->serviceNumber);
         $utilisateur->setMotDePasse($this->passwordEncoder->encodePassword(
             $utilisateur,
             'miaou123'
-        ));
-        
+        )); 
         $utilisateur->setRoles(array('ROLE_ADMIN'));
         $utilisateur->setGalop( $galop);
         $manager->persist($utilisateur);
@@ -54,11 +60,13 @@ class UtilisateurFixtures extends Fixture
         $utilisateur->setNom('Smith');
         $utilisateur->setPrenom('John');
         $utilisateur->setEmail('John.Smith@yahoo.co.jp');
+        $utilisateur->setDateNaissance($faker->dateTimeInInterval($startDate = '-30 years', $interval = '+ 10 days', $timezone = null));
+        $utilisateur->setAdresse($faker->address);
+        $utilisateur->setTelephone($faker->serviceNumber);
         $utilisateur->setMotDePasse($this->passwordEncoder->encodePassword(
             $utilisateur,
             'lapomme123'
         ));
-       
         $utilisateur->setRoles(array('ROLE_ADMIN_ASSO'));
         $utilisateur->setGalop( $galop);
         $manager->persist($utilisateur);
@@ -67,11 +75,13 @@ class UtilisateurFixtures extends Fixture
         $utilisateur->setNom('LaRoche');
         $utilisateur->setPrenom('Goron');
         $utilisateur->setEmail('GLR@wanadoo.fr');
+        $utilisateur->setDateNaissance($faker->dateTimeInInterval($startDate = '-30 years', $interval = '+ 10 days', $timezone = null));
+        $utilisateur->setAdresse($faker->address);
+        $utilisateur->setTelephone($faker->serviceNumber);
         $utilisateur->setMotDePasse($this->passwordEncoder->encodePassword(
             $utilisateur,
             'geode123'
         ));
-        
         $utilisateur->setRoles(array('ROLE_USER'));
         $utilisateur->setGalop( $galop);
         $manager->persist($utilisateur);

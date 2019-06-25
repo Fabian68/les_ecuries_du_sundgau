@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class RegistrationType extends AbstractType
@@ -24,6 +26,9 @@ class RegistrationType extends AbstractType
             ])
             ->add('motDePasse',PasswordType::class)
             ->add('confirm_motDePasse',PasswordType::class)
+            ->add('dateNaissance',DateType::class)
+            ->add('adresse')
+            ->add('telephone')
         ;
     }
 

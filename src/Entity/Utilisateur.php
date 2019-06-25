@@ -58,6 +58,7 @@ class Utilisateur implements UserInterface
      */
     public $confirm_motDePasse;
 
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Galops", inversedBy="utilisateurs")
      * @ORM\JoinColumn(nullable=false)
@@ -73,6 +74,21 @@ class Utilisateur implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="utilisateurs")
      */
     private $participe;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateNaissance;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $telephone;
 
     public function __construct()
     {
@@ -232,6 +248,42 @@ class Utilisateur implements UserInterface
         if ($this->participe->contains($participe)) {
             $this->participe->removeElement($participe);
         }
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(\DateTimeInterface $dateNaissance): self
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }
