@@ -4,7 +4,17 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Event;
+use App\Entity\DatesEvenements;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Form\EventType;
+use App\Form\DatesEvenementsType;
+use App\Form\EventCreateType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class GeneralController extends AbstractController
 {
@@ -81,10 +91,29 @@ class GeneralController extends AbstractController
     /**
      * @Route("/creationEvenement", name="createEvent")
      */
-    public function createEvents()
+    public function createEvents(Request $request,ObjectManager $manager)
     {
+        $event = new Event();
+
+        $form = $this->createForm(EventCreateType::class, $event);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $event = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event->getDates());
+            $em->persist($event);
+            $em->flush();
+
+            return $this->redirectToRoute('event');
+        }
+
         return $this->render('createEvents.html.twig', [
             'controller_name' => 'GeneralController',
+            'formEvent' => $form->createView()
         ]);
     }
 
