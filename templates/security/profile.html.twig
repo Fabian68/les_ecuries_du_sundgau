@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<br>
+    {% if not app.user %}
+        <div>Vous devez vous connecter pour accèder a cet page ! </div>
+    {% else %}
+        <div>Modifier Galops</div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <br>
+            <div>Cree evenement (visible que si admin ) </div>
+            <div>Lien ici</div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

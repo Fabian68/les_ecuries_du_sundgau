@@ -13,8 +13,18 @@
             background-attachement: fixed;
             background-repeat: true;
         }
-        .navbar-dark .navbar-nav .nav-link {
-            COLOR: yellow;
+        .navbar-text-custom {
+            color: #ffeb51 !important;
+        }
+        .bg-navbar-custom{
+            background-color: #3fc6b7;
+        }
+        .navbar-custom{
+            padding: 0.5rem 0.5rem;
+            z-index: 9;
+            position: fixed;
+            top: 0;
+            width: 100%;
         }
         h1{
             COLOR: white;
@@ -32,7 +42,7 @@
             width: 100%;
             padding: 5%;
         }
-        @media screen and (min-width: 600px){
+        @media screen and (min-width: 700px){
             .map-layout{
                 float: left;
                 width: 35%;
@@ -42,13 +52,130 @@
                 width: 65%;
             }
         }
+        .events-layout{
+            width: 46em;
+            padding: 3em;
+            margin-top: 2em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media screen and (min-width: 1000px){
+            .big-screen{
+                width: 70%;
+            }
+        }
+
+        .bg-event-date{
+            background-color: #f4f957 !important;
+        }
+        .corner-top-left{
+            float: left;
+        }
+        .corner-bottom-left{
+            float: left;
+        }
+        .corner-bottom-right{
+            float: right;
+        }
+        .corner-top-right{
+            float: right;
+        }
+        .event-date-layout{
+            list-style-type: none;
+            margin-top: 1rem !important;
+            margin-bottom: -1rem !important;
+        }
+        table{
+            margin-bottom: 0.5em;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .thumb-layout{
+            width: 100%;
+        }
+        td{
+            text-align: center;
+            padding: 0.5em;
+            display: table-cell;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .tarif-text{
+            width: 4em;
+        }
+        .date-text{
+            display: inline;
+            COLOR: #176aed;
+        }
+        @media screen and (max-width: 700px){
+            .mobile-layout{
+                font-size: 0.8em;
+                width: 100%;
+                padding:1em;
+                padding-left: 2em;
+                padding-right: 2em;
+            }
+            .mobile-title{
+                font-size: 2em;
+            }
+            .mobile-web-title{
+                margin-top: 2em !important;
+                font-size: 2.5em;
+            }
+            .mobile-index-layout{
+                flex-direction: column;
+            }
+            .events-layout{
+                margin-top: 5em;
+            }
+        }
+        .website-title{
+            margin-top: 1.5em;
+            padding: 0.05em;
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+            text-align: center;
+        }
+        .bg-transparent-blue{
+            background-color: #418aa2;
+            opacity: .4;
+        }
+        .custom-container{
+            padding-top: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .index-event-content{
+            display: flex;
+        }
+        .index-img-layout{
+            flex: 2;
+        }
+        .index-text-layout{
+            padding: 1em;
+            flex: 4;
+        }
+        .index-event-title{
+            font-size: 2em;
+        }
+        .index-more-button{
+            text-align: right;
+        }
+        .container-login{
+            display: flex;
+            justify-content: center;
+            margin-top: 10em;
+            padding: 1em;
+        }
         </style>
 
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
     </head>
-    <h1>Les Écuries du Sundgau</h1>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navbar-custom navbar-custom">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -56,32 +183,35 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('home') }}"><img src="http://placehold.it/32x32" alt="home"> Accueil<span class="sr-only">(current)</span></a>
+                <a class="nav-link navbar-text-custom" href="{{ path('home') }}"><img src="http://placehold.it/32x32" alt="home"> Accueil<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('events') }}"><img src="http://placehold.it/32x32" alt="events"> Évènements</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('events') }}"><img src="http://placehold.it/32x32" alt="events"> Évènements</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('prices') }}"><img src="http://placehold.it/32x32" alt="prices"> Tarif</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('prices') }}"><img src="http://placehold.it/32x32" alt="prices"> Tarif</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('contact') }}"><img src="http://placehold.it/32x32" alt="contact"> Contact</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('contact') }}"><img src="http://placehold.it/32x32" alt="contact"> Contact</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('localization') }}"><img src="http://placehold.it/32x32" alt="localization"> Localisation</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('localization') }}"><img src="http://placehold.it/32x32" alt="localization"> Localisation</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('facilities') }}"><img src="http://placehold.it/32x32" alt="facilities"> Le Centre</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('facilities') }}"><img src="http://placehold.it/32x32" alt="facilities"> Le Centre</a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
             {% if not app.user %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('security_login') }}">Se Connecter</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('security_login') }}">Se Connecter</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('security_logout') }}">Se Deconnecter</a>
+                <a class="nav-link navbar-text-custom" href="{{ path('security_profile') }}">Profil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link navbar-text-custom" href="{{ path('security_logout') }}">Se Deconnecter</a>
             </li>
             {% endif %}
             </ul>

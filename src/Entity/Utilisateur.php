@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+//use Symfony\Component\Security\Core\User\UserInterface
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
@@ -39,6 +42,11 @@ class Utilisateur implements UserInterface
      */
     private $nom;
 
+     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="8",minMessage="Votre mot de passe doit faire au moins 8 caractères")
@@ -49,6 +57,44 @@ class Utilisateur implements UserInterface
      * @Assert\EqualTo(propertyPath="motDePasse",message="Votre mot de passe doit être le même en confirmation")
      */
     public $confirm_motDePasse;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Galops", inversedBy="utilisateurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $galop;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Repas", mappedBy="cuisine")
+     */
+    private $repas;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="utilisateurs")
+     */
+    private $participe;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateNaissance;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $telephone;
+
+    public function __construct()
+    {
+        $this->repas = new ArrayCollection();
+        $this->participe = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,8 +167,125 @@ class Utilisateur implements UserInterface
 
     }
 
-    public function getRoles() {
-        return ['ROLE_USER'];
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getGalop(): ?Galops
+    {
+        return $this->galop;
+    }
+
+    public function setGalop(?Galops $galop): self
+    {
+        $this->galop = $galop;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Repas[]
+     */
+    public function getRepas(): Collection
+    {
+        return $this->repas;
+    }
+
+    public function addRepa(Repas $repa): self
+    {
+        if (!$this->repas->contains($repa)) {
+            $this->repas[] = $repa;
+            $repa->addCuisine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepa(Repas $repa): self
+    {
+        if ($this->repas->contains($repa)) {
+            $this->repas->removeElement($repa);
+            $repa->removeCuisine($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getParticipe(): Collection
+    {
+        return $this->participe;
+    }
+
+    public function addParticipe(Event $participe): self
+    {
+        if (!$this->participe->contains($participe)) {
+            $this->participe[] = $participe;
+        }
+
+        return $this;
+    }
+
+    public function removeParticipe(Event $participe): self
+    {
+        if ($this->participe->contains($participe)) {
+            $this->participe->removeElement($participe);
+        }
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(\DateTimeInterface $dateNaissance): self
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
     }
 
 

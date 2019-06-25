@@ -3,13 +3,22 @@
 {%  block body %}
 <h1>Inscription sur le site</h1>
 
-{{ form_start(form) }}
-{{ form_row(form.nom) }}
-{{ form_row(form.prenom) }}
-{{ form_row(form.email) }}
-{{ form_row(form.motDePasse) }}
-{{ form_row(form.confirm_motDePasse,{ 'label' : 'Confirmation du mot de passe'}) }}
+{% if app.user %}
+    <div>Vous devez vous déconnecter pour crée un nouveau compte.</div>
+{% else %}
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.prenom) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.dateNaissance,{ 'label' : 'Date de naissance'}) }}
+    {{ form_row(form.adresse) }}
+    {{ form_row(form.telephone,{ 'label' : 'Numero de telephone'}) }}
+    {{ form_row(form.galop) }}
+    {{ form_row(form.motDePasse) }}
+    {{ form_row(form.confirm_motDePasse,{ 'label' : 'Confirmation du mot de passe'}) }}
 
-<button type="submit" class="btn btn-success">Inscription ! </button>
-{{ form_end(form)}}
+    <button type="submit" class="btn btn-success">Inscription ! </button>
+    {{ form_end(form)}}
+
+{% endif %}
 {% endblock %}
