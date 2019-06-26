@@ -2,6 +2,81 @@
 
 {% block body %}
 
+    {{ form_start(formEvent) }}
 
+    {{ form_row(formEvent.titre) }}
+
+    <div class="well">
+
+    {{ form_row(formEvent.dates) }}
+    <a href="#" id="add_date" class="btn btn-default">Ajouter une date</a>
+
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            
+            var $container = $('div#event_create_dates');
+
+            var index = $container.find(':input').length;
+
+            $('#add_date').click(function(e) {
+                addDate($container);
+
+                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                return false;
+            });
+
+            if (index == 0) {
+                addDate($container);
+            } else {
+                $container.children('div').each(function() {
+                    addDeleteLink($(this));
+                });
+            }
+
+            function addDate($container) {
+                var template = $container.attr('data-prototype');
+
+                var $prototype = $(template);
+
+                addDeleteLink($prototype);
+
+                $container.append($prototype);
+
+                index++;
+            }
+
+            function addDeleteLink($prototype) {
+                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+                $prototype.append($deleteLink);
+
+                $deleteLink.click(function(e) {
+                    $prototype.remove();
+
+                    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                    return false;
+                });
+            }
+        });
+    </script>
+
+    {{ form_row(formEvent.tarifMoinsDe12) }}
+    {{ form_row(formEvent.plusDe12) }}
+    {{ form_row(formEvent.proprietaire) }}
+    {{ form_row(formEvent.image) }}
+    {{ form_row(formEvent.texte) }}
+    {{ form_row(formEvent.nbMaxParticipants) }}
+
+    {{ form_row(formEvent.galops) }}
+
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+
+    {{ form_end(formEvent) }}
+
+    
 
 {% endblock %}

@@ -78,6 +78,8 @@ class DatesEvenements
         return $this;
     }
 
+<<<<<<< HEAD
+=======
     public function getEventBenevoles(): ?Event
     {
         return $this->eventBenevoles;
@@ -89,4 +91,5 @@ class DatesEvenements
 
         return $this;
     }
+>>>>>>> 8102968170fa54d09e30a4f8cbce49eb4e6480e0
 }

@@ -18,6 +18,14 @@
             <img class="corner-bottom-left" src="http://placehold.it/32x32">
             <img class="corner-bottom-right" src="http://placehold.it/32x32">
             </div>
+            <div class="galops">
+                {% for galop in event.galops %}
+                    {{galop.niveau}}
+                {% endfor %}
+            </div>
+            <div class="content">
+                <p>Tarifs:  Moins de 12 : {{ event.tarifMoinsDe12 }}€,  Plus de 12 :  {{ event.plusDe12 }}€,  proprietaire :  {{ event.proprietaire }}€</p>
+                <img src="{{ event.image }}" alt="">
             <div class="card-body">
                 <table><tr class="bg-light">
                 <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
