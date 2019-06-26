@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Galops;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationType;
+use App\Form\ModifyAccountType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -64,5 +69,27 @@ class SecurityController extends AbstractController
      */
     public function profile(){
         return $this->render('security/profile.html.twig');
+    }
+
+    /**
+     * @Route("/profil/modifier",name="security_profile_modify")
+     */
+    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager){
+
+        
+           
+            $form = $this->createForm(ModifyAccountType::class,$user);
+     //   $user=$this->getUser();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($user);
+            $manager->flush();
+    
+            return $this->redirectToRoute('security_profile');
+        }
+        return $this->render('security/profile_modify.html.twig', [
+            'form'=> $form->createView(),
+            'user2'=>$user
+        ]);
     }
 }

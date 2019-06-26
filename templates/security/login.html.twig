@@ -7,6 +7,7 @@
 <div class="card border-warning mb-3 .container-login" style="max-width: 20rem;">
   <div class="card-header">Connexion</div>
   <div class="card-body">
+  {% if not app.user %}
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -29,6 +30,7 @@
     </div>
     <div>Vous n'avez pas de compte ? Inscrivez-vous <a href="{{ path('security_registration') }}">Inscription</a></div>
 </form>
+    {% endif %}
   </div>
 </div>
 </container>
