@@ -122,11 +122,14 @@ class GeneralController extends AbstractController
 
     /**
      * @Route("/creationEvenement", name="createEvent")
+     * @Route("/evenement/{id}/edit", name="editEvent")
      */
-    public function createEvents(Request $request,ObjectManager $manager)
+    public function createEvents(Event $event = null, Request $request,ObjectManager $manager)
     {
-        $event = new Event();
-        
+        if(!$event) {
+            $event = new Event();
+        }
+
         $form = $this->createForm(EventCreateType::class, $event);
 
         $form->handleRequest($request);

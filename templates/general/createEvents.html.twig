@@ -74,6 +74,9 @@
 
     {{ form_row(formEvent.galops) }}
 
+    {{ form_row(formEvent.nbBenevolesMatin, {'value':'0'})}}
+    {{ form_row(formEvent.nbBenevolesApresMidi, {'value':'0'})}}
+
     <button type="submit" class="btn btn-success">Enregistrer</button>
 
     {{ form_end(formEvent) }}
