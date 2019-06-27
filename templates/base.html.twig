@@ -14,17 +14,22 @@
             background-repeat: true;
         }
         .navbar-text-custom {
-            color: #ffeb51 !important;
+            color: #f4f270 !important;
+            padding: 0rem;
+            font-weight: bold;
         }
         .bg-navbar-custom{
             background-color: #3fc6b7;
         }
         .navbar-custom{
-            padding: 0.5rem 0.5rem;
-            z-index: 9;
-            position: fixed;
-            top: 0;
+            padding: 0rem 0rem;
             width: 100%;
+        }
+        .nav-item-custom{
+            padding: 0.2rem 0.4rem;
+        }
+        .bg-button-custom{
+            background-color: #35a89b;
         }
         h1{
             COLOR: white;
@@ -54,7 +59,7 @@
         }
         .events-layout{
             width: 46em;
-            padding: 3em;
+            padding: 4em;
             margin-top: 2em;
             margin-left: auto;
             margin-right: auto;
@@ -121,29 +126,38 @@
                 font-size: 2em;
             }
             .mobile-web-title{
-                margin-top: 2em !important;
-                font-size: 2.5em;
+                font-size: 1.5em !important;
+                overflow: hidden;
             }
             .mobile-index-layout{
                 flex-direction: column;
             }
             .events-layout{
-                margin-top: 5em;
+                margin-top: 6em;
             }
         }
+        .header-custom{
+            top: 0;
+            position: fixed;
+            z-index: 9;
+            width: 100%;
+        }
         .website-title{
-            margin-top: 1.5em;
+            font-size: 2em;
             padding: 0.05em;
             padding-left: 0.5em;
             padding-right: 0.5em;
-            text-align: center;
+            margin: 0;
+            text-align: left;
+            background-color: #77d1bd;
         }
         .bg-transparent-blue{
             background-color: #418aa2;
             opacity: .4;
         }
         .custom-container{
-            padding-top: 1rem;
+            padding-top: 7rem;
+            margin-bottom: -3rem;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -170,11 +184,25 @@
             margin-top: 10em;
             padding: 1em;
         }
+        .layout-pdf{
+            display: flex;
+            justify-content: center;
+        }
+        .embed-pdf-layout{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
         </style>
 
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
     </head>
+    <div class="header-custom">
+    <h1 class="website-title mobile-web-title">Les Écuries du Sundgau</h1>
     <nav class="navbar navbar-expand-lg navbar-dark bg-navbar-custom navbar-custom">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -182,41 +210,42 @@
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('home') }}"><img src="http://placehold.it/32x32" alt="home"> Accueil<span class="sr-only">(current)</span></a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('home') }}"><img src="http://placehold.it/24x24" alt="home"> Accueil<span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('events') }}"><img src="http://placehold.it/32x32" alt="events"> Évènements</a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('events') }}"><img src="http://placehold.it/24x24" alt="events"> Évènements</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('prices') }}"><img src="http://placehold.it/32x32" alt="prices"> Tarif</a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('prices') }}"><img src="http://placehold.it/24x24" alt="prices"> Tarif</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('contact') }}"><img src="http://placehold.it/32x32" alt="contact"> Contact</a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('contact') }}"><img src="http://placehold.it/24x24" alt="contact"> Contact</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('localization') }}"><img src="http://placehold.it/32x32" alt="localization"> Localisation</a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('localization') }}"><img src="http://placehold.it/24x24" alt="localization"> Localisation</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('facilities') }}"><img src="http://placehold.it/32x32" alt="facilities"> Le Centre</a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('facilities') }}"><img src="http://placehold.it/24x24" alt="facilities"> Le Centre</a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
             {% if not app.user %}
-            <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('security_login') }}">Se Connecter</a>
+            <li class="nav-item nav-item-custom">
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_login') }}">Se Connecter</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('security_profile') }}">Profil</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_profile') }}">Profil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link navbar-text-custom" href="{{ path('security_logout') }}">Se Deconnecter</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_logout') }}">Se Deconnecter</a>
             </li>
             {% endif %}
             </ul>
         </div>
     </nav>
+    </div>
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
