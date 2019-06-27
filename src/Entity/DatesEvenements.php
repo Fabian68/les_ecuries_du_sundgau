@@ -78,15 +78,4 @@ class DatesEvenements
         return $this;
     }
 
-    public function getEventBenevoles(): ?Event
-    {
-        return $this->eventBenevoles;
-    }
-
-    public function setEventBenevoles(?Event $eventBenevoles): self
-    {
-        $this->eventBenevoles = $eventBenevoles;
-
-        return $this;
-    }
 }

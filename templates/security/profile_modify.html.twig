@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+    {% if not app.user %}
+    <div>Vous devez vous connecter pour modifier votre profil.</div>
+{% else %}
+    {{ dump(user2) }}
+    {{ form_start(form) }}
+    {{ form_row(form.adresse,{ 'label' : 'Modifier adresse','value' : user2.adresse }) }}
+    {{ form_row(form.telephone,{ 'label' : 'Modifier numero de telephone','value' : user2.telephone}) }}
+    {{ form_row(form.galop,{ 'label' : 'Modifier galop','value' : user2.galop }) }}
+
+    <button type="submit" class="btn btn-success"> Modifier </button>
+    {{ form_end(form)}}
+
+{% endif %}
+{% endblock %}

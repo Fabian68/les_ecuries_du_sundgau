@@ -24,11 +24,6 @@ class Event
     private $titre;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $image;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $texte;
@@ -90,12 +85,18 @@ class Event
      */
     private $nbBenevolesApresMidi;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement")
+     */
+    private $images;
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
         $this->galops = new ArrayCollection();
         $this->benevoles = new ArrayCollection();
         $this->utilisateurs = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,18 +112,6 @@ class Event
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
@@ -337,5 +326,41 @@ class Event
         $this->nbBenevolesApresMidi = $nbBenevolesApresMidi;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Images[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Images $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): self
+    {
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getEvenement() === $this) {
+                $image->setEvenement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->titre;
     }
 }
