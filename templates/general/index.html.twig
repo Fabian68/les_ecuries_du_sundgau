@@ -25,19 +25,21 @@
             <img class="corner-top-right" src="http://placehold.it/32x32">
                 <ul class="event-date-layout">
                 {% for date in event.dates %}
-                    <li><div class="date-text">{{ date.dateDebut | date('d/m/Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H:i') }}</div> à <div class="date-text">{{ date.dateFin | date('H:i') }}</div></li>
+                    <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                 {% endfor %}
                 </ul>
             <img class="corner-bottom-left" src="http://placehold.it/32x32">
             <img class="corner-bottom-right" src="http://placehold.it/32x32">
             </div>
-            <div class="card-body">
-                <table><tr class="bg-light">
-                <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
-                </tr></table>
+            <div class="card-body index-content-event-layout">
+            <div class="galops-layout">galops:
+                {% for galop in event.galops %}
+                    <div class="btn btn-outline-warning galop-layout">galop {{galop.niveau}}</div>
+                {% endfor %}
+            </div>
                 <container class="index-event-content mobile-index-layout">
                 <div class="index-img-layout">
-                <!-- image -->
+                <img class="event-img-layout" src="{{ ((event.images | first).url) }}">
                 </div>
                 <div class="index-text-layout">
                 {{ event.texte }}
