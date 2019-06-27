@@ -37,7 +37,7 @@ class GeneralController extends AbstractController
             $iter++;
         }
 
-        return $this->render('general/index.html.twig', [
+        return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $recents
         ]);
@@ -48,7 +48,7 @@ class GeneralController extends AbstractController
      */
     public function prices()
     {
-        return $this->render('general/prices.html.twig', [
+        return $this->render('/general/prices.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -58,7 +58,7 @@ class GeneralController extends AbstractController
      */
     public function contact()
     {   
-        return $this->render('general/contact.html.twig', [
+        return $this->render('/general/contact.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -68,7 +68,7 @@ class GeneralController extends AbstractController
      */
     public function localization()
     {
-        return $this->render('general/localization.html.twig', [
+        return $this->render('/general/localization.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -82,7 +82,7 @@ class GeneralController extends AbstractController
 
         $events = $repo->findAll();
 
-        return $this->render('general/events.html.twig', [
+        return $this->render('/general/events.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events
         ]);
@@ -113,7 +113,7 @@ class GeneralController extends AbstractController
             return $this->redirectToRoute('events');
         }
 
-        return $this->render('general/event.html.twig', [
+        return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
             'form'=> $form->createView()
@@ -150,7 +150,7 @@ class GeneralController extends AbstractController
             return $this->redirectToRoute('events');
         }
 
-        return $this->render('general/createEvents.html.twig', [
+        return $this->render('/general/createEvents.html.twig', [
             'controller_name' => 'GeneralController',
             'formEvent' => $form->createView()
         ]);
@@ -161,7 +161,7 @@ class GeneralController extends AbstractController
      */
     public function facilities()
     {
-        return $this->render('facilities.html.twig', [
+        return $this->render('/facilities.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     } 
@@ -171,7 +171,7 @@ class GeneralController extends AbstractController
      */
     public function test()
     {
-        return $this->render('general/test.php', [
+        return $this->render('/general/test.php', [
             'controller_name' => 'GeneralController',
         ]);
     }
