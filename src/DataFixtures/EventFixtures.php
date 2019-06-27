@@ -32,10 +32,10 @@ class EventFixtures extends Fixture
         for ($i=0; $i <10 ; $i++) { 
             
             $event=new Event();
-            $image= new Images();
-            $image->setUrl($faker->imageUrl(640,480));
-            $manager->persist($image);
-            $image->setEvenement($event);
+          //  $image= new Images();
+          //  $image->setUrl($faker->imageUrl(640,480));
+         //   $manager->persist($image);
+          //  $image->setEvenement($event);
             $event->setTitre($faker->sentence());
            // $event->setImage();
             $event->setTexte($faker->paragraph());

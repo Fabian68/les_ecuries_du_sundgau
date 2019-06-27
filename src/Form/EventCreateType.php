@@ -37,12 +37,12 @@ class EventCreateType extends EventType
                 'expanded' => true,
                 'class' => Galops::class,
                 'mapped' => false
-            ]);
-           /**->add('images', CollectionType::class,[
+            ])
+            ->add('images', CollectionType::class,[
                 'entry_type' => ImagesType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true
-            ]);*/
+            ]);
     
     }
 

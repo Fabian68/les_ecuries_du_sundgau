@@ -135,7 +135,7 @@ class GeneralController extends AbstractController
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump($event);
+            var_dump($event->getDates());
                         
             foreach ($event->getDates() as $date) {
                 $event->addDate($date);
