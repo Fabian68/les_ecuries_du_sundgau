@@ -64,7 +64,7 @@
                     return false;
                 });
             }
-        });
+        });// n'envoie qu'une seule date ! 
     </script>
     {{ form_row(formEvent.tarifMoinsDe12) }}
     {{ form_row(formEvent.plusDe12) }}
@@ -72,7 +72,7 @@
     {{ form_row(formEvent.texte) }}
     {{ form_row(formEvent.nbMaxParticipants) }}
 
-    {{ form_row(formEvent.galops) }}
+    {{ form_row(formEvent.galops) }}/<!-- je m'en occupe -->
 
     {{ form_row(formEvent.nbBenevolesMatin, {'value':'0'})}}
     {{ form_row(formEvent.nbBenevolesApresMidi, {'value':'0'})}}
