@@ -18,19 +18,14 @@ class EventType extends AbstractType
     {
         $builder
             ->add('titre')
-            /**->add('dates', CollectionType::class, [
-             'entry_type' => DateTimeType::class,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => true
-            ])*/
             ->add('tarifMoinsDe12')
             ->add('plusDe12')
             ->add('proprietaire')
-            ->add('image')
             ->add('texte')
-            ->add('nbMaxParticipants');
-        // ->add('galops')
+            ->add('nbMaxParticipants')
+            ->add('nbBenevolesMatin')
+            ->add('nbBenevolesApresMidi')
+        ;
     }
 
     /**

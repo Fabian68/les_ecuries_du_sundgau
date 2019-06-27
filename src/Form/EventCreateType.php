@@ -3,14 +3,16 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use App\Entity\DatesEvenements;
 use App\Entity\Galops;
+use App\Entity\Images;
+use App\Form\ImagesType;
+use App\Entity\DatesEvenements;
 use Symfony\Component\Form\AbstractType;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class EventCreateType extends EventType
 {
@@ -36,6 +38,11 @@ class EventCreateType extends EventType
                 'class' => Galops::class,
                 'mapped' => false
             ]);
+           /**->add('images', CollectionType::class,[
+                'entry_type' => ImagesType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true
+            ]);*/
     
     }
 

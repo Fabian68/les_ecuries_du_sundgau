@@ -2,24 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Event;
-use App\Entity\DatesEvenements;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Entity\Images;
 use App\Form\EventType;
-use App\Form\DatesEvenementsType;
 use App\Form\EventCreateType;
-use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\Event;
+use App\Entity\DatesEvenements;
+use App\Form\DatesEvenementsType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GeneralController extends AbstractController
@@ -52,7 +48,7 @@ class GeneralController extends AbstractController
      */
     public function prices()
     {
-        return $this->render('prices.html.twig', [
+        return $this->render('general/prices.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -62,7 +58,7 @@ class GeneralController extends AbstractController
      */
     public function contact()
     {   
-        return $this->render('contact.html.twig', [
+        return $this->render('general/contact.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -72,7 +68,7 @@ class GeneralController extends AbstractController
      */
     public function localization()
     {
-        return $this->render('localization.html.twig', [
+        return $this->render('general/localization.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     }
@@ -86,7 +82,7 @@ class GeneralController extends AbstractController
 
         $events = $repo->findAll();
 
-        return $this->render('events.html.twig', [
+        return $this->render('general/events.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events
         ]);
@@ -117,7 +113,7 @@ class GeneralController extends AbstractController
             return $this->redirectToRoute('events');
         }
 
-        return $this->render('event.html.twig', [
+        return $this->render('general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
             'form'=> $form->createView()
@@ -130,24 +126,31 @@ class GeneralController extends AbstractController
     public function createEvents(Request $request,ObjectManager $manager)
     {
         $event = new Event();
-
+        
         $form = $this->createForm(EventCreateType::class, $event);
 
         $form->handleRequest($request);
-
+     
         if ($form->isSubmitted() && $form->isValid()) {
+                        
+            foreach ($event->getDates() as $date) {
+                $event->addDate($date);
+                $date->setEvent($event);
+                $manager->persist($date);
+            }
 
-            $event = $form->getData();
+            echo('sfqfsfsfsdfsfsfsdfsdfsf \n \n \n fgsdgsdgsdgs');
+            $image=new Images();
+            $image->setUrl('voilamonurl');
+            $manager->persist($image);
+            $event->addImage($image);
+            $manager->persist($event);
+            $manager->flush();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($event->getDates());
-            $em->persist($event);
-            $em->flush();
-
-            return $this->redirectToRoute('event');
+            return $this->redirectToRoute('events');
         }
 
-        return $this->render('createEvents.html.twig', [
+        return $this->render('general/createEvents.html.twig', [
             'controller_name' => 'GeneralController',
             'formEvent' => $form->createView()
         ]);
@@ -168,7 +171,7 @@ class GeneralController extends AbstractController
      */
     public function test()
     {
-        return $this->render('test.php', [
+        return $this->render('general/test.php', [
             'controller_name' => 'GeneralController',
         ]);
     }

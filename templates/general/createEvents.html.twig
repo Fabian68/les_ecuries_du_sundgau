@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+<br>
+<br>
+<br>
+<br>
     {{ form_start(formEvent) }}
 
     {{ form_row(formEvent.titre) }}
@@ -63,11 +66,9 @@
             }
         });
     </script>
-
     {{ form_row(formEvent.tarifMoinsDe12) }}
     {{ form_row(formEvent.plusDe12) }}
     {{ form_row(formEvent.proprietaire) }}
-    {{ form_row(formEvent.image) }}
     {{ form_row(formEvent.texte) }}
     {{ form_row(formEvent.nbMaxParticipants) }}
 
