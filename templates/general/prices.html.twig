@@ -1,1 +1,5 @@
 {% extends 'base.html.twig' %}
+
+{% block body %}
+<a href="{{ asset('uploads/brochures/' ~ product.brochure) }}">View brochure (PDF)</a>
+{% endblock %}
