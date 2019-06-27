@@ -69,9 +69,12 @@
             width: 100%;
         }
         
-        @media screen and (min-width: 1000px){
+        @media screen and (min-width: 992px){
             .big-screen{
-                width: 70%;
+                width: 71%;
+            }
+            .layout-pdf{
+                top: 4.5rem !important;
             }
         }
 
@@ -149,6 +152,9 @@
                 padding-top: 0.3em;
                 padding-bottom: 0.3em;
             }
+            .layout-pdf{
+                top: 4.2rem !important;
+            }
         }
         .header-custom{
             top: 0;
@@ -200,16 +206,16 @@
             padding: 1em;
         }
         .layout-pdf{
-            display: flex;
-            justify-content: center;
-        }
-        .embed-pdf-layout{
             position: absolute;
-            top: 0;
+            top: 4.75rem;
             left: 0;
-            width: 100%;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+        .object-pdf-layout{
             height: 100%;
-            border: 0;
+            width: 100%;
         }
         .galop-layout{
             margin: 0.5em;

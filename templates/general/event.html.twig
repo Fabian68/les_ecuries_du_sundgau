@@ -2,41 +2,37 @@
 
 {% block body %}
 
-    <event>
-        <h2>{{ event.titre }}</h2>
-        <div class="date">
-            <p>
-                {% for date in event.dates %}
-                    {{ date.dateDebut | date('d/m/Y') }} de {{ date.dateDebut | date('H:i') }} à {{ date.dateFin | date('H:i') }}</br>
-                {% endfor %}
-            </p>
+<section class="events-layout big-screen mobile-layout">
+    <event class="card mb-3">
+        <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
+        <div class="card-subtitle bg-event-date">
+        <img class="corner-top-left" src="http://placehold.it/32x32">
+        <img class="corner-top-right" src="http://placehold.it/32x32">
+            <ul class="event-date-layout">
+            {% for date in event.dates %}
+                <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
+            {% endfor %}
+            </ul>
+        <img class="corner-bottom-left" src="http://placehold.it/32x32">
+        <img class="corner-bottom-right" src="http://placehold.it/32x32">
         </div>
-        <div class="galops">
-                {% for galop in event.galops %}
-                    {{galop.niveau}}
-                {% endfor %}
+        <div class="galops-layout">galops:
+            {% for galop in event.galops %}
+                <div class="btn btn-outline-warning galop-layout">galop {{galop.niveau}}</div>
+            {% endfor %}
         </div>
-        <div class="content">
-            <p>Tarifs:  Moins de 12 : {{ event.tarifMoinsDe12 }}€,  Plus de 12 :  {{ event.plusDe12 }}€,  proprietaire :  {{ event.proprietaire }}€</p>
-           <!-- image -->
+        <div class="card-body">
+            <table><tr class="bg-light">
+            <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
+            </tr></table>
+            <img class="event-img-layout" src="{{ ((event.images | first).url) }}">
             </br>
             {{ event.texte }}
             </br>
         </div>
-        {% if not app.user %}
-            <div>Connecter vous pour vous inscrire a l'evenement ! </div>
-        {% else %}
-            </br>
-            <div>Inscription</div>
-            {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
-
-            {% elseif app.user.participe is null %} <!-- si deja inscrit a levenement -->
-                {{ form_start(form) }}
-                {{ form_end(form) }}                
-            {% else %}
-                <div>Vous êtes inscrit pour cet évènement.</div>
-            {% endif %}
-        {% endif %}
     </event>
+    <HR width="50%" size="10" noshade />
+
+</section>
 
 {% endblock %}
