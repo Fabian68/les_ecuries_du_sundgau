@@ -11,7 +11,7 @@
             <img class="corner-top-right" src="http://placehold.it/32x32">
                 <ul class="event-date-layout">
                 {% for date in event.dates %}
-                    <li><div class="date-text">{{ date.dateDebut | date('d/m/Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H:i') }}</div> à <div class="date-text">{{ date.dateFin | date('H:i') }}</div></li>
+                    <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                 {% endfor %}
                 </ul>
             <img class="corner-bottom-left" src="http://placehold.it/32x32">
