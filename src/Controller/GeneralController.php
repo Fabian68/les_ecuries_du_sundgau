@@ -29,21 +29,21 @@ class GeneralController extends AbstractController
 
         $repo2 = $this->getDoctrine()->getRepository(Images::class);
 
-        $recents = array();
-        $events = $repo->findAll();
-        $iter = 0;
+        //$recents = array();
+        $events = $repo->findFutureEvents();  //findBy(array(), array('id' => 'DESC'));
+        /* $iter = 0;
         foreach($events as $event){
             if($iter<5){
                 array_push($recents, $event);
             }
             $iter++;
-        }
+        } */
 
         $images = $repo2->findAll();
 
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
-            'events' => $recents,
+            'events' => $events,
             'images' => $images
         ]);
     }
@@ -85,7 +85,7 @@ class GeneralController extends AbstractController
     {
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
-        $events = $repo->findAll();
+        $events = $repo->findAllDesc();
 
         return $this->render('/general/events.html.twig', [
             'controller_name' => 'GeneralController',

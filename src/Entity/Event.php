@@ -363,4 +363,22 @@ class Event
     {
         return $this->titre;
     }
+
+    public function addGalop(Galops $galop): self
+    {
+        if (!$this->galops->contains($galop)) {
+            $this->galops[] = $galop;
+        }
+
+        return $this;
+    }
+
+    public function removeGalop(Galops $galop): self
+    {
+        if ($this->galops->contains($galop)) {
+            $this->galops->removeElement($galop);
+        }
+
+        return $this;
+    }
 }
