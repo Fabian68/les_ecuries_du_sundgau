@@ -30,6 +30,8 @@ class GeneralController extends AbstractController
     {
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
+        $repo2 = $this->getDoctrine()->getRepository(Images::class);
+
         $recents = array();
         $events = $repo->findAll();
         $iter = 0;
@@ -40,9 +42,12 @@ class GeneralController extends AbstractController
             $iter++;
         }
 
+        $images = $repo2->findAll();
+
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
-            'events' => $recents
+            'events' => $recents,
+            'images' => $images
         ]);
     }
 
@@ -240,7 +245,7 @@ class GeneralController extends AbstractController
      */
     public function facilities()
     {
-        return $this->render('/facilities.html.twig', [
+        return $this->render('/general/facilities.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
     } 

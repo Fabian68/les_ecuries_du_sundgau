@@ -6,15 +6,19 @@
     <event class="card mb-3">
         <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
         <div class="card-subtitle bg-event-date">
+        <div class="corners">
         <img class="corner-top-left" src="http://placehold.it/32x32">
         <img class="corner-top-right" src="http://placehold.it/32x32">
+        </div>
             <ul class="event-date-layout">
             {% for date in event.dates %}
                 <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
             {% endfor %}
             </ul>
+        <div class="corners">
         <img class="corner-bottom-left" src="http://placehold.it/32x32">
         <img class="corner-bottom-right" src="http://placehold.it/32x32">
+        </div>
         </div>
         <div class="galops-layout">galops:
             {% for galop in event.galops %}

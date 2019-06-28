@@ -80,9 +80,17 @@
 
         .bg-event-date{
             background-color: #f4f957 !important;
+            min-height: 4.5rem;
+            display: flex;
+            justify-content: space-between;  
         }
         .index-content-event-layout{
             padding-top: 0em;
+        }
+        .corners{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .corner-top-left{
             float: left;
@@ -97,9 +105,10 @@
             float: right;
         }
         .event-date-layout{
-            list-style-type: none;
-            margin-top: 0.2rem !important;
-            margin-bottom: -1.8rem !important;
+            list-style-type: none;        
+            padding: 0.3em;
+            text-align: center;
+            margin: 0em;
         }
         table{
             margin-bottom: 0.5em;
@@ -224,6 +233,25 @@
             text-align: center;
             margin-top: 0.5em;
             margin-bottom: -1em;
+        }
+        .image-band-layout{
+            background-color: #cc2233;
+            width: 100%;
+            height: 10em;
+            margin-top: 3em;
+            margin-bottom: -5em;
+            display: flex;
+            justify-content: space-around;
+        }
+        .image-thumbnail{
+            flex: 1;
+            height: 100%;
+            padding: 0.5em;
+            align-self: center;
+        }
+        .image-thumbnail:hover{
+            height: 150%;
+            z-index: 9;
         }
         </style>
 
