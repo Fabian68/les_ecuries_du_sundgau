@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190625114710 extends AbstractMigration
+final class Version20190628120045 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,10 +23,13 @@ final class Version20190625114710 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE dates_evenements (id INT AUTO_INCREMENT NOT NULL, event_id INT NOT NULL, event_benevoles_id INT DEFAULT NULL, date_debut DATETIME NOT NULL, date_fin DATETIME NOT NULL, INDEX IDX_A00387DD71F7E88B (event_id), INDEX IDX_A00387DD7359740E (event_benevoles_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE document (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE event (id INT AUTO_INCREMENT NOT NULL, repas_id INT DEFAULT NULL, titre VARCHAR(255) NOT NULL, texte LONGTEXT NOT NULL, tarif_moins_de12 DOUBLE PRECISION NOT NULL, plus_de12 DOUBLE PRECISION NOT NULL, proprietaire DOUBLE PRECISION NOT NULL, nb_max_participants INT NOT NULL, nb_benevoles_matin INT NOT NULL, nb_benevoles_apres_midi INT NOT NULL, INDEX IDX_3BAE0AA71D236AAA (repas_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE event_galops (event_id INT NOT NULL, galops_id INT NOT NULL, INDEX IDX_E6B02A3871F7E88B (event_id), INDEX IDX_E6B02A386EA63067 (galops_id), PRIMARY KEY(event_id, galops_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE files_pdf (id INT AUTO_INCREMENT NOT NULL, file_name VARCHAR(255) NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE galops (id INT AUTO_INCREMENT NOT NULL, niveau INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE images (id INT AUTO_INCREMENT NOT NULL, evenement_id INT DEFAULT NULL, url VARCHAR(255) NOT NULL, INDEX IDX_E01FBE6AFD02F13 (evenement_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE images (id INT AUTO_INCREMENT NOT NULL, evenement_id INT DEFAULT NULL, image_name VARCHAR(255) NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_E01FBE6AFD02F13 (evenement_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE product (id INT AUTO_INCREMENT NOT NULL, brochure VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE repas (id INT AUTO_INCREMENT NOT NULL, nombre_benevoles INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE repas_utilisateur (repas_id INT NOT NULL, utilisateur_id INT NOT NULL, INDEX IDX_12BB4C031D236AAA (repas_id), INDEX IDX_12BB4C03FB88E14F (utilisateur_id), PRIMARY KEY(repas_id, utilisateur_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE repas_utilisateur_cuisine (repas_id INT NOT NULL, utilisateur_id INT NOT NULL, INDEX IDX_394F2AC1D236AAA (repas_id), INDEX IDX_394F2ACFB88E14F (utilisateur_id), PRIMARY KEY(repas_id, utilisateur_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
@@ -66,10 +69,13 @@ final class Version20190625114710 extends AbstractMigration
         $this->addSql('ALTER TABLE repas_utilisateur_cuisine DROP FOREIGN KEY FK_394F2ACFB88E14F');
         $this->addSql('ALTER TABLE utilisateur_event DROP FOREIGN KEY FK_FD6B5279FB88E14F');
         $this->addSql('DROP TABLE dates_evenements');
+        $this->addSql('DROP TABLE document');
         $this->addSql('DROP TABLE event');
         $this->addSql('DROP TABLE event_galops');
+        $this->addSql('DROP TABLE files_pdf');
         $this->addSql('DROP TABLE galops');
         $this->addSql('DROP TABLE images');
+        $this->addSql('DROP TABLE product');
         $this->addSql('DROP TABLE repas');
         $this->addSql('DROP TABLE repas_utilisateur');
         $this->addSql('DROP TABLE repas_utilisateur_cuisine');

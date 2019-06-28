@@ -32,12 +32,13 @@ class EventFixtures extends Fixture
         for ($i=0; $i <10 ; $i++) { 
             
             $event=new Event();
-          //  $image= new Images();
-          //  $image->setUrl($faker->imageUrl(640,480));
-         //   $manager->persist($image);
-          //  $image->setEvenement($event);
+            $image= new Images();
+            $image->setImageName(($i+1) . ".png");
+            $image->setUpdatedAt(new \DateTime());
+            $manager->persist($image);
+            $image->setEvenement($event);
             $event->setTitre($faker->sentence());
-           // $event->setImage();
+            $event->addImage($image);
             $event->setTexte($faker->paragraph());
             $tarif = mt_rand(10,25);
             $event->setTarifMoinsDe12($tarif/2.0);

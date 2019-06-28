@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Images;
 use App\Form\EventType;
+use App\Entity\FilesPdf;
+use App\Form\ImagesType;
+use App\Form\FilesPdfType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
@@ -129,7 +132,6 @@ class GeneralController extends AbstractController
         if(!$event) {
             $event = new Event();
         }
-
         $form = $this->createForm(EventCreateType::class, $event);
 
         $form->handleRequest($request);
@@ -160,6 +162,75 @@ class GeneralController extends AbstractController
         return $this->render('/general/createEvents.html.twig', [
             'controller_name' => 'GeneralController',
             'formEvent' => $form->createView()
+
+        ]);
+    }
+
+     /**
+     * @Route("/creationImage", name="createImage")
+     */
+    public function createImages(Request $request,ObjectManager $manager)
+    {
+        $image = new Images();
+        $form = $this->createForm(ImagesType::class, $image);
+
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $manager->persist($image);
+            $manager->flush();
+
+            //return $this->redirectToRoute('events');
+        }
+
+        return $this->render('/general/createImages.html.twig', [
+            'controller_name' => 'GeneralController',
+            'formImage' => $form->createView()
+
+        ]);
+    }
+
+     /**
+     * @Route("/image/{id}", name="show_image")
+     */
+    public function image($id,Request $request,ObjectManager $manager)
+    {
+        
+       // $form->handleRequest($request);
+      
+
+        $repo = $this->getDoctrine()->getRepository(Images::class);
+
+        $image = $repo->find($id);
+        
+        return $this->render('/general/showImage.html.twig', [
+            'controller_name' => 'GeneralController',
+            'image' => $image
+        ]);
+    }
+
+    /**
+     * @Route("/creationPdf", name="createPdf")
+     */
+    public function createPdf(Request $request,ObjectManager $manager)
+    {
+        $pdf = new FilesPdf();
+        $form = $this->createForm(FilesPdfType::class, $pdf);
+
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $manager->persist($pdf);
+            $manager->flush();
+
+            //return $this->redirectToRoute('events');
+        }
+
+        return $this->render('/general/createPdf.html.twig', [
+            'controller_name' => 'GeneralController',
+            'formPdf' => $form->createView()
 
         ]);
     }

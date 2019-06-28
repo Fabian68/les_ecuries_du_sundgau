@@ -25,7 +25,7 @@
             <table><tr class="bg-light">
             <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
             </tr></table>
-            <img class="event-img-layout" src="{{ ((event.images | first).url) }}">
+            <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
             </br>
             {{ event.texte }}
             </br>

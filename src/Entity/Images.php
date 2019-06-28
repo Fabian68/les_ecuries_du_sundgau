@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -22,7 +23,7 @@ class Images
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="property_image", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="imageName")
      * 
      * @var File|null
      */
@@ -40,6 +41,11 @@ class Images
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="images")
      */
     private $evenement;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -68,7 +74,7 @@ class Images
        if (null !== $imageFile) {
            // It is required that at least one field changes if you are using doctrine
            // otherwise the event listeners won't be called and the file is lost
-           $this->updatedAt = new \DateTimeImmutable();
+           $this->updatedAt = new \DateTime();
        }
    }
 
@@ -87,6 +93,22 @@ class Images
        return $this->imageName;
    }
     
+   public function __construct()
+   {
+       $this->image = new EmbeddedFile();
+   }
+
+   public function getUpdatedAt(): ?\DateTimeInterface
+   {
+       return $this->updatedAt;
+   }
+
+   public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+   {
+       $this->updatedAt = $updatedAt;
+
+       return $this;
+   }
 
 
 }
