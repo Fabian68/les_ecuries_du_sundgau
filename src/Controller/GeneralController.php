@@ -107,11 +107,17 @@ class GeneralController extends AbstractController
        ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
        ->getForm();
 
-
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
         $form->handleRequest($request);
+        
+       $formAsso = $this->createFormBuilder($event)
+                        ->add('nbBenevolesMatin')
+                        ->add('nbBenevolesApresMidi')
+                        ->getForm();
+
+       $formAsso->handleRequest($request);
 
         if ($form->isSubmitted()) {
             $user=$this->getUser();
@@ -120,11 +126,16 @@ class GeneralController extends AbstractController
             $manager->flush();
             return $this->redirectToRoute('events');
         }
+        else if ($formAsso->isSubmitted()) {
+            $manager->persist($event);
+            $manager->flush();
+        }
 
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
-            'form'=> $form->createView()
+            'form'=> $form->createView(),
+            'formAsso' => $formAsso->createView()
         ]);
     }
 

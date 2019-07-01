@@ -52,4 +52,25 @@
         {% endif %}
 </section>
 
+<section>
+
+    {% if app.user %}
+        {% for role in app.user.roles %}
+            {% if role == 'ROLE_ADMIN_ASSO' %}
+                
+                {{ form_start(formAsso) }}
+
+                {{ form_row(formAsso.nbBenevolesMatin) }}
+                {{ form_row(formAsso.nbBenevolesApresMidi)}}
+
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+
+                {{ form_end(formAsso) }}
+
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</section>
+
 {% endblock %}
