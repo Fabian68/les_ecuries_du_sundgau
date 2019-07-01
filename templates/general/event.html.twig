@@ -36,7 +36,20 @@
         </div>
     </event>
     <HR width="50%" size="10" noshade />
+    {% if not app.user %}
+            <div>Connecter vous pour vous inscrire a l'evenement ! </div>
+        {% else %}
+            </br>
+            <div>Inscription</div>
+            {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
 
+            {% elseif app.user.participe is not null %} <!-- si deja inscrit a levenement -->
+                {{ form_start(form) }}
+                {{ form_end(form) }}                
+            {% else %}
+                <div>Vous êtes inscrit pour cet évènement.</div>
+            {% endif %}
+        {% endif %}
 </section>
 
 {% endblock %}
