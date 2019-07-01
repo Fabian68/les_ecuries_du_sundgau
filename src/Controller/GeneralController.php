@@ -110,26 +110,32 @@ class GeneralController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
-        $form->handleRequest($request);
         
-       $formAsso = $this->createFormBuilder($event)
+        $formAsso = $this->createFormBuilder($event)
                         ->add('nbBenevolesMatin')
                         ->add('nbBenevolesApresMidi')
                         ->getForm();
 
-       $formAsso->handleRequest($request);
-
-        if ($form->isSubmitted()) {
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
             $user=$this->getUser();
             $event->addUtilisateur($user);
             $user->addParticipe($event);
             $manager->flush();
             return $this->redirectToRoute('events');
         }
-        else if ($formAsso->isSubmitted()) {
-            $manager->persist($event);
+
+        $formAsso->handleRequest($request);
+        if ($formAsso->isSubmitted() && $formAsso->isValid()) {
+            $nbMatin = $event->getNbBenevolesMatin();
+            $nbAprem = $event->getNbBenevolesApresMidi();
+            $event->setNbBenevolesMatin($nbMatin);
+            $event->setNbBenevolesApresMidi($nbAprem);
             $manager->flush();
+            return $this->redirectToRoute('events');
         }
+
 
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
