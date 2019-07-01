@@ -29,14 +29,14 @@ class EventCreateType extends EventType
             ->add('dates', CollectionType::class,[
                 'entry_type' => DatesEvenementsType::class,
                 'entry_options' => ['label' => false],
-                'allow_add' => true
+                'allow_add' => true,
+                'by_reference' => false,
             ])
             ->add('galops', EntityType::class, [
                 'choice_label' => 'niveau',
                 'multiple' => true,
                 'expanded' => true,
                 'class' => Galops::class,
-                'mapped' => false
             ])
             ->add('images', CollectionType::class,[
                 'entry_type' => ImagesType::class,

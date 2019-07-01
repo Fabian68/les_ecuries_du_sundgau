@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FilesPdfRepository")
@@ -22,12 +23,16 @@ class FilesPdf
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fileName;
 
      /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * @Assert\File(
+     * maxSize = "10024k",
+     * mimeTypes = {"application/pdf", "application/x-pdf"},
+     * mimeTypesMessage = "L'upload ne prend que les fichiers PDF"
+     * )
      * 
      * @Vich\UploadableField(mapping="property_pdf", fileNameProperty="fileName")
      * 

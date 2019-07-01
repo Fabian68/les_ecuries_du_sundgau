@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImagesRepository")
@@ -21,7 +22,7 @@ class Images
     private $id;
 
     /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * @Assert\Image
      * 
      * @Vich\UploadableField(mapping="property_image", fileNameProperty="imageName")
      * 
@@ -31,9 +32,7 @@ class Images
 
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @var string|null
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageName;
 

@@ -16,8 +16,6 @@ class ImagesType extends AbstractType
             ->add('imageFile',FileType::class,[
                 'required' =>false
             ])
-            ->add('imageName')
-            ->add('evenement')
         ;
     }
 

@@ -142,7 +142,7 @@ class GeneralController extends AbstractController
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump($event->getDates());
+            //var_dump($event->getDates());
                         
             foreach ($event->getDates() as $date) {
                 $event->addDate($date);
@@ -150,14 +150,16 @@ class GeneralController extends AbstractController
                 $manager->persist($date);
             }
             foreach ($event->getGalops() as $galop) {
-                $event->addGalop($galop);
-                $galop->addEvent($event);
+                $event->addGalops($galop);
+               // $galop->addEvenement($event);
+                $manager->persist($galop);
             }
-            echo('sfqfsfsfsdfsfsfsdfsdfsf \n \n \n fgsdgsdgsdgs');
-            $image=new Images();
-            $image->setUrl('voilamonurl');
-            $manager->persist($image);
-            $event->addImage($image);
+            foreach ($event->getImages() as $image) {
+                $event->addImage($image);
+                $image->setEvenement($event); 
+                $manager->persist($image);
+            }
+            
             $manager->persist($event);
             $manager->flush();
 
