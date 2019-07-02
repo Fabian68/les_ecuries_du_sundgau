@@ -3,8 +3,6 @@
 {% block title %}Les écuries - Accueil{% endblock %}
 
 {% block body %}
-<style>
-</style>
 
 <div class="custom-container">
     <div class="card text-white bg-transparent-blue mb-3" style="max-width: 60rem;">
@@ -15,11 +13,39 @@
     </div>
 </div>
 
-<div class="image-band-layout">
-{% for image in images %}
-<img class="image-thumbnail" src=" {{ image.url }}">
-{% endfor %}
-</div>
+{% set var = 0 %}
+{% set active = 'active' %}
+
+<div id="myCarousel" class="carousel slide image-band-layout" data-ride="carousel">
+    <ol class="carousel-indicators">
+      {% for image in images %}
+      <li data-target="#myCarousel" data-slide-to="{{ var }}" class="{% if var == 0 %}{{ active }}{% endif %}"></li>
+      {% set var = var + 1 %}
+      {% endfor %}
+    </ol>
+    <div class="carousel-inner carousel-custom">
+      {% set var = 0 %}
+      {% for image in images %}
+      <div class="carousel-item  {% if var == 0 %}{{ active }}{% endif %}">
+        <img class="image-thumbnail" src=" {{ image.url }}">
+        <div class="container">
+           <div class="carousel-caption text-left">
+           </div>
+        </div>
+      </div>
+      {% set var = var + 1 %}
+      {% endfor %}
+
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 
 <section class="events-layout big-screen mobile-layout">
 
