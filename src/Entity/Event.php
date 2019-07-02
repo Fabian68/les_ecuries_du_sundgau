@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
@@ -90,6 +91,11 @@ class Event
      */
     private $images;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="evenements")
+     */
+    private $attributMoyenPaiements;
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -97,6 +103,7 @@ class Event
         $this->benevoles = new ArrayCollection();
         $this->utilisateurs = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->attributMoyenPaiements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -373,6 +380,24 @@ class Event
         return $this;
     }
 
+    /**
+     * @return Collection|AttributMoyenPaiements[]
+     */
+    public function getAttributMoyenPaiements(): Collection
+    {
+        return $this->attributMoyenPaiements;
+    }
+
+    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    {
+        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
+            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
+            $attributMoyenPaiement->addEvenement($this);
+        }
+
+        return $this;
+    }
+
     public function removeGalop(Galops $galop): self
     {
         if ($this->galops->contains($galop)) {
@@ -381,4 +406,14 @@ class Event
 
         return $this;
     }
+
+    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    {
+        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
+            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
+            $attributMoyenPaiement->removeEvenement($this);
+        }
+        return $this;
+    }
+
 }

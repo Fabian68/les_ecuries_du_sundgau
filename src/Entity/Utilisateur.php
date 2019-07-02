@@ -90,10 +90,16 @@ class Utilisateur implements UserInterface
      */
     private $telephone;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="utilisateurs")
+     */
+    private $attributMoyenPaiements;
+
     public function __construct()
     {
         $this->repas = new ArrayCollection();
         $this->participe = new ArrayCollection();
+        $this->attributMoyenPaiements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -284,6 +290,34 @@ class Utilisateur implements UserInterface
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AttributMoyenPaiements[]
+     */
+    public function getAttributMoyenPaiements(): Collection
+    {
+        return $this->attributMoyenPaiements;
+    }
+
+    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    {
+        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
+            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
+            $attributMoyenPaiement->addUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    {
+        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
+            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
+            $attributMoyenPaiement->removeUtilisateur($this);
+        }
 
         return $this;
     }

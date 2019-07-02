@@ -2,25 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Product;
+use App\Entity\FilesPdf;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class ProductType extends AbstractType
+class FilesPdfType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('brochure', FileType::class, ['label' => 'Brochure (PDF file)'])
+        ->add('fileName')
+        ->add('pdfFile',FileType::class,[
+            'required' =>false
+        ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => FilesPdf::class,
         ]);
     }
 }

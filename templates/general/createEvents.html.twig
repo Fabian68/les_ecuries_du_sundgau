@@ -4,68 +4,54 @@
 <br>
 <br>
 <br>
-<br>
+
     {{ form_start(formEvent) }}
 
     {{ form_row(formEvent.titre) }}
 
     <div class="well">
 
-    {{ form_row(formEvent.dates) }}
-    <a href="#" id="add_date" class="btn btn-default">Ajouter une date</a>
+    <script>
+  // add-collection-widget.js
+jQuery(document).ready(function () {
+    jQuery('.add-another-collection-widget').click(function (e) {
+        var list = jQuery(jQuery(this).attr('data-list-selector'));
+        // Try to find the counter of the list or use the length of the list
+        var counter = list.data('widget-counter') | list.children().length;
 
-    </div>
+        // grab the prototype template
+        var newWidget = list.attr('data-prototype');
+        // replace the "__name__" used in the id and name of the prototype
+        // with a number that's unique to your emails
+        // end name attribute looks like name="contact[emails][2]"
+        newWidget = newWidget.replace(/__name__/g, counter);
+        // Increase the counter
+        counter++;
+        // And store it, the length cannot be used if deleting widgets is allowed
+        list.data('widget-counter', counter);
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        // create a new list element and add it to the list
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+    });
+});
+</script>
+<ul id="date-fields-list"
+        data-prototype="{{ form_widget(formEvent.dates.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ formEvent.children|length }}">
+    {% for dateField in formEvent.dates %}
+        <li>
+            {{ form_errors(dateField) }}
+            {{ form_widget(dateField) }}
+        </li>
+    {% endfor %}
+    </ul>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            
-            var $container = $('div#event_create_dates');
+    <button type="button"
+        class="add-another-collection-widget"
+        data-list-selector="#date-fields-list">Add another date</button>
 
-            var index = $container.find(':input').length;
-
-            $('#add_date').click(function(e) {
-                addDate($container);
-
-                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-                return false;
-            });
-
-            if (index == 0) {
-                addDate($container);
-            } else {
-                $container.children('div').each(function() {
-                    addDeleteLink($(this));
-                });
-            }
-
-            function addDate($container) {
-                var template = $container.attr('data-prototype');
-
-                var $prototype = $(template);
-
-                addDeleteLink($prototype);
-
-                $container.append($prototype);
-
-                index++;
-            }
-
-            function addDeleteLink($prototype) {
-                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
-
-                $prototype.append($deleteLink);
-
-                $deleteLink.click(function(e) {
-                    $prototype.remove();
-
-                    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-                    return false;
-                });
-            }
-        });// n'envoie qu'une seule date ! 
-    </script>
     {{ form_row(formEvent.tarifMoinsDe12) }}
     {{ form_row(formEvent.plusDe12) }}
     {{ form_row(formEvent.proprietaire) }}
@@ -73,7 +59,21 @@
     {{ form_row(formEvent.nbMaxParticipants) }}
 
     {{ form_row(formEvent.galops) }}/<!-- je m'en occupe -->
+<ul id="image-fields-list"
+        data-prototype="{{ form_widget(formEvent.images.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ formEvent.children|length }}">
+    {% for imageField in formEvent.images %}
+        <li>
+            {{ form_errors(imageField) }}
+            {{ form_widget(imageField) }}
+        </li>
+    {% endfor %}
+    </ul>
 
+    <button type="button"
+        class="add-another-collection-widget"
+        data-list-selector="#image-fields-list">Add another image</button>
     {{ form_row(formEvent.nbBenevolesMatin, {'value':'0'})}}
     {{ form_row(formEvent.nbBenevolesApresMidi, {'value':'0'})}}
 

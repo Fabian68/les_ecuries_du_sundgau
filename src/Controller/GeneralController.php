@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Images;
 use App\Form\EventType;
+use App\Entity\FilesPdf;
+use App\Form\ImagesType;
+use App\Form\FilesPdfType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
@@ -104,13 +107,18 @@ class GeneralController extends AbstractController
        ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
        ->getForm();
 
-
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
-        $form->handleRequest($request);
+        
+        $formAsso = $this->createFormBuilder($event)
+                        ->add('nbBenevolesMatin')
+                        ->add('nbBenevolesApresMidi')
+                        ->getForm();
 
-        if ($form->isSubmitted()) {
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
             $user=$this->getUser();
             $event->addUtilisateur($user);
             $user->addParticipe($event);
@@ -118,10 +126,22 @@ class GeneralController extends AbstractController
             return $this->redirectToRoute('events');
         }
 
+        $formAsso->handleRequest($request);
+        if ($formAsso->isSubmitted() && $formAsso->isValid()) {
+            $nbMatin = $event->getNbBenevolesMatin();
+            $nbAprem = $event->getNbBenevolesApresMidi();
+            $event->setNbBenevolesMatin($nbMatin);
+            $event->setNbBenevolesApresMidi($nbAprem);
+            $manager->flush();
+            return $this->redirectToRoute('events');
+        }
+
+
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
-            'form'=> $form->createView()
+            'form'=> $form->createView(),
+            'formAsso' => $formAsso->createView()
         ]);
     }
 
@@ -134,13 +154,12 @@ class GeneralController extends AbstractController
         if(!$event) {
             $event = new Event();
         }
-
         $form = $this->createForm(EventCreateType::class, $event);
 
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump($event);
+            //var_dump($event->getDates());
                         
             foreach ($event->getDates() as $date) {
                 $event->addDate($date);
@@ -148,14 +167,16 @@ class GeneralController extends AbstractController
                 $manager->persist($date);
             }
             foreach ($event->getGalops() as $galop) {
-                $event->addGalop($galop);
-                $galop->addEvent($event);
+                $event->addGalops($galop);
+               // $galop->addEvenement($event);
+                $manager->persist($galop);
             }
-            echo('sfqfsfsfsdfsfsfsdfsdfsf \n \n \n fgsdgsdgsdgs');
-            $image=new Images();
-            $image->setUrl('voilamonurl');
-            $manager->persist($image);
-            $event->addImage($image);
+            foreach ($event->getImages() as $image) {
+                $event->addImage($image);
+                $image->setEvenement($event); 
+                $manager->persist($image);
+            }
+            
             $manager->persist($event);
             $manager->flush();
 
@@ -165,6 +186,75 @@ class GeneralController extends AbstractController
         return $this->render('/general/createEvents.html.twig', [
             'controller_name' => 'GeneralController',
             'formEvent' => $form->createView()
+
+        ]);
+    }
+
+     /**
+     * @Route("/creationImage", name="createImage")
+     */
+    public function createImages(Request $request,ObjectManager $manager)
+    {
+        $image = new Images();
+        $form = $this->createForm(ImagesType::class, $image);
+
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $manager->persist($image);
+            $manager->flush();
+
+            //return $this->redirectToRoute('events');
+        }
+
+        return $this->render('/general/createImages.html.twig', [
+            'controller_name' => 'GeneralController',
+            'formImage' => $form->createView()
+
+        ]);
+    }
+
+     /**
+     * @Route("/image/{id}", name="show_image")
+     */
+    public function image($id,Request $request,ObjectManager $manager)
+    {
+        
+       // $form->handleRequest($request);
+      
+
+        $repo = $this->getDoctrine()->getRepository(Images::class);
+
+        $image = $repo->find($id);
+        
+        return $this->render('/general/showImage.html.twig', [
+            'controller_name' => 'GeneralController',
+            'image' => $image
+        ]);
+    }
+
+    /**
+     * @Route("/creationPdf", name="createPdf")
+     */
+    public function createPdf(Request $request,ObjectManager $manager)
+    {
+        $pdf = new FilesPdf();
+        $form = $this->createForm(FilesPdfType::class, $pdf);
+
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $manager->persist($pdf);
+            $manager->flush();
+
+            //return $this->redirectToRoute('events');
+        }
+
+        return $this->render('/general/createPdf.html.twig', [
+            'controller_name' => 'GeneralController',
+            'formPdf' => $form->createView()
 
         ]);
     }
