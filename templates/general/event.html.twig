@@ -43,7 +43,9 @@
             </br>
             <div>Inscription</div>
             {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
-              {{ dump(app.user.participe) }}
+               {% for user in users %}
+             <li>{{ user.username|e }}</li>
+                {% endfor %}
             {% elseif app.user.participe is  defined %} <!-- si pas deja inscrit a levenement -->
                 {{ form_start(form) }}
                 {{ form_end(form) }}                
@@ -51,6 +53,7 @@
                 <div>Vous êtes inscrit pour cet évènement.</div>
             {% endif %}
         {% endif %}
+        <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
 </section>
 
 <section>
