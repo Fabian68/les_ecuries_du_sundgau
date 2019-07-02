@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass="App\Repository\RepasRepository")
  */
 class Repas
