@@ -9,11 +9,20 @@
     {% if not app.user %}
         <div>Vous devez vous connecter pour accèder a cet page ! </div>
     {% else %}
-        <div>Modifier Galops</div>
+        <h2>Informations du profil</h2>
+        <div>Nom : {{ app.user.nom}}</div>
+        <div>Prenom : {{ app.user.prenom}}</div>
+        <div>Email : {{ app.user.email}}</div>
+        <div>Date de naissance : {{ app.user.datenaissance|date("d/m/Y")}}</div>
+        <div>Adresse : {{ app.user.adresse}}</div>
+        <div>Galop : {{ app.user.galop.niveau | number_format }}</div>
+        <div><a href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
+        <br>
+        <div><a href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
         {% if is_granted('ROLE_ADMIN') %}
             <br>
-            <div>Cree evenement (visible que si admin ) </div>
-            <div>Lien ici</div>
+            <div><a href="{{ path('createEvent') }}">Creation evenement</a></div>
+            
         {% endif %}
     {% endif %}
 {% endblock %}
