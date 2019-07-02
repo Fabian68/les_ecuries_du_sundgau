@@ -17,25 +17,29 @@
 {% set active = 'active' %}
 
 <div id="myCarousel" class="carousel slide image-band-layout" data-ride="carousel">
-    <ol class="carousel-indicators">
+    <ol class="carousel-indicators carousel-indic-custom">
       {% for image in images %}
-      <li data-target="#myCarousel" data-slide-to="{{ var }}" class="{% if var == 0 %}{{ active }}{% endif %}"></li>
+      {% if var % 5 == 0 %}
+      <li data-target="#myCarousel" data-slide-to="{{ var }}" class="{% if var == 0 %}{{ active }}{% set active = '' %}{% endif %}"></li>
+      {% endif %}
       {% set var = var + 1 %}
+      {% set var = var % 5 %}
       {% endfor %}
     </ol>
+    {% set active = 'active' %}
     <div class="carousel-inner carousel-custom">
       {% set var = 0 %}
       {% for image in images %}
-      <div class="carousel-item  {% if var == 0 %}{{ active }}{% endif %}">
-        <img class="image-thumbnail" src=" {{ image.url }}">
-        <div class="container">
-           <div class="carousel-caption text-left">
-           </div>
-        </div>
-      </div>
+      {% if var == 0 %}
+      <div class="carousel-item {% if active == 'active' %}{{ active }}{% set active = '' %}{% endif %}">
+      <div class="carousel-pusher"></div>
+      {% endif %}
+        <img class="image-thumbnail" src="/images/properties/{{ image.imageName }}">
+      {% if var % 5 == 4 %}</div>{% endif %}
       {% set var = var + 1 %}
+      {% set var = var % 5 %}
       {% endfor %}
-
+      {% if var % 5 != 0 %}</div>{% endif %}
     </div>
     <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
