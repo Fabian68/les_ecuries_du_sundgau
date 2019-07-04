@@ -3,15 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
         <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <style type="text/css">
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
         body {
             background-color: #48a04c;
-            background-image: url('http://placehold.it/100x100');
-            background-attachement: fixed;
-            background-repeat: true;
+            background-image: url('/images/resources/fond.png');
+            background-attachment: fixed;
+            background-size: cover;
         }
         .navbar-text-custom {
             color: #f4f270 !important;
@@ -76,13 +80,32 @@
             .layout-pdf{
                 top: 4.5rem !important;
             }
+            .image-band-layout{
+                height: 11em !important;
+            }
+            .carousel-pusher{
+                width: 50% !important;
+                margin-left: -28em !important;
+            }
+            .image-thumbnail{
+                margin-left: 0.5em !important;
+                margin-right: 0.5em !important;
+                height: 10em !important;
+                max-width: 10em !important;
+            }
+            .image-thumbnail:hover{
+                max-width: 30% !important;
+            }
         }
 
         .bg-event-date{
             background-color: #f4f957 !important;
-            min-height: 4.5rem;
             display: flex;
-            justify-content: space-between;  
+            justify-content: space-between;
+        }
+        .event-container{
+            display: flex;
+            align-content: center;
         }
         .index-content-event-layout{
             padding-top: 0em;
@@ -94,20 +117,26 @@
         }
         .corner-top-left{
             float: left;
+            height: 50%;
         }
         .corner-bottom-left{
             float: left;
+            height: 50%;
         }
         .corner-bottom-right{
             float: right;
+            height: 50%;
         }
         .corner-top-right{
             float: right;
+            height: 50%;
         }
         .event-date-layout{
+            display: flex;
+            flex-direction: column;
             list-style-type: none;        
             padding: 0.3em;
-            text-align: center;
+            justify-content: center;
             margin: 0em;
         }
         table{
@@ -163,6 +192,20 @@
             }
             .layout-pdf{
                 top: 4.2rem !important;
+            }
+            .image-thumbnail{
+                height: 5em !important;
+                max-width: 5em !important;
+            }
+            .image-thumbnail:hover{
+                transform: scale(3.0) !important;
+                max-width: 30% !important;
+            }
+            .carousel-pusher{
+                margin-left: -13em !important;
+            }
+            .image-band-layout{
+                height: 6em !important;
             }
         }
         .header-custom{
@@ -235,23 +278,111 @@
             margin-bottom: -1em;
         }
         .image-band-layout{
-            background-color: #cc2233;
+            background-color: #5b7a50;
             width: 100%;
-            height: 10em;
+            height: 8em;
             margin-top: 3em;
             margin-bottom: -5em;
-            display: flex;
             justify-content: space-around;
+            transition: all .2s ease-in-out;
+            z-index: 5;
+        }
+        .band-container{
+            z-index: 7;
+            display: flex;
+            justify-content: space-between;
+        }
+        .image-band-left{
+            margin-top: -5.7rem;
+            height: 11.2em;
+            flex: 1;
+            width: 50%;
+            background-color: red;
+            margin-right: 40%;
+            z-index: 7;
+        }
+        .image-band-right{
+            margin-top: -5.7rem;
+            height: 11.2em;
+            flex: 1;
+            width: 50%;
+            background-color: green;
+            margin-left: 40%;
+            z-index: 7;
+        }
+        .image-band-left:hover{
+            background-color: black;
+        }
+        .image-band-right:hover{
+            background-color: black;
         }
         .image-thumbnail{
-            flex: 1;
-            height: 100%;
+            height: 7em;
+            max-width: 7em;
             padding: 0.5em;
-            align-self: center;
+            transition: all .2s ease-in-out;
         }
         .image-thumbnail:hover{
-            height: 150%;
-            z-index: 9;
+            transform: scale(2.0); 
+            max-width: 30%;
+        }
+        .carousel-custom{
+            overflow: visible;
+            white-space: nowrap;
+        }
+        .carousel-pusher{
+            width: 50%;
+            margin-left: -18em;
+            height: 8em;
+            float: left;
+        }
+        .carousel-indic-custom{
+            z-index: -1;
+            margin-bottom: 0;
+        }
+        .container-profile{
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: center;
+            margin-top: 5em;
+            padding: 1em;
+        }
+        .profile-layout{
+            display: flex;
+        }
+        .profile-info{
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-modifs{
+            display: flex;
+            justify-content: center;
+            margin: 2em;
+        }
+        .profile-button{
+            margin: 1em;
+            width: 80%;
+        }
+        .profile-data{
+            width: 80%;
+        }
+        .profile-modifs-wrapper{
+            height: min-content;
+        }
+        @media screen and (max-width: 475px){
+            .image-thumbnail{
+                height: 4em !important;
+                max-width: 4em !important;
+            }
+            .image-thumbnail:hover{
+                max-width: 30% !important;
+                transform: scale(4.0) !important;
+            }
+            .carousel-pusher{
+                margin-left: -10.5em !important;
+            }
         }
         </style>
 

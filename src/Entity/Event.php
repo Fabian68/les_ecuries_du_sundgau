@@ -4,15 +4,19 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
- */
+* @ApiResource(normalizationContext={"groups"={"read"} })
+* @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+*/
 class Event
 {
     /**
+     * @Groups("read")
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,78 +24,93 @@ class Event
     private $id;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      */
     private $titre;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="text")
      */
     private $texte;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="float")
      */
     private $tarifMoinsDe12;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="float")
      */
     private $plusDe12;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="float")
      */
     private $proprietaire;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="integer")
      */
     private $nbMaxParticipants;
 
     /**
+     * @Groups("read")
      * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event")
      * @ORM\JoinColumn(nullable=false)
      */
     private $dates;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Galops", inversedBy="evenements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $galops;
 
     /**
+     * @Groups("read")
      * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="eventBenevoles")
      */
     private $benevoles;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToOne(targetEntity="App\Entity\Repas", inversedBy="repasEvent")
      */
     private $repas;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", mappedBy="participe")
      */
     private $utilisateurs;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="integer")
      */
     private $nbBenevolesMatin;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="integer")
      */
     private $nbBenevolesApresMidi;
 
     /**
+     * @Groups("read")
      * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement")
      */
     private $images;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="evenements")
      */
     private $attributMoyenPaiements;
@@ -371,6 +390,15 @@ class Event
         return $this->titre;
     }
 
+    public function addGalop(Galops $galop): self
+    {
+        if (!$this->galops->contains($galop)) {
+            $this->galops[] = $galop;
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|AttributMoyenPaiements[]
      */
@@ -389,13 +417,22 @@ class Event
         return $this;
     }
 
+    public function removeGalop(Galops $galop): self
+    {
+        if ($this->galops->contains($galop)) {
+            $this->galops->removeElement($galop);
+        }
+
+        return $this;
+    }
+
     public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
     {
         if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
             $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
             $attributMoyenPaiement->removeEvenement($this);
         }
-
         return $this;
     }
+
 }

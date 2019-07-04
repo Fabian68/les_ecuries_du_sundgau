@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
+* @ApiResource(normalizationContext={"groups"={"read"}},
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\FilesPdfRepository")
  * @Vich\Uploadable
  */

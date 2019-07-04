@@ -2,16 +2,20 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AttributMoyenPaiementsRepository")
- */
+* @ApiResource(normalizationContext={"groups"={"read"}})
+* @ORM\Entity(repositoryClass="App\Repository\AttributMoyenPaiementsRepository")
+*/
 class AttributMoyenPaiements
 {
     /**
+     * @Groups("read")  
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,16 +23,19 @@ class AttributMoyenPaiements
     private $id;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      */
     private $Libelle;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", inversedBy="attributMoyenPaiements")
      */
     private $utilisateurs;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="attributMoyenPaiements")
      */
     private $evenements;

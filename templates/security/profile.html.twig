@@ -1,19 +1,63 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<br>
-<br>
-<br>
-<br>
+
+<container class="container-profile">
+<div class="card border-warning mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h2>Profil</h2></div>
+  <div class="card-body profile-layout">
     {% if not app.user %}
         <div>Vous devez vous connecter pour accèder a cet page ! </div>
     {% else %}
-        <div>Modifier Galops</div>
+    <div class="profile-info">
+      <div class="profile-inner">
+        <div>Nom : </div>
+        <fieldset class="profile-data">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.nom }}" readonly="">
+        </fieldset>
+      </div>
+      <div class="profile-inner">
+        <div>Prenom : </div>
+        <fieldset class="profile-data">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.prenom}}" readonly="">
+        </fieldset>
+      </div>
+      <div class="profile-inner">
+        <div>Email : </div>
+        <fieldset class="profile-data">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.email}}" readonly="">
+        </fieldset>
+      </div>
+      <div class="profile-inner">
+        <div>Date de naissance : </div>
+        <fieldset class="profile-data">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.datenaissance|date("d/m/Y")}}" readonly="">
+        </fieldset>
+      </div>
+      <div class="profile-inner">
+        <div>Adresse : </div>
+        <fieldset class="profile-data">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.adresse}}" readonly="">
+        </fieldset>
+      </div>
+      <div class="profile-inner">
+        <div>Galop : </div>
+        <fieldset class="profile-data">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.galop.niveau | number_format }}" readonly="">
+        </fieldset>
+      </div>
+    </div>
+  </div>    
+</div>
+<div class="profile-modifs">
+    <div class="card border-info profile-modifs-wrapper">
+        <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
+        <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
         {% if is_granted('ROLE_ADMIN') %}
-            <br>
-            <div>Cree evenement (visible que si admin ) </div>
-            <div>Lien ici</div>
+            <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>  
         {% endif %}
     {% endif %}
+</div>
+</container>
+
 {% endblock %}

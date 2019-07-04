@@ -6,6 +6,7 @@ use App\Entity\Galops;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
+use App\Form\ChangePasswordType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,7 +71,7 @@ class SecurityController extends AbstractController
     public function profile(){
         return $this->render('security/profile.html.twig');
     }
-
+    
     /**
      * @Route("/profil/modifier",name="security_profile_modify")
      */
@@ -92,4 +93,25 @@ class SecurityController extends AbstractController
             'user2'=>$user
         ]);
     }
+
+    /**
+     * @Route("/profil/modifier_mot_de_passe",name="security_profile_modify_password")
+     */
+    public function profile_modify_password(UserInterface $user ,Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder){   
+        $form = $this->createForm(ChangePasswordType::class,$user);
+ //   $user=$this->getUser();
+    $form->handleRequest($request);
+    if($form->isSubmitted() && $form->isValid()) {
+        $hash = $encoder->encodePassword($user,$user->getMotDePasse());
+        $user->setMotDePasse($hash);
+        $manager->persist($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('security_profile');
+    }
+    return $this->render('security/profile_modify_password.html.twig', [
+        'form'=> $form->createView(),
+        'user'=>$user
+    ]);
+}
 }

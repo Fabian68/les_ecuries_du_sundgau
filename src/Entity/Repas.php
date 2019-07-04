@@ -5,14 +5,18 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+* @ApiResource(normalizationContext={"groups"={"read"}})
  * @ORM\Entity(repositoryClass="App\Repository\RepasRepository")
  */
 class Repas
 {
     /**
+     * @Groups("read")
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,22 +24,26 @@ class Repas
     private $id;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="integer")
      */
     private $nombreBenevoles;
 
     /**
+     * @Groups("read")
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="repas")
      */
     private $repasEvent;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", inversedBy="repas")
      * benevoles qui aide a preparer le repas
      */
     private $cuisine;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", inversedBy="repas")
      * @ORM\JoinTable(name="repas_utilisateur_cuisine")
      * client qui paie son repas

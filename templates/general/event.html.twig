@@ -7,8 +7,8 @@
         <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
         <div class="card-subtitle bg-event-date">
         <div class="corners">
-        <img class="corner-top-left" src="http://placehold.it/32x32">
-        <img class="corner-top-right" src="http://placehold.it/32x32">
+        <img class="corner-top-left" src="/images/resources/corner_top_left.png">
+        <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
         </div>
             <ul class="event-date-layout">
             {% for date in event.dates %}
@@ -16,8 +16,8 @@
             {% endfor %}
             </ul>
         <div class="corners">
-        <img class="corner-bottom-left" src="http://placehold.it/32x32">
-        <img class="corner-bottom-right" src="http://placehold.it/32x32">
+        <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
+        <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
         </div>
         </div>
         <div class="galops-layout">galops:
@@ -34,13 +34,14 @@
             {{ event.texte }}
             </br>
         </div>
-    </event>
-    <HR width="50%" size="10" noshade />
-    {% if not app.user %}
+        <div class="card-footer">
+            <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
+        {% if not app.user %}
             <div>Connecter vous pour vous inscrire a l'evenement ! </div>
         {% else %}
             </br>
             <div>Inscription</div>
+<<<<<<< HEAD
             <!-- test si le galot de l'utilisateur est dans l'évènement -->
 
             {% set inscrit = false %}
@@ -54,13 +55,23 @@
                 <label>Repas</label>
                 <input type="radio" value="Oui" name="RadioRepas" />Oui
                 <input type="radio" value="Non" name="RadioRepas" />Non
+=======
+            {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
+               {% for user in users %}
+             <li>{{ user.username|e }}</li>
+                {% endfor %}
+            {% elseif app.user.participe is  defined %} <!-- si pas deja inscrit a levenement -->
+>>>>>>> 7355d98f88a9aaf5ed6825ced3c86ab3d003c56e
                 {{ form_start(form) }}
                 {{ form_end(form) }}                
             {% else %}
                 <div>Vous êtes inscrit pour cet évènement.</div>
             {% endif %}
         {% endif %}
-        <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
+        </div>
+    </event>
+    <HR width="50%" size="10" noshade />
+    
 </section>
 
 <section>

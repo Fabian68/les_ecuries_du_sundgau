@@ -8,8 +8,11 @@
     {% if not app.user %}
     <div>Vous devez vous connecter pour modifier votre profil.</div>
 {% else %}
-    {{ dump(user2) }}
     {{ form_start(form) }}
+     {{ form_row(form.nom,{ 'label' : 'Modifier nom','value' : user2.nom}) }}
+    {{ form_row(form.prenom,{ 'label' : 'Modifier prenom','value' : user2.prenom}) }}
+    {{ form_row(form.email,{ 'label' : 'Modifier email','value' : user2.email}) }}
+    {{ form_row(form.dateNaissance,{ 'label' : 'Modifier date de naissance','value' : user2.dateNaissance}) }}
     {{ form_row(form.adresse,{ 'label' : 'Modifier adresse','value' : user2.adresse }) }}
     {{ form_row(form.telephone,{ 'label' : 'Modifier numero de telephone','value' : user2.telephone}) }}
     {{ form_row(form.galop,{ 'label' : 'Modifier galop','value' : user2.galop }) }}

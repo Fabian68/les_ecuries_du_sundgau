@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\DatesEvenementsRepository")
- */
+* @ApiResource(normalizationContext={"groups"={"read"} })
+* @ORM\Entity(repositoryClass="App\Repository\DatesEvenementsRepository")
+*/
 class DatesEvenements
 {
     /**
+     * @Groups("read")
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -17,22 +21,26 @@ class DatesEvenements
     private $id;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="datetime")
      */
     private $dateDebut;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="datetime")
      */
     private $dateFin;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="dates")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
 
     /**
+     * @Groups("read")
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevoles")
      */
     private $eventBenevoles;
