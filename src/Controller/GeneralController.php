@@ -180,7 +180,7 @@ class GeneralController extends AbstractController
             $manager->persist($event);
             $manager->flush();
 
-            //return $this->redirectToRoute('events');
+            return $this->redirectToRoute('events');
         }
 
         return $this->render('/general/createEvents.html.twig', [
