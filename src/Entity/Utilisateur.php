@@ -79,6 +79,11 @@ class Utilisateur implements UserInterface
      */
     public $confirm_motDePasse;
 
+    /**
+     * 
+     * 
+     */
+    public $confirm_oldMotDePasse;
 
     /**
      * @Groups("read")

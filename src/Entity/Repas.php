@@ -10,9 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
-* @ApiResource(normalizationContext={"groups"={"read"},"enable_max_depth"=true},
-*attributes={"force_eager"=false,
-* })
+* @ApiResource(normalizationContext={"groups"={"read"}})
  * @ORM\Entity(repositoryClass="App\Repository\RepasRepository")
  */
 class Repas
