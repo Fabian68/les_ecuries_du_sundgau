@@ -7,11 +7,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
-* @ApiResource(normalizationContext={"groups"={"read"},"enable_max_depth"=true},
-*attributes={"force_eager"=false,
-* })
- * @ORM\Entity(repositoryClass="App\Repository\DatesEvenementsRepository")
- */
+* @ApiResource(normalizationContext={"groups"={"read"} })
+* @ORM\Entity(repositoryClass="App\Repository\DatesEvenementsRepository")
+*/
 class DatesEvenements
 {
     /**
