@@ -6,10 +6,12 @@
 <br>
 <br>
 <br>
+{% if is_granted('ROLE_ADMIN') %}
     {{ form_start(formPdf) }}
     
 
     <button type="submit" class="btn btn-success">Enregistrer</button>
     {{ form_end(formPdf) }}
-
+    
+{% endif %}
 {% endblock %}

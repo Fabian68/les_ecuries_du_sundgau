@@ -4,7 +4,7 @@
 <br>
 <br>
 <br>
-
+{% if is_granted('ROLE_ADMIN') %}
     {{ form_start(formEvent) }}
 
     {{ form_row(formEvent.titre) }}
@@ -80,7 +80,7 @@ jQuery(document).ready(function () {
     <button type="submit" class="btn btn-success">Enregistrer</button>
 
     {{ form_end(formEvent) }}
-
+{% endif %}
     
 
 {% endblock %}
