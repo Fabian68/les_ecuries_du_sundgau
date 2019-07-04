@@ -6,13 +6,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 //use Symfony\Component\Security\Core\User\UserInterface
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     collectionOperations={
+ *         "get"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *         "post"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get"={"access_control"="is_granted('ROLE_USER') and object.owner == user"},
+ *         "put"={"access_control"="is_granted('ROLE_USER') and previous_object.owner == user"},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
  * @UniqueEntity(
  *  fields= {"email"},
@@ -22,6 +34,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Utilisateur implements UserInterface
 {
     /**
+     * @Groups("read")
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -29,39 +42,46 @@ class Utilisateur implements UserInterface
     private $id;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      * @Assert\Email()
      */
     private $email;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      */
     private $prenom;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
      /**
+     * @Groups("read")
      * @ORM\Column(type="json")
      */
     private $roles = [];
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="8",minMessage="Votre mot de passe doit faire au moins 8 caractères")
      */
     private $motDePasse;
 
     /**
+     * @Groups("read")
      * @Assert\EqualTo(propertyPath="motDePasse",message="Votre mot de passe doit être le même en confirmation")
      */
     public $confirm_motDePasse;
 
 
     /**
+     * @Groups("read")
      * @ORM\ManyToOne(targetEntity="App\Entity\Galops", inversedBy="utilisateurs")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -78,16 +98,19 @@ class Utilisateur implements UserInterface
     private $participe;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="datetime")
      */
     private $dateNaissance;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      */
     private $adresse;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="string", length=255)
      */
     private $telephone;

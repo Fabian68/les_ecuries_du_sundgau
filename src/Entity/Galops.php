@@ -6,14 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource
- * @ORM\Entity(repositoryClass="App\Repository\GalopsRepository")
- */
+* @ApiResource(normalizationContext={"groups"={"read"},"enable_max_depth"=true},
+*attributes={"force_eager"=false,
+* })
+* @ORM\Entity(repositoryClass="App\Repository\GalopsRepository")
+*/
 class Galops
 {
     /**
+     * @Groups("read")
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,6 +25,7 @@ class Galops
     private $id;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="integer")
      */
     private $niveau;
