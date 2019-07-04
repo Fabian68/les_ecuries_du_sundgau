@@ -10,7 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @ApiResource
+* @ApiResource(normalizationContext={"groups"={"read"}},
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ImagesRepository")
  * @Vich\Uploadable
  */

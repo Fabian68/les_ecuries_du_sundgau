@@ -97,11 +97,13 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profil/modifier_mot_de_passe",name="security_profile_modify_password")
      */
-    public function profile_modify_password(UserInterface $user ,Request $request,ObjectManager $manager){   
+    public function profile_modify_password(UserInterface $user ,Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder){   
         $form = $this->createForm(ChangePasswordType::class,$user);
  //   $user=$this->getUser();
     $form->handleRequest($request);
     if($form->isSubmitted() && $form->isValid()) {
+        $hash = $encoder->encodePassword($user,$user->getMotDePasse());
+        $user->setMotDePasse($hash);
         $manager->persist($user);
         $manager->flush();
 

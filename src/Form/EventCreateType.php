@@ -31,6 +31,7 @@ class EventCreateType extends EventType
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
+                
             ])
             ->add('galops', EntityType::class, [
                 'choice_label' => 'niveau',

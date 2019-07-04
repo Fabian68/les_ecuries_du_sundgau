@@ -4,14 +4,7 @@
 <br>
 <br>
 <br>
-
-    {{ form_start(formEvent) }}
-
-    {{ form_row(formEvent.titre) }}
-
-    <div class="well">
-
-    <script>
+<script>
   // add-collection-widget.js
 jQuery(document).ready(function () {
     jQuery('.add-another-collection-widget').click(function (e) {
@@ -36,6 +29,13 @@ jQuery(document).ready(function () {
     });
 });
 </script>
+{% if is_granted('ROLE_ADMIN') %}
+    {{ form_start(formEvent) }}
+
+    {{ form_row(formEvent.titre) }}
+
+    <div class="well">
+
 <ul id="date-fields-list"
         data-prototype="{{ form_widget(formEvent.dates.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
@@ -58,7 +58,8 @@ jQuery(document).ready(function () {
     {{ form_row(formEvent.texte) }}
     {{ form_row(formEvent.nbMaxParticipants) }}
 
-    {{ form_row(formEvent.galops) }}/<!-- je m'en occupe -->
+    {{ form_row(formEvent.galops) }}<!-- je m'en occupe -->
+    
 <ul id="image-fields-list"
         data-prototype="{{ form_widget(formEvent.images.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
@@ -74,13 +75,15 @@ jQuery(document).ready(function () {
     <button type="button"
         class="add-another-collection-widget"
         data-list-selector="#image-fields-list">Add another image</button>
+    
     {{ form_row(formEvent.nbBenevolesMatin, {'value':'0'})}}
     {{ form_row(formEvent.nbBenevolesApresMidi, {'value':'0'})}}
 
     <button type="submit" class="btn btn-success">Enregistrer</button>
-
+{{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
+{{ form_row(formEvent.dates,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle dates , car avec les collections on appelle pas explicitement ces méthodes-->    
     {{ form_end(formEvent) }}
-
+{% endif %}
     
 
 {% endblock %}

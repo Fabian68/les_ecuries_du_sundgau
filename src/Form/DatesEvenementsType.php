@@ -18,8 +18,12 @@ class DatesEvenementsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
-            ->add('dateDebut', DateTimeType::class)
-            ->add('dateFin', DateTimeType::class);
+            ->add('dateDebut', DateTimeType::class,[
+                'data' => new \DateTime("now"),
+            ])
+            ->add('dateFin', DateTimeType::class,[
+                'data' => new \DateTime("now"),
+            ]);
     }
 
     /**
