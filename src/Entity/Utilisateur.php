@@ -212,6 +212,9 @@ class Utilisateur implements UserInterface
         return $this->repas;
     }
 
+    /**
+     * Merci symfony!!!
+     */
     public function addRepa(Repas $repa): self
     {
         if (!$this->repas->contains($repa)) {

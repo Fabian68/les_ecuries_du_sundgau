@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Images;
+use App\Entity\Repas;
 use App\Form\EventType;
 use App\Entity\FilesPdf;
 use App\Form\ImagesType;
@@ -11,6 +12,10 @@ use App\Form\FilesPdfType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
+use App\Form\ParticipeType;
+use App\Form\RepasType;
+use App\Form\AssoEventType;
+use App\Entity\AttributMoyenPaiements;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -103,18 +108,17 @@ class GeneralController extends AbstractController
     {
         
        // $form->handleRequest($request);
-       $form = $this->createFormBuilder()
-       ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
-       ->getForm();
+       /**$form = $this->createFormBuilder()
+                    ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
+                    ->getForm();*/
+
+        $form = $this->createForm(ParticipeType::class);
 
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
         
-        $formAsso = $this->createFormBuilder($event)
-                        ->add('nbBenevolesMatin')
-                        ->add('nbBenevolesApresMidi')
-                        ->getForm();
+        $formAsso = $this->createForm(AssoEventType::class,$event);
 
         $form->handleRequest($request);
         
@@ -122,6 +126,21 @@ class GeneralController extends AbstractController
             $user=$this->getUser();
             $event->addUtilisateur($user);
             $user->addParticipe($event);
+            
+            $paiement = new AttributMoyenPaiements();
+            $repository = $this->getDoctrine()->getRepository(AttributMoyenPaiements::class);
+            $user->addAttributMoyenPaiement($paiement);
+            $manager->persist($paiement);
+            
+            $choixRepas = ('input[name=RadioRepas]:checked').val() || '';
+            if( $choixRepas == Oui ) {
+                $repas = new Repas();
+                $repas = $event->getRepas();
+                $repas->addMange($user);
+                $user->addRepa($repas);
+                $manager->persist($repas);
+            }
+
             $manager->flush();
             return $this->redirectToRoute('events');
         }
@@ -176,6 +195,10 @@ class GeneralController extends AbstractController
                 $image->setEvenement($event); 
                 $manager->persist($image);
             }
+
+            $repas = new Repas();
+            $event->setRepas($repas);
+            $repas->addRepasEvent($event);
             
             $manager->persist($event);
             $manager->flush();

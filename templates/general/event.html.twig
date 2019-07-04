@@ -41,9 +41,19 @@
         {% else %}
             </br>
             <div>Inscription</div>
-            {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
+            <!-- test si le galot de l'utilisateur est dans l'évènement -->
 
-            {% elseif app.user.participe is not null %} <!-- si n'est pas deja inscrit a levenement -->
+            {% set inscrit = false %}
+
+            {% for participe in app.user.participe %}
+                {% if participe.id == event.id %}
+                    {% set inscrit = true %}
+                {% endif %}
+            {% endfor %}
+            {% if not inscrit %}
+                <label>Repas</label>
+                <input type="radio" value="Oui" name="RadioRepas" />Oui
+                <input type="radio" value="Non" name="RadioRepas" />Non
                 {{ form_start(form) }}
                 {{ form_end(form) }}                
             {% else %}
@@ -63,6 +73,7 @@
 
                 {{ form_row(formAsso.nbBenevolesMatin) }}
                 {{ form_row(formAsso.nbBenevolesApresMidi)}}
+                {{ form_row(formAsso.repas) }}
 
                 <button type="submit" class="btn btn-success">Enregistrer</button>
 

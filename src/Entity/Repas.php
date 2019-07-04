@@ -31,12 +31,14 @@ class Repas
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", inversedBy="repas")
+     * benevoles qui aide a preparer le repas
      */
     private $cuisine;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", inversedBy="repas")
      * @ORM\JoinTable(name="repas_utilisateur_cuisine")
+     * client qui paie son repas
      */
     private $mange;
 
