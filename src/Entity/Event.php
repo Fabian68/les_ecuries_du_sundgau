@@ -392,6 +392,15 @@ class Event
         return $this->titre;
     }
 
+    public function addGalop(Galops $galop): self
+    {
+        if (!$this->galops->contains($galop)) {
+            $this->galops[] = $galop;
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|AttributMoyenPaiements[]
      */
@@ -410,13 +419,22 @@ class Event
         return $this;
     }
 
+    public function removeGalop(Galops $galop): self
+    {
+        if ($this->galops->contains($galop)) {
+            $this->galops->removeElement($galop);
+        }
+
+        return $this;
+    }
+
     public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
     {
         if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
             $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
             $attributMoyenPaiement->removeEvenement($this);
         }
-
         return $this;
     }
+
 }
