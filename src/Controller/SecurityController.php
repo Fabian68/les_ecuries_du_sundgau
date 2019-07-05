@@ -102,16 +102,12 @@ class SecurityController extends AbstractController
     $form = $this->createForm(ChangePasswordType::class,$user);
 
     $form->handleRequest($request);
-  
    
    // ne rentre pas la dedans 
     if($form->isSubmitted() && $form->isValid()) { 
-        
-        if( $user->oldMotDePasse == null ){
-            $user->oldMotDePasse=$user->getMotDePasse();
-        }
-       
-        if(!password_verify( $user->confirm_oldMotDePasse ,$user->oldMotDePasse )){
+            
+      // !password_verify( $user->confirm_oldMotDePasse ,$user->oldMotDePasse) ancienne manniere 
+        if(!$encoder->isPasswordValid($user, $user->confirm_oldMotDePasse)){
             // Gérer l'erreur
             $form->get('confirm_oldMotDePasse')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
         }else{

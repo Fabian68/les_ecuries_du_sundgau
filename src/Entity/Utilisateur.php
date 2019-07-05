@@ -84,8 +84,6 @@ class Utilisateur implements UserInterface
 
     public $confirm_nouveauMotDePasse;
 
-    public $oldMotDePasse;
-
     public $confirm_oldMotDePasse;
 
     /**
