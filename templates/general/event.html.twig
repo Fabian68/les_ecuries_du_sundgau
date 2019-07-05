@@ -41,7 +41,6 @@
         {% else %}
             </br>
             <div>Inscription</div>
-<<<<<<< HEAD
             <!-- test si le galot de l'utilisateur est dans l'évènement -->
 
             {% set inscrit = false %}
@@ -52,21 +51,31 @@
                 {% endif %}
             {% endfor %}
             {% if not inscrit %}
-                <label>Repas</label>
-                <input type="radio" value="Oui" name="RadioRepas" />Oui
-                <input type="radio" value="Non" name="RadioRepas" />Non
-=======
-            {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
-               {% for user in users %}
-             <li>{{ user.username|e }}</li>
-                {% endfor %}
-            {% elseif app.user.participe is  defined %} <!-- si pas deja inscrit a levenement -->
->>>>>>> 7355d98f88a9aaf5ed6825ced3c86ab3d003c56e
+                <p>
+                <label for="PrendreRepas">Repas</label>
+                <input type="checkbox" name="ChoixRepas" id="PrendreRepas">
+                </p>
                 {{ form_start(form) }}
                 {{ form_end(form) }}                
             {% else %}
                 <div>Vous êtes inscrit pour cet évènement.</div>
             {% endif %}
+            </br>
+            <div>Inscription benevole</div>
+
+            {{ form_start(formBenevole) }}
+
+            <div> Nombre de Benevole necessaire le matin : {{ event.nbBenevolesMatin }}</div>
+            {{ form_row(formBenevole.save) }}
+
+            <div> Nombre de Benevole necessaire l'apres-midi : {{ event.nbBenevolesApresMidi }}</div>
+            {{ form_row(formBenevole.saveAndAdd) }}
+
+            <div> Nombre de Benevole necessaire pour le repas : {{ event.repas.nombreBenevoles }}</div>
+            {{ form_row(formBenevole.Save) }}
+
+            {{ form_end(formBenevole) }} 
+
         {% endif %}
         </div>
     </event>

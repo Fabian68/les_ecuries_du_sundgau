@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ParticipeType extends AbstractType
 {
@@ -21,14 +22,15 @@ class ParticipeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-        $builder
-            ->add('Paiement', EntityType::class, [
+        parent::buildForm($builder, $option);
+
+        $builder->add('Paiement', EntityType::class, [
                 'choice_label' => 'Libelle',
                 'multiple' => false,
                 'mapped' => false,
                 'class' => AttributMoyenPaiements::class,
-            ])
-            ->add('save', SubmitType::class, ['label' => 'S\'inscrire'])
+                ])
+                ->add('save', SubmitType::class, ['label' => 'S\'inscrire'])
         ;
     }
 

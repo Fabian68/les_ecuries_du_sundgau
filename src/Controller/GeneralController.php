@@ -15,6 +15,7 @@ use App\Form\DatesEvenementsType;
 use App\Form\ParticipeType;
 use App\Form\RepasType;
 use App\Form\AssoEventType;
+use App\Form\BenevoleType;
 use App\Entity\AttributMoyenPaiements;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -107,12 +108,8 @@ class GeneralController extends AbstractController
     public function event($id,Request $request,ObjectManager $manager)
     {
         
-       // $form->handleRequest($request);
-       /**$form = $this->createFormBuilder()
-                    ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
-                    ->getForm();*/
 
-        $form = $this->createForm(ParticipeType::class);
+        $form = $this->createForm(ParticipeType::class, $this->getUser());
 
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
@@ -120,21 +117,24 @@ class GeneralController extends AbstractController
         
         $formAsso = $this->createForm(AssoEventType::class,$event);
 
+        $formBenevole = $this->createForm(BenevoleType::class);
+
         $form->handleRequest($request);
-        
         if ($form->isSubmitted() && $form->isValid()) {
             $user=$this->getUser();
             $event->addUtilisateur($user);
             $user->addParticipe($event);
             
             $paiement = new AttributMoyenPaiements();
-            $repository = $this->getDoctrine()->getRepository(AttributMoyenPaiements::class);
+            $idpaiement = $form['Paiement']->getData();
+            $paiement = $this->getDoctrine()
+                             ->getRepository(AttributMoyenPaiements::class)
+                             ->find($idpaiement);
             $user->addAttributMoyenPaiement($paiement);
             $manager->persist($paiement);
             
-            $choixRepas = ('input[name=RadioRepas]:checked').val() || '';
-            if( $choixRepas == Oui ) {
-                $repas = new Repas();
+            $choixRepas = $request->get("ChoixRepas");
+            if( $choixRepas ) {
                 $repas = $event->getRepas();
                 $repas->addMange($user);
                 $user->addRepa($repas);
@@ -155,12 +155,26 @@ class GeneralController extends AbstractController
             return $this->redirectToRoute('events');
         }
 
+        $formBenevole->handleRequest($request);
+        if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
+            $user=$this->getUser();
+            if($formBenevole->get('Save')->isClicked()){
+                $repas = $event->getRepas();
+                //$repas->addCuisine($user);
+                $user->addRepa($repas);
+            } else {
+                $event->addBenevole($user);
+            }
+            $manager->flush();
+            return $this->redirectToRoute('events');
+        }
 
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
             'form'=> $form->createView(),
-            'formAsso' => $formAsso->createView()
+            'formAsso' => $formAsso->createView(),
+            'formBenevole' => $formBenevole->createView()
         ]);
     }
 
@@ -197,9 +211,11 @@ class GeneralController extends AbstractController
             }
 
             $repas = new Repas();
+            $repas->setNombreBenevoles(0);
             $event->setRepas($repas);
             $repas->addRepasEvent($event);
             
+            $manager->persist($repas);
             $manager->persist($event);
             $manager->flush();
 
