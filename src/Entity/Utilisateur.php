@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 //use Symfony\Component\Security\Core\User\UserInterface
 
 /**
@@ -79,10 +80,16 @@ class Utilisateur implements UserInterface
      */
     public $confirm_motDePasse;
 
-    /**
-     * 
-     * 
+    public $nouveau_motDePasse;
+
+     /**
+     * @Groups("read")
+     * @Assert\EqualTo(propertyPath="nouveau_motDePasse",message="Votre mot de passe doit être le même en confirmation")
      */
+    public $confirm_nouveauMotDePasse;
+
+    public $oldMotDePasse;
+
     public $confirm_oldMotDePasse;
 
     /**
@@ -125,11 +132,23 @@ class Utilisateur implements UserInterface
      */
     private $attributMoyenPaiements;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="utilisateur")
+     */
+    private $utilisateurMoyenPaiementEvents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="utilisateurs")
+     */
+    private $utilisateurMoyenPaiementEvent;
+
     public function __construct()
     {
         $this->repas = new ArrayCollection();
         $this->participe = new ArrayCollection();
         $this->attributMoyenPaiements = new ArrayCollection();
+        $this->utilisateurMoyenPaiementEvents = new ArrayCollection();
+        $this->utilisateurMoyenPaiementEvent = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +203,19 @@ class Utilisateur implements UserInterface
 
         return $this;
     }
+
+    public function setOldMotDePasse(string $oldMotDePasse): self
+    {
+        $this->oldMotDePasse = $oldMotDePasse;
+
+        return $this;
+    }
+
+    public function getOldMotDePasse(): ?string
+    {
+        return $this->oldMotDePasse;
+    }
+   
 
     public function getUsername() : ?string 
     {
@@ -325,32 +357,44 @@ class Utilisateur implements UserInterface
     }
 
     /**
-     * @return Collection|AttributMoyenPaiements[]
+     * @return Collection|UtilisateurMoyenPaiementEvent[]
      */
-    public function getAttributMoyenPaiements(): Collection
+    public function getUtilisateurMoyenPaiementEvents(): Collection
     {
-        return $this->attributMoyenPaiements;
+        return $this->utilisateurMoyenPaiementEvents;
     }
 
-    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    public function addUtilisateurMoyenPaiementEvent(UtilisateurMoyenPaiementEvent $utilisateurMoyenPaiementEvent): self
     {
-        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
-            $attributMoyenPaiement->addUtilisateur($this);
+        if (!$this->utilisateurMoyenPaiementEvents->contains($utilisateurMoyenPaiementEvent)) {
+            $this->utilisateurMoyenPaiementEvents[] = $utilisateurMoyenPaiementEvent;
+            $utilisateurMoyenPaiementEvent->setUtilisateur($this);
         }
 
         return $this;
     }
 
-    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    public function removeUtilisateurMoyenPaiementEvent(UtilisateurMoyenPaiementEvent $utilisateurMoyenPaiementEvent): self
     {
-        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
-            $attributMoyenPaiement->removeUtilisateur($this);
+        if ($this->utilisateurMoyenPaiementEvents->contains($utilisateurMoyenPaiementEvent)) {
+            $this->utilisateurMoyenPaiementEvents->removeElement($utilisateurMoyenPaiementEvent);
+            // set the owning side to null (unless already changed)
+            if ($utilisateurMoyenPaiementEvent->getUtilisateur() === $this) {
+                $utilisateurMoyenPaiementEvent->setUtilisateur(null);
+            }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection|UtilisateurMoyenPaiementEvent[]
+     */
+    public function getUtilisateurMoyenPaiementEvent(): Collection
+    {
+        return $this->utilisateurMoyenPaiementEvent;
+    }
+
 
 
 }

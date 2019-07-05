@@ -115,6 +115,16 @@ class Event
      */
     private $attributMoyenPaiements;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="event")
+     */
+    private $utilisateurMoyenPaiementEvents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="events")
+     */
+    private $utilisateurMoyenPaiementEvent;
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -123,6 +133,8 @@ class Event
         $this->utilisateurs = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->attributMoyenPaiements = new ArrayCollection();
+        $this->utilisateurMoyenPaiementEvents = new ArrayCollection();
+        $this->utilisateurMoyenPaiementEvent = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -400,39 +412,44 @@ class Event
     }
 
     /**
-     * @return Collection|AttributMoyenPaiements[]
+     * @return Collection|UtilisateurMoyenPaiementEvent[]
      */
-    public function getAttributMoyenPaiements(): Collection
+    public function getUtilisateurMoyenPaiementEvents(): Collection
     {
-        return $this->attributMoyenPaiements;
+        return $this->utilisateurMoyenPaiementEvents;
     }
 
-    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    public function addUtilisateurMoyenPaiementEvent(UtilisateurMoyenPaiementEvent $utilisateurMoyenPaiementEvent): self
     {
-        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
-            $attributMoyenPaiement->addEvenement($this);
+        if (!$this->utilisateurMoyenPaiementEvents->contains($utilisateurMoyenPaiementEvent)) {
+            $this->utilisateurMoyenPaiementEvents[] = $utilisateurMoyenPaiementEvent;
+            $utilisateurMoyenPaiementEvent->setEvent($this);
         }
 
         return $this;
     }
 
-    public function removeGalop(Galops $galop): self
+    public function removeUtilisateurMoyenPaiementEvent(UtilisateurMoyenPaiementEvent $utilisateurMoyenPaiementEvent): self
     {
-        if ($this->galops->contains($galop)) {
-            $this->galops->removeElement($galop);
+        if ($this->utilisateurMoyenPaiementEvents->contains($utilisateurMoyenPaiementEvent)) {
+            $this->utilisateurMoyenPaiementEvents->removeElement($utilisateurMoyenPaiementEvent);
+            // set the owning side to null (unless already changed)
+            if ($utilisateurMoyenPaiementEvent->getEvent() === $this) {
+                $utilisateurMoyenPaiementEvent->setEvent(null);
+            }
         }
 
         return $this;
     }
 
-    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
+    /**
+     * @return Collection|UtilisateurMoyenPaiementEvent[]
+     */
+    public function getUtilisateurMoyenPaiementEvent(): Collection
     {
-        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
-            $attributMoyenPaiement->removeEvenement($this);
-        }
-        return $this;
+        return $this->utilisateurMoyenPaiementEvent;
     }
+
+
 
 }
