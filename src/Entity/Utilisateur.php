@@ -82,10 +82,6 @@ class Utilisateur implements UserInterface
 
     public $nouveau_motDePasse;
 
-     /**
-     * @Groups("read")
-     * @Assert\EqualTo(propertyPath="nouveau_motDePasse",message="Votre mot de passe doit être le même en confirmation")
-     */
     public $confirm_nouveauMotDePasse;
 
     public $oldMotDePasse;
@@ -185,20 +181,7 @@ class Utilisateur implements UserInterface
         $this->motDePasse = $motDePasse;
 
         return $this;
-    }
-
-    public function setOldMotDePasse(string $oldMotDePasse): self
-    {
-        $this->oldMotDePasse = $oldMotDePasse;
-
-        return $this;
-    }
-
-    public function getOldMotDePasse(): ?string
-    {
-        return $this->oldMotDePasse;
-    }
-   
+    }   
 
     public function getUsername() : ?string 
     {

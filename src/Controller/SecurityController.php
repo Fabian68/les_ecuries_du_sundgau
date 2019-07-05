@@ -100,19 +100,18 @@ class SecurityController extends AbstractController
      */
     public function profile_modify_password(UserInterface $user ,Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder){   
     $form = $this->createForm(ChangePasswordType::class,$user);
- //   $user=$this->getUser();
+
     $form->handleRequest($request);
-   if( $user->oldMotDePasse == null ){
-    $user->oldMotDePasse=$user->getMotDePasse();
-   }
+  
    
    // ne rentre pas la dedans 
-    if($form->isSubmitted() && $form->isValid()) {
-         if($user->confirm_oldMotDePasse != null ){
-            $hash = $encoder->encodePassword($user,$user->confirm_oldMotDePasse);
-            $user->confirm_oldMotDePasse = $hash;
+    if($form->isSubmitted() && $form->isValid()) { 
+        
+        if( $user->oldMotDePasse == null ){
+            $user->oldMotDePasse=$user->getMotDePasse();
         }
-        if($user->confirm_oldMotDePasse!=$user->oldMotDePasse){
+       
+        if(!password_verify( $user->confirm_oldMotDePasse ,$user->oldMotDePasse )){
             // Gérer l'erreur
             $form->get('confirm_oldMotDePasse')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
         }else{
