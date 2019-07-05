@@ -127,28 +127,11 @@ class Utilisateur implements UserInterface
      */
     private $telephone;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="utilisateurs")
-     */
-    private $attributMoyenPaiements;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="utilisateur")
-     */
-    private $utilisateurMoyenPaiementEvents;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="utilisateurs")
-     */
-    private $utilisateurMoyenPaiementEvent;
-
     public function __construct()
     {
         $this->repas = new ArrayCollection();
         $this->participe = new ArrayCollection();
         $this->attributMoyenPaiements = new ArrayCollection();
-        $this->utilisateurMoyenPaiementEvents = new ArrayCollection();
-        $this->utilisateurMoyenPaiementEvent = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -354,45 +337,6 @@ class Utilisateur implements UserInterface
         $this->telephone = $telephone;
 
         return $this;
-    }
-
-    /**
-     * @return Collection|UtilisateurMoyenPaiementEvent[]
-     */
-    public function getUtilisateurMoyenPaiementEvents(): Collection
-    {
-        return $this->utilisateurMoyenPaiementEvents;
-    }
-
-    public function addUtilisateurMoyenPaiementEvent(UtilisateurMoyenPaiementEvent $utilisateurMoyenPaiementEvent): self
-    {
-        if (!$this->utilisateurMoyenPaiementEvents->contains($utilisateurMoyenPaiementEvent)) {
-            $this->utilisateurMoyenPaiementEvents[] = $utilisateurMoyenPaiementEvent;
-            $utilisateurMoyenPaiementEvent->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUtilisateurMoyenPaiementEvent(UtilisateurMoyenPaiementEvent $utilisateurMoyenPaiementEvent): self
-    {
-        if ($this->utilisateurMoyenPaiementEvents->contains($utilisateurMoyenPaiementEvent)) {
-            $this->utilisateurMoyenPaiementEvents->removeElement($utilisateurMoyenPaiementEvent);
-            // set the owning side to null (unless already changed)
-            if ($utilisateurMoyenPaiementEvent->getUtilisateur() === $this) {
-                $utilisateurMoyenPaiementEvent->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|UtilisateurMoyenPaiementEvent[]
-     */
-    public function getUtilisateurMoyenPaiementEvent(): Collection
-    {
-        return $this->utilisateurMoyenPaiementEvent;
     }
 
 
