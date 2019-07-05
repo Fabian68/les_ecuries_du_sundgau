@@ -7,6 +7,7 @@ use App\Entity\Utilisateur;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
 use App\Form\ChangePasswordType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,16 +99,34 @@ class SecurityController extends AbstractController
      * @Route("/profil/modifier_mot_de_passe",name="security_profile_modify_password")
      */
     public function profile_modify_password(UserInterface $user ,Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder){   
-        $form = $this->createForm(ChangePasswordType::class,$user);
+    $form = $this->createForm(ChangePasswordType::class,$user);
  //   $user=$this->getUser();
     $form->handleRequest($request);
+   if( $user->oldMotDePasse == null ){
+    $user->oldMotDePasse=$user->getMotDePasse();
+   }
+   
+   // ne rentre pas la dedans 
     if($form->isSubmitted() && $form->isValid()) {
-        $hash = $encoder->encodePassword($user,$user->getMotDePasse());
+         if($user->confirm_oldMotDePasse != null ){
+            $hash = $encoder->encodePassword($user,$user->confirm_oldMotDePasse);
+            $user->confirm_oldMotDePasse = $hash;
+        }
+        if($user->confirm_oldMotDePasse!=$user->oldMotDePasse){
+            // Gérer l'erreur
+            $form->get('confirm_oldMotDePasse')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
+        }else{
+
+        $hash = $encoder->encodePassword($user,$user->nouveau_motDePasse);
         $user->setMotDePasse($hash);
         $manager->persist($user);
         $manager->flush();
-
+        $this->addFlash(
+            'success',
+            "Votre mot de passe a bien été modifié !"
+        );
         return $this->redirectToRoute('security_profile');
+        }
     }
     return $this->render('security/profile_modify_password.html.twig', [
         'form'=> $form->createView(),
