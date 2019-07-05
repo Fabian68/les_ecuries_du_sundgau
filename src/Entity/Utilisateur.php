@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 //use Symfony\Component\Security\Core\User\UserInterface
 
 /**
@@ -79,10 +80,10 @@ class Utilisateur implements UserInterface
      */
     public $confirm_motDePasse;
 
-    /**
-     * 
-     * 
-     */
+    public $nouveau_motDePasse;
+
+    public $confirm_nouveauMotDePasse;
+
     public $confirm_oldMotDePasse;
 
     /**
@@ -119,11 +120,6 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $telephone;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="utilisateurs")
-     */
-    private $attributMoyenPaiements;
 
     public function __construct()
     {
@@ -183,7 +179,7 @@ class Utilisateur implements UserInterface
         $this->motDePasse = $motDePasse;
 
         return $this;
-    }
+    }   
 
     public function getUsername() : ?string 
     {
@@ -327,33 +323,6 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|AttributMoyenPaiements[]
-     */
-    public function getAttributMoyenPaiements(): Collection
-    {
-        return $this->attributMoyenPaiements;
-    }
-
-    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
-    {
-        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
-            $attributMoyenPaiement->addUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
-    {
-        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
-            $attributMoyenPaiement->removeUtilisateur($this);
-        }
-
-        return $this;
-    }
 
 
 }

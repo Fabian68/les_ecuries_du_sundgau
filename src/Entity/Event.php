@@ -109,12 +109,6 @@ class Event
      */
     private $images;
 
-    /**
-     * @Groups("read")
-     * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="evenements")
-     */
-    private $attributMoyenPaiements;
-
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -399,40 +393,6 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection|AttributMoyenPaiements[]
-     */
-    public function getAttributMoyenPaiements(): Collection
-    {
-        return $this->attributMoyenPaiements;
-    }
 
-    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
-    {
-        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
-            $attributMoyenPaiement->addEvenement($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGalop(Galops $galop): self
-    {
-        if ($this->galops->contains($galop)) {
-            $this->galops->removeElement($galop);
-        }
-
-        return $this;
-    }
-
-    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
-    {
-        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
-            $attributMoyenPaiement->removeEvenement($this);
-        }
-        return $this;
-    }
 
 }

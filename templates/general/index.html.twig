@@ -74,11 +74,14 @@
             </div>
             </div>
             <div class="card-body index-content-event-layout">
-            <div class="galops-layout">galops:
-                {% for galop in event.galops %}
-                    <div class="btn btn-outline-warning galop-layout">galop {{galop.niveau}}</div>
-                {% endfor %}
-            </div>
+              <div class="galops-layout index-galops-container table-active">  
+                <div class="galops-text">Galops:</div>
+                <div class="galops-inner index-galops">
+                  {% for galop in event.galops %}
+                    <div class="btn btn-outline-warning galop-layout">{{galop.niveau}}</div>
+                  {% endfor %}
+                </div>
+              </div>
                 <container class="index-event-content mobile-index-layout">
                 <div class="index-img-layout">
                 <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
