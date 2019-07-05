@@ -45,7 +45,7 @@ class Repas
     /**
      * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", inversedBy="repas")
-     * @ORM\JoinTable(name="repas_utilisateur_cuisine")
+     * @ORM\JoinTable(name="repas_utilisateur")
      */
     private $mange;
 
