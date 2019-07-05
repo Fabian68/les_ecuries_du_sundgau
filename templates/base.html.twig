@@ -107,9 +107,6 @@
             display: flex;
             align-content: center;
         }
-        .index-content-event-layout{
-            padding-top: 0em;
-        }
         .corners{
             display: flex;
             flex-direction: column;
@@ -155,8 +152,14 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .tarif-text{
-            width: 4em;
+        .tarifs-galops-container{
+            display: flex;
+            margin-bottom: 1.3em;
+            padding: 0.2em;
+        }
+        .tarifs-layout{
+            flex: 2;
+            margin-bottom: 0 !important;
         }
         .date-text{
             display: inline;
@@ -207,6 +210,9 @@
             .image-band-layout{
                 height: 6em !important;
             }
+            .galop-layout{
+                margin: 0.2em !important;
+            }
         }
         .header-custom{
             top: 0;
@@ -236,7 +242,6 @@
         }
         .index-event-content{
             display: flex;
-            margin-top: 2em;
         }
         .index-img-layout{
             flex: 1;
@@ -270,12 +275,34 @@
             width: 100%;
         }
         .galop-layout{
-            margin: 0.5em;
+            margin: 0.5em !important;
+            flex: 1;
+            align-self: center;
+            justify-content: center;
+            max-width: 6em;
         }
         .galops-layout{
-            text-align: center;
-            margin-top: 0.5em;
-            margin-bottom: -1em;
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .galops-text{
+            flex: 1;
+            padding-left: 1em;
+            padding-top: 0.3em; 
+        }
+        .galops-inner{
+            flex: 3;
+            display: flex;
+            justify-content: space-around;
+            margin-left: 0.2em;
+        }
+        .index-galops{
+            justify-content: left;
+        }
+        .index-galops-container{
+            margin-bottom: 1.3em;
         }
         .image-band-layout{
             background-color: #5b7a50;
@@ -383,6 +410,16 @@
             .carousel-pusher{
                 margin-left: -10.5em !important;
             }
+            .galop-layout{
+                margin: 0.05em !important;
+                padding: 0.4em !important;
+                padding-right: 0.6em !important;
+                padding-left: 0.6em !important;
+            }
+        }
+        .navbar-logo-custom{
+            margin-right: 0.2em !important;
+            margin-bottom: 0.2em !important;
         }
         </style>
 
@@ -399,22 +436,22 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('home') }}"><img src="http://placehold.it/24x24" alt="home"> Accueil<span class="sr-only">(current)</span></a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('home') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/home.png" alt="home"> Accueil<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('events') }}"><img src="http://placehold.it/24x24" alt="events"> Évènements</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('events') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/events.png" alt="events"> Évènements</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('prices') }}"><img src="http://placehold.it/24x24" alt="prices"> Tarif</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('prices') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/prices.png" alt="prices"> Tarif</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('contact') }}"><img src="http://placehold.it/24x24" alt="contact"> Contact</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('contact') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/contact.png" alt="contact"> Contact</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('localization') }}"><img src="http://placehold.it/24x24" alt="localization"> Localisation</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('localization') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/localisation.png" alt="localization"> Localisation</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('facilities') }}"><img src="http://placehold.it/24x24" alt="facilities"> Le Centre</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('facilities') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/installations.png" alt="facilities"> Le Centre</a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -423,10 +460,10 @@
                 <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_login') }}">Se Connecter</a>
             </li>
             {% else %}
-            <li class="nav-item">
+            <li class="nav-item nav-item-custom">
                 <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_profile') }}">Profil</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item nav-item-custom">
                 <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_logout') }}">Se Deconnecter</a>
             </li>
             {% endif %}
