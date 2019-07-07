@@ -201,7 +201,7 @@ class GeneralController extends AbstractController
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $manager->persist($image);
             $manager->flush();
 

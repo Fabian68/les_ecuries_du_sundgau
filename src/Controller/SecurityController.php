@@ -33,6 +33,7 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+            $user->setUpdatedAt(new \DateTime());
             $hash = $encoder->encodePassword($user,$user->getMotDePasse());
             $user->setMotDePasse($hash);
             $user->setRoles(array('ROLE_USER'));
@@ -86,6 +87,8 @@ class SecurityController extends AbstractController
      //   $user=$this->getUser();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+            $user->setUpdatedAt(new \DateTime());
+            $user->setImageFile(null);
             $manager->persist($user);
             $manager->flush();
     
@@ -115,6 +118,7 @@ class SecurityController extends AbstractController
 
             $hash = $encoder->encodePassword($user,$user->nouveau_motDePasse);
             $user->setMotDePasse($hash);
+            $user->setUpdatedAt(new \DateTime());
             $manager->persist($user);
             $manager->flush();
             $this->addFlash(

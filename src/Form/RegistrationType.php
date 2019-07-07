@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
@@ -23,6 +24,9 @@ class RegistrationType extends AbstractType
             ->add('galop', EntityType::class, [
                 'class'=> Galops::class,
                 'choice_label' => 'niveau'
+            ])
+            ->add('imageFile',FileType::class,[
+                'required' =>false
             ])
             ->add('motDePasse',PasswordType::class)
             ->add('confirm_motDePasse',PasswordType::class)

@@ -11,6 +11,7 @@
     {% else %}
     <div class="profile-info">
       <div class="profile-inner">
+      <img class="event-img-layout" src="/images/profile/{{ app.user.imageName }}">
         <div>Nom : </div>
         <fieldset class="profile-data">
             <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.nom }}" readonly="">
