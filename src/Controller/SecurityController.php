@@ -6,6 +6,7 @@ use App\Entity\Galops;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
+use App\Form\ResetPasswordType;
 use App\Form\ChangePasswordType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,16 +31,18 @@ class SecurityController extends AbstractController
     {  
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationType::class,$user);
-
+        $user->setUpdatedAt(new \DateTime());
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+            
+            
             $user->setUpdatedAt(new \DateTime());
             $hash = $encoder->encodePassword($user,$user->getMotDePasse());
             $user->setMotDePasse($hash);
             $user->setRoles(array('ROLE_USER'));
             $manager->persist($user);
             $manager->flush();
-
+            $user->setImageFile(null);
             return $this->redirectToRoute('security_login');
         }
         return $this->render('security/registration.html.twig', [
@@ -88,9 +91,10 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user->setUpdatedAt(new \DateTime());
-            $user->setImageFile(null);
+           
             $manager->persist($user);
             $manager->flush();
+            $user->setImageFile(null);
     
             return $this->redirectToRoute('security_profile');
         }
@@ -182,7 +186,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/modifier_mot_de_passe/{token}", name="security_reset_password")
      */
-    public function resetPassword(ObjectManager $manager,Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
+    public function resetPassword(ObjectManager $manager,Request $request, string $token, UserPasswordEncoderInterface $encoder)
     {
  
         $user = $manager->getRepository(Utilisateur::class)->findOneByResetToken($token);
