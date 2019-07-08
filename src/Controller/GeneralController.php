@@ -17,6 +17,7 @@ use App\Form\RepasType;
 use App\Form\AssoEventType;
 use App\Form\BenevoleType;
 use App\Entity\AttributMoyenPaiements;
+use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -130,8 +131,15 @@ class GeneralController extends AbstractController
             $paiement = $this->getDoctrine()
                              ->getRepository(AttributMoyenPaiements::class)
                              ->find($idpaiement);
-            $user->addAttributMoyenPaiement($paiement);
+            $userPayEvent = new UtilisateurMoyenPaiementEvent();
+            $userPayEvent->setAttributMoyenPaiement($paiement);
+            $userPayEvent->setUtilisateur($user);
+            $userPayEvent->setEvent($event);
+            $userPayEvent->setAttributMoyenPaiements($paiement);
+            $userPayEvent->setUtilisateurs($user);
+            $userPayEvent->setEvents($event);
             $manager->persist($paiement);
+            $manager->persist($userPayEvent);
             
             $choixRepas = $request->get("ChoixRepas");
             if( $choixRepas ) {
