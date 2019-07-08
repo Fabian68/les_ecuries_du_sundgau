@@ -104,6 +104,18 @@ class Utilisateur implements UserInterface
      */
     private $repas;
 
+      /**
+     * @Groups("read")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevolesMatin")
+     */
+    private $eventBenevolesMatin;
+
+     /**
+     * @Groups("read")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevolesApresMidi")
+     */
+    private $eventBenevolesApresMidi;
+
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="utilisateurs")
      */

@@ -75,13 +75,13 @@ class Event
 
     /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="eventBenevolesMatin")
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="eventBenevolesMatin")
      */
     private $benevolesMatin;
 
        /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="eventBenevolesApresMidi")
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="eventBenevolesApresMidi")
      */
     private $benevolesApresMidi;
 
@@ -260,7 +260,7 @@ class Event
     }
 
     /**
-     * @return Collection|DatesEvenements[]
+     * @return Collection|Utilisateur[]
      */
     public function getBenevolesMatin(): Collection
     {
@@ -291,7 +291,7 @@ class Event
     }
 
      /**
-     * @return Collection|DatesEvenements[]
+     * @return Collection|Utilisateur[]
      */
     public function getBenevolesApresMidi(): Collection
     {
