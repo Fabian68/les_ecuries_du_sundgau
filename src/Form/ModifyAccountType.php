@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ModifyAccountType extends AbstractType
 {
@@ -24,6 +25,9 @@ class ModifyAccountType extends AbstractType
             ->add('galop', EntityType::class, [
                 'class'=> Galops::class,
                 'choice_label' => 'niveau'
+            ])
+            ->add('imageFile',FileType::class,[
+                'required' =>false
             ])
         ;
     }

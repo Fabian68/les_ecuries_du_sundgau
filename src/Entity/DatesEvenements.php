@@ -39,12 +39,6 @@ class DatesEvenements
      */
     private $event;
 
-    /**
-     * @Groups("read")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevoles")
-     */
-    private $eventBenevoles;
-
     public function getId(): ?int
     {
         return $this->id;

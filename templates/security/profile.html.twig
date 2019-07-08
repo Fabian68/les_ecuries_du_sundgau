@@ -11,27 +11,28 @@
     {% else %}
     <div class="profile-info">
       <div class="profile-inner">
+      <img class="event-img-layout" src="/images/profile/{{ user.imageName }}">
         <div>Nom : </div>
         <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.nom }}" readonly="">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.nom }}" readonly="">
         </fieldset>
       </div>
       <div class="profile-inner">
         <div>Prenom : </div>
         <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.prenom}}" readonly="">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.prenom}}" readonly="">
         </fieldset>
       </div>
       <div class="profile-inner">
         <div>Email : </div>
         <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.email}}" readonly="">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.email}}" readonly="">
         </fieldset>
       </div>
       <div class="profile-inner">
         <div>Date de naissance : </div>
         <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.datenaissance|date("d/m/Y")}}" readonly="">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.datenaissance|date("d/m/Y")}}" readonly="">
         </fieldset>
       </div>
       <div class="profile-inner">
@@ -43,16 +44,20 @@
       <div class="profile-inner">
         <div>Galop : </div>
         <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.galop.niveau | number_format }}" readonly="">
+            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.galop.niveau | number_format }}" readonly="">
         </fieldset>
       </div>
     </div>
   </div>    
 </div>
+
+
 <div class="profile-modifs">
     <div class="card border-info profile-modifs-wrapper">
+    {% if app.user == user %}
         <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
         <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
+    {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
             <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>  
         {% endif %}

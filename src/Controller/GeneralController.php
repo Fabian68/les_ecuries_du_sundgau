@@ -192,6 +192,7 @@ class GeneralController extends AbstractController
      */
     public function createEvents(Event $event = null, Request $request,ObjectManager $manager)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if(!$event) {
             $event = new Event();
         }
@@ -242,13 +243,14 @@ class GeneralController extends AbstractController
      */
     public function createImages(Request $request,ObjectManager $manager)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $image = new Images();
         $form = $this->createForm(ImagesType::class, $image);
 
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $manager->persist($image);
             $manager->flush();
 
@@ -286,6 +288,7 @@ class GeneralController extends AbstractController
      */
     public function createPdf(Request $request,ObjectManager $manager)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $pdf = new FilesPdf();
         $form = $this->createForm(FilesPdfType::class, $pdf);
 
