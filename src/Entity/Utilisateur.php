@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
+use Serializable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 //use Symfony\Component\Security\Core\User\UserInterface
 
 /**
@@ -30,6 +36,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  fields= {"email"},
  *  message= "L'email que vous avez indiqué est déja utilisé."
  * )
+ * @Vich\Uploadable
  */
 class Utilisateur implements UserInterface
 {
@@ -79,10 +86,10 @@ class Utilisateur implements UserInterface
      */
     public $confirm_motDePasse;
 
-    /**
-     * 
-     * 
-     */
+    public $nouveau_motDePasse;
+
+    public $confirm_nouveauMotDePasse;
+
     public $confirm_oldMotDePasse;
 
     /**
@@ -121,9 +128,45 @@ class Utilisateur implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\AttributMoyenPaiements", mappedBy="utilisateurs")
+     * @var string le token qui servira lors de l'oubli de mot de passe
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $attributMoyenPaiements;
+    protected $resetToken;
+
+    /**
+     * @Assert\Image
+     * 
+     * @Vich\UploadableField(mapping="property_image_profile", fileNameProperty="imageName")
+     * 
+     * @var File|null
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $imageName;
+
+    /**
+     * @return string
+     */
+    public function getResetToken(): string
+    {
+        return $this->resetToken;
+    }
+ 
+    /**
+     * @param string $resetToken
+     */
+    public function setResetToken(?string $resetToken): void
+    {
+        $this->resetToken = $resetToken;
+    }
 
     public function __construct()
     {
@@ -183,7 +226,7 @@ class Utilisateur implements UserInterface
         $this->motDePasse = $motDePasse;
 
         return $this;
-    }
+    }   
 
     public function getUsername() : ?string 
     {
@@ -325,32 +368,44 @@ class Utilisateur implements UserInterface
     }
 
     /**
-     * @return Collection|AttributMoyenPaiements[]
-     */
-    public function getAttributMoyenPaiements(): Collection
-    {
-        return $this->attributMoyenPaiements;
-    }
+    * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
+    */
+   public function setImageFile(?File $imageFile = null): void
+   {
+       $this->imageFile = $imageFile;
 
-    public function addAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
-    {
-        if (!$this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements[] = $attributMoyenPaiement;
-            $attributMoyenPaiement->addUtilisateur($this);
-        }
+       if (null !== $imageFile) {
+           // It is required that at least one field changes if you are using doctrine
+           // otherwise the event listeners won't be called and the file is lost
+           $this->updatedAt = new \DateTime();
+       }
+   }
 
-        return $this;
-    }
+   public function getImageFile(): ?File
+   {
+       return $this->imageFile;
+   }
 
-    public function removeAttributMoyenPaiement(AttributMoyenPaiements $attributMoyenPaiement): self
-    {
-        if ($this->attributMoyenPaiements->contains($attributMoyenPaiement)) {
-            $this->attributMoyenPaiements->removeElement($attributMoyenPaiement);
-            $attributMoyenPaiement->removeUtilisateur($this);
-        }
+   public function setImageName(?string $imageName): void
+   {
+       $this->imageName = $imageName;
+   }
 
-        return $this;
-    }
+   public function getImageName(): ?string
+   {
+       return $this->imageName;
+   }
 
+   public function getUpdatedAt(): ?\DateTimeInterface
+   {
+       return $this->updatedAt;
+   }
+
+   public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+   {
+       $this->updatedAt = $updatedAt;
+
+       return $this;
+   }
 
 }

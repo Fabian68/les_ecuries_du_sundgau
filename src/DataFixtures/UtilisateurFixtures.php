@@ -39,6 +39,8 @@ class UtilisateurFixtures extends Fixture
                      ));
         $utilisateur->setRoles(array('ROLE_USER'));
         $utilisateur->setGalop($galop);
+        $utilisateur->setImageName("fabian.png");
+        $utilisateur->setUpdatedAt(new \DateTime());
         $manager->persist($utilisateur);
 
         $utilisateur=new Utilisateur();
@@ -54,6 +56,8 @@ class UtilisateurFixtures extends Fixture
         )); 
         $utilisateur->setRoles(array('ROLE_ADMIN'));
         $utilisateur->setGalop( $galop);
+        $utilisateur->setImageName("laurine.jpg");
+        $utilisateur->setUpdatedAt(new \DateTime());
         $manager->persist($utilisateur);
 
         $utilisateur=new Utilisateur();
@@ -68,8 +72,11 @@ class UtilisateurFixtures extends Fixture
             'lapomme123'
         ));
         $utilisateur->setRoles(array('ROLE_ADMIN_ASSO'));
-        $utilisateur->setGalop( $galop);
+        $utilisateur->setGalop( $galop); 
+        $utilisateur->setImageName("julien.jpg");
+        $utilisateur->setUpdatedAt(new \DateTime());
         $manager->persist($utilisateur);
+      
 
         $utilisateur=new Utilisateur();
         $utilisateur->setNom('LaRoche');
@@ -84,6 +91,8 @@ class UtilisateurFixtures extends Fixture
         ));
         $utilisateur->setRoles(array('ROLE_USER'));
         $utilisateur->setGalop( $galop);
+        $utilisateur->setImageName("Hugo.jpg");
+        $utilisateur->setUpdatedAt(new \DateTime());
         $manager->persist($utilisateur);
 
         // $product = new Product();

@@ -6,6 +6,10 @@ vich_uploader:
         uri_prefix: /images/properties
         upload_destination: '%kernel.project_dir%/public/images/properties'
         namer: Vich\UploaderBundle\Naming\OrignameNamer
+      property_image_profile:
+        uri_prefix: /images/imageProfile
+        upload_destination: '%kernel.project_dir%/public/images/profile'
+        namer: Vich\UploaderBundle\Naming\UniqidNamer
       property_pdf:
         uri_prefix: /pdf/properties
         upload_destination: '%kernel.project_dir%/public/pdf/properties'

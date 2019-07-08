@@ -5,7 +5,6 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'fr'
-    brochures_directory: '%kernel.project_dir%/public/uploads/brochures'
 
 services:
     # default configuration for services in *this* file
@@ -32,3 +31,4 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+
