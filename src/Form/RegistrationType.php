@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use DateTime;
+use DateInterval;
 use App\Entity\Galops;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
@@ -30,7 +32,10 @@ class RegistrationType extends AbstractType
             ])
             ->add('motDePasse',PasswordType::class)
             ->add('confirm_motDePasse',PasswordType::class)
-            ->add('dateNaissance',DateType::class)
+            ->add('dateNaissance',DateType::class,[
+                'data' => (new \DateTime('1995-05-14')),
+                'years' => range(1850,2024)
+            ])
             ->add('adresse')
             ->add('telephone')
         ;
