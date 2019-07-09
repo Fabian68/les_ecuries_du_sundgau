@@ -45,8 +45,8 @@ class EventFixtures extends Fixture
             $event->setPlusDe12($tarif);
             $event->setProprietaire($tarif/4.0);
             $event->setNbMaxParticipants(mt_rand(20,150));
-            $event->setNbBenevolesMatin(mt_rand(1,6));
-            $event->setNbBenevolesApresMidi(mt_rand(1,6));
+          //$event->setNbBenevolesMatin(mt_rand(1,6));
+          //$event->setNbBenevolesApresMidi(mt_rand(1,6));
             if(mt_rand(0,1)==0){
                 $repas=new Repas();
                 $repas->setNombreBenevoles(mt_rand(1,6));
