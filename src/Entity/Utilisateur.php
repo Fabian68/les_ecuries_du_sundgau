@@ -294,40 +294,6 @@ class Utilisateur implements UserInterface
     }
 
     /**
-<<<<<<< HEAD
-     * @return Collection|Repas[]
-     */
-    public function getRepas(): Collection
-    {
-        return $this->repas;
-    }
-
-    /**
-     * Merci symfony!!!
-     */
-    public function addRepa(Repas $repa): self
-    {
-        if (!$this->repas->contains($repa)) {
-            $this->repas[] = $repa;
-            $repa->addCuisine($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRepa(Repas $repa): self
-    {
-        if ($this->repas->contains($repa)) {
-            $this->repas->removeElement($repa);
-            $repa->removeCuisine($this);
-        }
-
-        return $this;
-    }
-
-    /**
-=======
->>>>>>> f760e1e7ab8c7bc1352efc389066b4dc81a1ecec
      * @return Collection|Event[]
      */
     public function getParticipe(): Collection
