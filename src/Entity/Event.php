@@ -75,9 +75,15 @@ class Event
 
     /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="eventBenevoles")
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="eventBenevolesMatin")
      */
-    private $benevoles;
+    private $benevolesMatin;
+
+       /**
+     * @Groups("read")
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="eventBenevolesApresMidi")
+     */
+    private $benevolesApresMidi;
 
     /**
      * @Groups("read")
@@ -254,30 +260,61 @@ class Event
     }
 
     /**
-     * @return Collection|DatesEvenements[]
+     * @return Collection|Utilisateur[]
      */
-    public function getBenevoles(): Collection
+    public function getBenevolesMatin(): Collection
     {
-        return $this->benevoles;
+        return $this->benevolesMatin;
     }
 
-    public function addBenevole(DatesEvenements $benevole): self
+    public function addBenevoleMatin(DatesEvenements $benevoleMatin): self
     {
-        if (!$this->benevoles->contains($benevole)) {
-            $this->benevoles[] = $benevole;
-            $benevole->setEventBenevoles($this);
+        if (!$this->benevolesMatin->contains($benevoleMatin)) {
+            $this->benevolesMatin[] = $benevoleMatin;
+            $benevoleMatin->setEventBenevolesMatin($this);
         }
 
         return $this;
     }
 
-    public function removeBenevole(DatesEvenements $benevole): self
+    public function removeBenevoleMatin(DatesEvenements $benevoleMatin): self
     {
-        if ($this->benevoles->contains($benevole)) {
-            $this->benevoles->removeElement($benevole);
+        if ($this->benevolesMatin->contains($benevoleMatin)) {
+            $this->benevolesMatin->removeElement($benevoleMatin);
             // set the owning side to null (unless already changed)
-            if ($benevole->getEventBenevoles() === $this) {
-                $benevole->setEventBenevoles(null);
+            if ($benevoleMatin->getEventBenevolesMatin() === $this) {
+                $benevoleMatin->setEventBenevolesMatin(null);
+            }
+        }
+
+        return $this;
+    }
+
+     /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getBenevolesApresMidi(): Collection
+    {
+        return $this->benevolesApresMidi;
+    }
+
+    public function addBenevoleApresMidi(DatesEvenements $benevoleApresMidi): self
+    {
+        if (!$this->benevolesApresMidi->contains($benevoleApresMidi)) {
+            $this->benevolesApresMidi[] = $benevoleApresMidi;
+            $benevoleApresMidi->setEventBenevolesApresMidi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBenevoleApresMidi(DatesEvenements $benevoleApresMidi): self
+    {
+        if ($this->benevolesApresMidi->contains($benevoleApresMidi)) {
+            $this->benevolesApresMidi->removeElement($benevoleApresMidi);
+            // set the owning side to null (unless already changed)
+            if ($benevoleApresMidi->getEventBenevolesApresMidi() === $this) {
+                $benevoleApresMidi->setEventBenevolesApresMidi(null);
             }
         }
 

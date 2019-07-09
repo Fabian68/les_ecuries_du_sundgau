@@ -74,9 +74,20 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/profil",name="security_profile")
+     * @Route("/profil/{id}",name="security_profile_withid")
      */
-    public function profile(){
-        return $this->render('security/profile.html.twig');
+    public function profile($id=null,ObjectManager $manager){
+        $user=new Utilisateur();
+        if($id==null){
+            $user = $this->getUser();
+        }else{
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+            $user=$user = $manager->getRepository(Utilisateur::class)->findOneById($id);
+        }
+
+        return $this->render('security/profile.html.twig',[
+            'user'=>$user
+        ]);
     }
     
     /**
