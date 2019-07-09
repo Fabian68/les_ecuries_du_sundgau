@@ -75,45 +75,25 @@ class Event
 
     /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="eventBenevolesMatin")
-     */
-    private $benevolesMatin;
-
-       /**
-     * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\Utilisateur", mappedBy="eventBenevolesApresMidi")
-     */
-    private $benevolesApresMidi;
-
-    /**
-     * @Groups("read")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Repas", inversedBy="repasEvent")
-     */
-    private $repas;
-
-    /**
-     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", mappedBy="participe")
      */
     private $utilisateurs;
 
     /**
      * @Groups("read")
-     * @ORM\Column(type="integer")
-     */
-    private $nbBenevolesMatin;
-
-    /**
-     * @Groups("read")
-     * @ORM\Column(type="integer")
-     */
-    private $nbBenevolesApresMidi;
-
-    /**
-     * @Groups("read")
      * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement")
      */
     private $images;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event")
+     */
+    private $creneauxBenevoles;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", mappedBy="mange")
+     */
+    private $utilisateursMange;
 
     public function __construct()
     {
@@ -123,6 +103,8 @@ class Event
         $this->utilisateurs = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->attributMoyenPaiements = new ArrayCollection();
+        $this->creneauxBenevoles = new ArrayCollection();
+        $this->utilisateursMange = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,80 +244,6 @@ class Event
     /**
      * @return Collection|Utilisateur[]
      */
-    public function getBenevolesMatin(): Collection
-    {
-        return $this->benevolesMatin;
-    }
-
-    public function addBenevoleMatin(DatesEvenements $benevoleMatin): self
-    {
-        if (!$this->benevolesMatin->contains($benevoleMatin)) {
-            $this->benevolesMatin[] = $benevoleMatin;
-            $benevoleMatin->setEventBenevolesMatin($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBenevoleMatin(DatesEvenements $benevoleMatin): self
-    {
-        if ($this->benevolesMatin->contains($benevoleMatin)) {
-            $this->benevolesMatin->removeElement($benevoleMatin);
-            // set the owning side to null (unless already changed)
-            if ($benevoleMatin->getEventBenevolesMatin() === $this) {
-                $benevoleMatin->setEventBenevolesMatin(null);
-            }
-        }
-
-        return $this;
-    }
-
-     /**
-     * @return Collection|Utilisateur[]
-     */
-    public function getBenevolesApresMidi(): Collection
-    {
-        return $this->benevolesApresMidi;
-    }
-
-    public function addBenevoleApresMidi(DatesEvenements $benevoleApresMidi): self
-    {
-        if (!$this->benevolesApresMidi->contains($benevoleApresMidi)) {
-            $this->benevolesApresMidi[] = $benevoleApresMidi;
-            $benevoleApresMidi->setEventBenevolesApresMidi($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBenevoleApresMidi(DatesEvenements $benevoleApresMidi): self
-    {
-        if ($this->benevolesApresMidi->contains($benevoleApresMidi)) {
-            $this->benevolesApresMidi->removeElement($benevoleApresMidi);
-            // set the owning side to null (unless already changed)
-            if ($benevoleApresMidi->getEventBenevolesApresMidi() === $this) {
-                $benevoleApresMidi->setEventBenevolesApresMidi(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getRepas(): ?Repas
-    {
-        return $this->repas;
-    }
-
-    public function setRepas(?Repas $repas): self
-    {
-        $this->repas = $repas;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Utilisateur[]
-     */
     public function getUtilisateurs(): Collection
     {
         return $this->utilisateurs;
@@ -357,30 +265,6 @@ class Event
             $this->utilisateurs->removeElement($utilisateur);
             $utilisateur->removeParticipe($this);
         }
-
-        return $this;
-    }
-
-    public function getNbBenevolesMatin(): ?int
-    {
-        return $this->nbBenevolesMatin;
-    }
-
-    public function setNbBenevolesMatin(int $nbBenevolesMatin): self
-    {
-        $this->nbBenevolesMatin = $nbBenevolesMatin;
-
-        return $this;
-    }
-
-    public function getNbBenevolesApresMidi(): ?int
-    {
-        return $this->nbBenevolesApresMidi;
-    }
-
-    public function setNbBenevolesApresMidi(int $nbBenevolesApresMidi): self
-    {
-        $this->nbBenevolesApresMidi = $nbBenevolesApresMidi;
 
         return $this;
     }
@@ -425,6 +309,65 @@ class Event
     {
         if (!$this->galops->contains($galop)) {
             $this->galops[] = $galop;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CreneauxBenevoles[]
+     */
+    public function getCreneauxBenevoles(): Collection
+    {
+        return $this->creneauxBenevoles;
+    }
+
+    public function addCreneauxBenevole(CreneauxBenevoles $creneauxBenevole): self
+    {
+        if (!$this->creneauxBenevoles->contains($creneauxBenevole)) {
+            $this->creneauxBenevoles[] = $creneauxBenevole;
+            $creneauxBenevole->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreneauxBenevole(CreneauxBenevoles $creneauxBenevole): self
+    {
+        if ($this->creneauxBenevoles->contains($creneauxBenevole)) {
+            $this->creneauxBenevoles->removeElement($creneauxBenevole);
+            // set the owning side to null (unless already changed)
+            if ($creneauxBenevole->getEvent() === $this) {
+                $creneauxBenevole->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getUtilisateursMange(): Collection
+    {
+        return $this->utilisateursMange;
+    }
+
+    public function addUtilisateursMange(Utilisateur $utilisateursMange): self
+    {
+        if (!$this->utilisateursMange->contains($utilisateursMange)) {
+            $this->utilisateursMange[] = $utilisateursMange;
+            $utilisateursMange->addMange($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateursMange(Utilisateur $utilisateursMange): self
+    {
+        if ($this->utilisateursMange->contains($utilisateursMange)) {
+            $this->utilisateursMange->removeElement($utilisateursMange);
+            $utilisateursMange->removeMange($this);
         }
 
         return $this;
