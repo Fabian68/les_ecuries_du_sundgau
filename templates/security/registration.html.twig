@@ -10,7 +10,7 @@
     <div class="card-body">
     {{ form_start(form) }}
     <div class="reg-outer">
-    <div class="reg-inner">
+    <div class="reg-inner reg-pusher">
     <div class="form-element">{{ form_row(form.nom, {'attr':{'class' : 'reg-row-layout'}}) }}</div>
     <div class="form-element">{{ form_row(form.prenom, {'label' : 'Prénom' , 'attr':{'class' : 'reg-row-layout'}}) }}</div>
     <div class="form-element">{{ form_row(form.email, {'attr':{'class' : 'reg-row-layout'}}) }}</div>
@@ -24,7 +24,7 @@
     <div class="form-element">{{ form_row(form.confirm_motDePasse,{ 'label' : 'Confirmation du mot de passe','attr':{'class' : 'reg-row-layout'}}) }}</div>
     </div>
     </div>
-    <div>{{ form_row(form.imageFile, {'attr':{'class' : 'reg-row-layout card-footer upload-btn'}}) }}</div>
+    <div>{{ form_row(form.imageFile, {'label' : 'Image de profil' , 'attr':{'class' : 'reg-row-layout card-footer upload-btn'}}) }}</div>
     <button type="submit" class="btn btn-success"> S'inscrire </button>
     {{ form_end(form)}}
   </div>
