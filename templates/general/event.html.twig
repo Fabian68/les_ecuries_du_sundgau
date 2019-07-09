@@ -60,6 +60,12 @@
             {% else %}
                 <div>Vous êtes inscrit pour cet évènement.</div>
             {% endif %}
+
+            {% for utilisateur in event.utilisateurs %}
+                {{ utilisateur.prenom }}
+                {{ utilisateur.nom}}
+            {% endfor %}
+
             </br>
             <div>Inscription benevole</div>
 
