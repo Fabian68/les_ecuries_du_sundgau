@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Serializable;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\File\File;
@@ -98,26 +99,10 @@ class Utilisateur implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $galop;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Repas", mappedBy="cuisine")
-     */
-    private $repas;
-
-      /**
-     * @Groups("read")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevolesMatin")
-     */
-    private $eventBenevolesMatin;
-
-     /**
-     * @Groups("read")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="benevolesApresMidi")
-     */
-    private $eventBenevolesApresMidi;
-
+    
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="utilisateurs")
+     * @JoinTable(name="participe")
      */
     private $participe;
 
@@ -146,7 +131,14 @@ class Utilisateur implements UserInterface
     protected $resetToken;
 
     /**
-     * @Assert\Image
+     * @Assert\Image(
+     *     minWidth = 100,
+     *     maxWidth = 1000,
+     *     minHeight = 100,
+     *     maxHeight = 1000,
+     *     minRatio = 0.6,
+     *     maxRatio = 2
+     * )
      * 
      * @Vich\UploadableField(mapping="property_image_profile", fileNameProperty="imageName")
      * 
@@ -163,6 +155,16 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageName;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="utilisateursMange")
+     */
+    private $mange;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CreneauxBenevoles", inversedBy="utilisateurs")
+     */
+    private $benevolat;
 
     /**
      * @return string
@@ -185,6 +187,8 @@ class Utilisateur implements UserInterface
         $this->repas = new ArrayCollection();
         $this->participe = new ArrayCollection();
         $this->attributMoyenPaiements = new ArrayCollection();
+        $this->mange = new ArrayCollection();
+        $this->benevolat = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -290,34 +294,6 @@ class Utilisateur implements UserInterface
     }
 
     /**
-     * @return Collection|Repas[]
-     */
-    public function getRepas(): Collection
-    {
-        return $this->repas;
-    }
-
-    public function addRepa(Repas $repa): self
-    {
-        if (!$this->repas->contains($repa)) {
-            $this->repas[] = $repa;
-            $repa->addCuisine($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRepa(Repas $repa): self
-    {
-        if ($this->repas->contains($repa)) {
-            $this->repas->removeElement($repa);
-            $repa->removeCuisine($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Event[]
      */
     public function getParticipe(): Collection
@@ -416,6 +392,58 @@ class Utilisateur implements UserInterface
    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
    {
        $this->updatedAt = $updatedAt;
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|Event[]
+    */
+   public function getMange(): Collection
+   {
+       return $this->mange;
+   }
+
+   public function addMange(Event $mange): self
+   {
+       if (!$this->mange->contains($mange)) {
+           $this->mange[] = $mange;
+       }
+
+       return $this;
+   }
+
+   public function removeMange(Event $mange): self
+   {
+       if ($this->mange->contains($mange)) {
+           $this->mange->removeElement($mange);
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|CreneauxBenevoles[]
+    */
+   public function getBenevolat(): Collection
+   {
+       return $this->benevolat;
+   }
+
+   public function addBenevolat(CreneauxBenevoles $benevolat): self
+   {
+       if (!$this->benevolat->contains($benevolat)) {
+           $this->benevolat[] = $benevolat;
+       }
+
+       return $this;
+   }
+
+   public function removeBenevolat(CreneauxBenevoles $benevolat): self
+   {
+       if ($this->benevolat->contains($benevolat)) {
+           $this->benevolat->removeElement($benevolat);
+       }
 
        return $this;
    }

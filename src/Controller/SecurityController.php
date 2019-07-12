@@ -42,9 +42,11 @@ class SecurityController extends AbstractController
             $user->setRoles(array('ROLE_USER'));
             $manager->persist($user);
             $manager->flush();
-            $user->setImageFile(null);
+            $user->setImageFile(null);//la valeur doit être vidé car elle ne sert plus et n'est pas serializable
             return $this->redirectToRoute('security_login');
         }
+         $user->setImageFile(null);//si le formulaire est invalide la valeur doit aussi être vidé
+
         return $this->render('security/registration.html.twig', [
             'form'=> $form->createView()
         ]);
@@ -72,17 +74,41 @@ class SecurityController extends AbstractController
     public function logout(){
     }
 
+     /**
+     * @Route("/profil/modifier",name="security_profile_modify")
+     */
+    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager){
+
+            $form = $this->createForm(ModifyAccountType::class,$user);
+    //   $user=$this->getUser();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user->setUpdatedAt(new \DateTime());
+        
+            $manager->persist($user);
+            $manager->flush();
+            $user->setImageFile(null);
+
+            return $this->redirectToRoute('security_profile');
+        }
+        $user->setImageFile(null);
+        return $this->render('security/profile_modify.html.twig', [
+            'form'=> $form->createView(),
+            'user2'=>$user
+        ]);
+    }
+
     /**
      * @Route("/profil",name="security_profile")
-     * @Route("/profil/{id}",name="security_profile_withid")
+     * @Route("/profil/{ident}",name="security_profile_withid")
      */
-    public function profile($id=null,ObjectManager $manager){
+    public function profile($ident=null,ObjectManager $manager){
         $user=new Utilisateur();
-        if($id==null){
+        if($ident==null){
             $user = $this->getUser();
         }else{
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
-            $user=$user = $manager->getRepository(Utilisateur::class)->findOneById($id);
+            $user=$user = $manager->getRepository(Utilisateur::class)->findOneById($ident);
         }
 
         return $this->render('security/profile.html.twig',[
@@ -90,30 +116,7 @@ class SecurityController extends AbstractController
         ]);
     }
     
-    /**
-     * @Route("/profil/modifier",name="security_profile_modify")
-     */
-    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager){
-
-        
-           
-            $form = $this->createForm(ModifyAccountType::class,$user);
-     //   $user=$this->getUser();
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $user->setUpdatedAt(new \DateTime());
-           
-            $manager->persist($user);
-            $manager->flush();
-            $user->setImageFile(null);
-    
-            return $this->redirectToRoute('security_profile');
-        }
-        return $this->render('security/profile_modify.html.twig', [
-            'form'=> $form->createView(),
-            'user2'=>$user
-        ]);
-    }
+   
 
     /**
      * @Route("/profil/modifier_mot_de_passe",name="security_profile_modify_password")

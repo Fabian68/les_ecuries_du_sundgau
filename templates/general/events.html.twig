@@ -42,11 +42,11 @@
                   </div>
                 </div>
               </div>  
-                 <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
+                 <img class="event-img-layout event-text-transition" src="/images/properties/{{ ((event.images | first).imageName) }}">
                 </br>
                 {{ event.texte }}
                 </br>
-                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary">Lire la suite</a>
+                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary event-more-button">Lire la suite</a>
             </div>
         </event>
         <HR width="50%" size="10" noshade />
