@@ -46,7 +46,7 @@ jQuery(document).ready(function () {
             {{ form_widget(dateField) }}
         </li>
     {% endfor %}
-    </ul>
+</ul>
 
     <button type="button"
         class="add-another-collection-widget"
@@ -70,14 +70,11 @@ jQuery(document).ready(function () {
             {{ form_widget(imageField) }}
         </li>
     {% endfor %}
-    </ul>
+</ul>
 
     <button type="button"
         class="add-another-collection-widget"
         data-list-selector="#image-fields-list">Add another image</button>
-    
-    {{ form_row(formEvent.nbBenevolesMatin, {'value':'0'})}}
-    {{ form_row(formEvent.nbBenevolesApresMidi, {'value':'0'})}}
 
     <button type="submit" class="btn btn-success">Enregistrer</button>
 {{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
