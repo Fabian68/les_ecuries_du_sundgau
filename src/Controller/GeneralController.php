@@ -27,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class GeneralController extends AbstractController
 {
@@ -111,6 +112,17 @@ class GeneralController extends AbstractController
         
 
         $form = $this->createForm(ParticipeType::class, $this->getUser());
+        $form->add('ChoixRepas', ChoiceType::class, array(
+            "mapped" => false,
+            "multiple" => false,
+            "attr" => array(
+                'class' => "form-control"
+            ),
+            'choices'  => array(
+                'Oui' => true,
+                'Non' => false
+            )
+        ));
 
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
@@ -141,8 +153,8 @@ class GeneralController extends AbstractController
             $manager->persist($paiement);
             $manager->persist($userPayEvent);
             
-            $choixRepas = $request->get("ChoixRepas");
-            if( $choixRepas ) {
+            $choixRepas = $form->get("ChoixRepas")->getData();
+            if( $choixRepas == true ) {
                 $event->addUtilisateursMange($user);
                 $user->addMange($event);
             }
@@ -153,6 +165,12 @@ class GeneralController extends AbstractController
 
         $formAsso->handleRequest($request);
         if ($formAsso->isSubmitted() && $formAsso->isValid()) {
+            foreach ($event->getCreneauxBenevoles() as $creneaux) {
+                $event->addCreneauxBenevole($creneaux);
+                $creneaux->setEvent($event);
+                $manager->persist($creneaux);
+            }
+            $manager->persist($event);
             $manager->flush();
             return $this->redirectToRoute('events');
         }
