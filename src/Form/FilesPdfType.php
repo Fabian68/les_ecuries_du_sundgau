@@ -13,7 +13,6 @@ class FilesPdfType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('fileName')
         ->add('pdfFile',FileType::class,[
             'required' =>false
         ])

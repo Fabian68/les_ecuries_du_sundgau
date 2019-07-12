@@ -28,8 +28,8 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  *         "post"={"access_control"="is_granted('ROLE_ADMIN')"}
  *     },
  *     itemOperations={
- *         "get"={"access_control"="is_granted('ROLE_USER') and object.owner == user"},
- *         "put"={"access_control"="is_granted('ROLE_USER') and previous_object.owner == user"},
+ *         "get"={"access_control"="is_granted('ROLE_ADMIN') "},
+ *         "put"={"access_control"="is_granted('ROLE_ADMIN') "},
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
@@ -165,6 +165,16 @@ class Utilisateur implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\CreneauxBenevoles", inversedBy="utilisateurs")
      */
     private $benevolat;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $validationEmailToken;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $verifiedMail;
 
     /**
      * @return string
@@ -444,6 +454,30 @@ class Utilisateur implements UserInterface
        if ($this->benevolat->contains($benevolat)) {
            $this->benevolat->removeElement($benevolat);
        }
+
+       return $this;
+   }
+
+   public function getValidationEmailToken(): ?string
+   {
+       return $this->validationEmailToken;
+   }
+
+   public function setValidationEmailToken(?string $validationEmailToken): self
+   {
+       $this->validationEmailToken = $validationEmailToken;
+
+       return $this;
+   }
+
+   public function getVerifiedMail(): ?bool
+   {
+       return $this->verifiedMail;
+   }
+
+   public function setVerifiedMail(?bool $verifiedMail): self
+   {
+       $this->verifiedMail = $verifiedMail;
 
        return $this;
    }

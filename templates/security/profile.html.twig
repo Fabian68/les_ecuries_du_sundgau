@@ -11,7 +11,9 @@
     {% else %}
     <div class="profile-info">
       <div class="profile-inner">
+      {% if user.imageName is not null %}
       <img class="event-img-layout" src="/images/profile/{{ user.imageName }}">
+      {% endif %}
         <div>Nom : </div>
         <fieldset class="profile-data">
             <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.nom }}" readonly="">

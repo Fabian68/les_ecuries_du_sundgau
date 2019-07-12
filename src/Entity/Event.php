@@ -74,13 +74,11 @@ class Event
     private $galops;
 
     /**
-     * @Groups("read")
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", mappedBy="participe")
      */
     private $utilisateurs;
 
     /**
-     * @Groups("read")
      * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement")
      */
     private $images;

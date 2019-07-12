@@ -33,7 +33,6 @@ class DatesEvenements
     private $dateFin;
 
     /**
-     * @Groups("read")
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="dates")
      * @ORM\JoinColumn(nullable=false)
      */
