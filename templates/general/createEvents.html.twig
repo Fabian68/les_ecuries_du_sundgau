@@ -50,7 +50,7 @@ jQuery(document).ready(function () {
 
     <button type="button"
         class="add-another-collection-widget"
-        data-list-selector="#date-fields-list">Add another date</button>
+        data-list-selector="#date-fields-list">Ajouter une date</button>
 
     {{ form_row(formEvent.tarifMoinsDe12) }}
     {{ form_row(formEvent.plusDe12) }}
@@ -58,7 +58,7 @@ jQuery(document).ready(function () {
     {{ form_row(formEvent.texte) }}
     {{ form_row(formEvent.nbMaxParticipants) }}
 
-    {{ form_row(formEvent.galops) }}<!-- je m'en occupe -->
+    {{ form_row(formEvent.galops) }}
     
 <ul id="image-fields-list"
         data-prototype="{{ form_widget(formEvent.images.vars.prototype)|e }}"
@@ -74,7 +74,7 @@ jQuery(document).ready(function () {
 
     <button type="button"
         class="add-another-collection-widget"
-        data-list-selector="#image-fields-list">Add another image</button>
+        data-list-selector="#image-fields-list">Ajouter une image</button>
 
     <button type="submit" class="btn btn-success">Enregistrer</button>
 {{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
