@@ -53,34 +53,68 @@
         {% else %}
             </br>
             <div>Inscription</div>
-            {% if 0 == 1 %}<!-- test si le galot de l'utilisateur est dans l'évènement -->  
-               {% for user in users %}
-             <li>{{ user.username|e }}</li>
-                {% endfor %}
-            {% elseif app.user.participe is  defined %} <!-- si pas deja inscrit a levenement -->
+            <!-- test si le galot de l'utilisateur est dans l'évènement -->
+
+            {% set inscrit = false %}
+
+            {% for participe in app.user.participe %}
+                {% if participe.id == event.id %}
+                    {% set inscrit = true %}
+                {% endif %}
+            {% endfor %}
+            {% if not inscrit %}
+                <p>
+                <label for="PrendreRepas">Repas</label>
+                <input type="checkbox" name="ChoixRepas" id="PrendreRepas">
+                </p>
                 {{ form_start(form) }}
                 {{ form_end(form) }}                
             {% else %}
                 <div>Vous êtes inscrit pour cet évènement.</div>
             {% endif %}
+
+            {% for utilisateur in event.utilisateurs %}
+                {{ utilisateur.prenom }}
+                {{ utilisateur.nom}}
+            {% endfor %}
+
+            </br>
+            <div>Inscription benevole</div>
+
+            {{ form_start(formBenevole) }}
+            {{ form_end(formBenevole) }} 
+
         {% endif %}
         </div>
     </event>
-    <HR width="50%" size="10" noshade />
     
 </section>
 
     {% if app.user %}
         {% for role in app.user.roles %}
             {% if role == 'ROLE_ADMIN_ASSO' %}
+            <HR width="50%" size="10" noshade />
             <section class="events-layout big-screen mobile-layout asso-layout">
               <div class="card mb-3 card-body">
                 {{ form_start(formAsso) }}
                 
-                <div class="form-container">
-                  <div class="form-element">{{ form_row(formAsso.nbBenevolesMatin,{ 'label' : 'bénévoles du matin'}) }}</div>
-                  <div class="form-element">{{ form_row(formAsso.nbBenevolesApresMidi,{ 'label' : 'bénévoles de l\'après-midi'}) }}</div>
-                </div>
+                <ul id="creneaux-fields-list"
+                        data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
+                        data-widget-tags="{{ '<li></li>'|e }}"
+                        data-widget-counter="{{ formAsso.children|length }}">
+                    {% for NbBenevole in formAsso.creneauxBenevoles %}
+                        <li>
+                            {{ form_errors(NbBenevole) }}
+                            {{ form_widget(NbBenevole) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {{ form_row(formAsso.creneauxBenevoles) }}
+                
+                <button type="button"
+                class="add-another-collection-widget"
+                data-list-selector="#creneaux-fields-list">Add another date</button>
 
                 <button type="submit" class="btn btn-success">Enregistrer</button>
 

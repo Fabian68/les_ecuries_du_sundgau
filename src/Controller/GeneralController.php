@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Images;
+use App\Entity\Repas;
 use App\Form\EventType;
 use App\Entity\FilesPdf;
 use App\Form\ImagesType;
@@ -11,6 +12,12 @@ use App\Form\FilesPdfType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
+use App\Form\ParticipeType;
+use App\Form\RepasType;
+use App\Form\AssoEventType;
+use App\Form\BenevoleType;
+use App\Entity\AttributMoyenPaiements;
+use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,46 +109,67 @@ class GeneralController extends AbstractController
     public function event($id,Request $request,ObjectManager $manager)
     {
         
-       // $form->handleRequest($request);
-       $form = $this->createFormBuilder()
-       ->add('save', SubmitType::class, ['label' => 'S\'enregistrer.'])
-       ->getForm();
+
+        $form = $this->createForm(ParticipeType::class, $this->getUser());
 
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
         
-        $formAsso = $this->createFormBuilder($event)
-                        ->add('nbBenevolesMatin')
-                        ->add('nbBenevolesApresMidi')
-                        ->getForm();
+        $formAsso = $this->createForm(AssoEventType::class,$event);
+
+        $formBenevole = $this->createForm(BenevoleType::class);
 
         $form->handleRequest($request);
-        
         if ($form->isSubmitted() && $form->isValid()) {
             $user=$this->getUser();
             $event->addUtilisateur($user);
             $user->addParticipe($event);
+            
+            $paiement = new AttributMoyenPaiements();
+            $idpaiement = $form['Paiement']->getData();
+            $paiement = $this->getDoctrine()
+                             ->getRepository(AttributMoyenPaiements::class)
+                             ->find($idpaiement);
+            $userPayEvent = new UtilisateurMoyenPaiementEvent();
+            $userPayEvent->setAttributMoyenPaiement($paiement);
+            $userPayEvent->setUtilisateur($user);
+            $userPayEvent->setEvent($event);
+            $userPayEvent->setAttributMoyenPaiements($paiement);
+            $userPayEvent->setUtilisateurs($user);
+            $userPayEvent->setEvents($event);
+            $manager->persist($paiement);
+            $manager->persist($userPayEvent);
+            
+            $choixRepas = $request->get("ChoixRepas");
+            if( $choixRepas ) {
+                $event->addUtilisateursMange($user);
+                $user->addMange($event);
+            }
+
             $manager->flush();
             return $this->redirectToRoute('events');
         }
 
         $formAsso->handleRequest($request);
         if ($formAsso->isSubmitted() && $formAsso->isValid()) {
-            $nbMatin = $event->getNbBenevolesMatin();
-            $nbAprem = $event->getNbBenevolesApresMidi();
-            $event->setNbBenevolesMatin($nbMatin);
-            $event->setNbBenevolesApresMidi($nbAprem);
             $manager->flush();
             return $this->redirectToRoute('events');
         }
 
+        $formBenevole->handleRequest($request);
+        if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
+            $user=$this->getUser();
+            $manager->flush();
+            return $this->redirectToRoute('events');
+        }
 
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
             'form'=> $form->createView(),
-            'formAsso' => $formAsso->createView()
+            'formAsso' => $formAsso->createView(),
+            'formBenevole' => $formBenevole->createView()
         ]);
     }
 
@@ -177,7 +205,7 @@ class GeneralController extends AbstractController
                 $image->setEvenement($event); 
                 $manager->persist($image);
             }
-            
+
             $manager->persist($event);
             $manager->flush();
 

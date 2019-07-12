@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Entity\CreneauxBenevoles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class EventType extends AbstractType
+class BenevoleType extends AbstractType
 {
 
     /**
@@ -17,12 +19,6 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
-            ->add('titre')
-            ->add('tarifMoinsDe12')
-            ->add('plusDe12')
-            ->add('proprietaire')
-            ->add('texte')
-            ->add('nbMaxParticipants')
         ;
     }
 

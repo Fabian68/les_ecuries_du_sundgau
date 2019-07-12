@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use Symfony\Component\Form\AbstractType;
+use App\Entity\CreneauxBenevoles;
+use App\Form\NbBenevoleType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class EventType extends AbstractType
+class AssoEventType extends NbBenevoleType
 {
 
     /**
@@ -16,14 +18,13 @@ class EventType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-        $builder
-            ->add('titre')
-            ->add('tarifMoinsDe12')
-            ->add('plusDe12')
-            ->add('proprietaire')
-            ->add('texte')
-            ->add('nbMaxParticipants')
-        ;
+        $builder->add('creneauxBenevoles', CollectionType::class,[
+            'entry_type' => NbBenevoleType::class,
+            'entry_options' => ['label' => false],
+            'allow_add' => true,
+            'by_reference' => false,
+            
+        ]);
     }
 
     /**

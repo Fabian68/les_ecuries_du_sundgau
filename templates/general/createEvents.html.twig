@@ -29,61 +29,62 @@ jQuery(document).ready(function () {
     });
 });
 </script>
-{% if is_granted('ROLE_ADMIN') %}
+  {% if is_granted('ROLE_ADMIN') %}
+  <container class="container-creer-event">
+    <div class="card mb-3 creer-event-layout">
     {{ form_start(formEvent) }}
 
-    {{ form_row(formEvent.titre) }}
+    {{ form_row(formEvent.titre, { 'attr' : { 'class' : 'form-control' }}) }}
 
     <div class="well">
 
-<ul id="date-fields-list"
+      <ul id="date-fields-list"
         data-prototype="{{ form_widget(formEvent.dates.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
         data-widget-counter="{{ formEvent.children|length }}">
-    {% for dateField in formEvent.dates %}
+        {% for dateField in formEvent.dates %}
         <li>
             {{ form_errors(dateField) }}
             {{ form_widget(dateField) }}
         </li>
-    {% endfor %}
-    </ul>
+        {% endfor %}
+      </ul>
 
-    <button type="button"
+      <button type="button"
         class="add-another-collection-widget"
         data-list-selector="#date-fields-list">Add another date</button>
 
-    {{ form_row(formEvent.tarifMoinsDe12) }}
-    {{ form_row(formEvent.plusDe12) }}
-    {{ form_row(formEvent.proprietaire) }}
-    {{ form_row(formEvent.texte) }}
-    {{ form_row(formEvent.nbMaxParticipants) }}
+      {{ form_row(formEvent.tarifMoinsDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.plusDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.proprietaire, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.texte, { 'attr' : { 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.nbMaxParticipants, { 'attr' : { 'class' : 'form-control' }}) }}
 
-    {{ form_row(formEvent.galops) }}<!-- je m'en occupe -->
+      {{ form_row(formEvent.galops) }}<!-- je m'en occupe -->
     
-<ul id="image-fields-list"
+      <ul id="image-fields-list"
         data-prototype="{{ form_widget(formEvent.images.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
         data-widget-counter="{{ formEvent.children|length }}">
-    {% for imageField in formEvent.images %}
+        {% for imageField in formEvent.images %}
         <li>
             {{ form_errors(imageField) }}
             {{ form_widget(imageField) }}
         </li>
-    {% endfor %}
-    </ul>
+        {% endfor %}
+      </ul>
 
-    <button type="button"
+      <button type="button"
         class="add-another-collection-widget"
         data-list-selector="#image-fields-list">Add another image</button>
-    
-    {{ form_row(formEvent.nbBenevolesMatin, {'value':'0'})}}
-    {{ form_row(formEvent.nbBenevolesApresMidi, {'value':'0'})}}
 
-    <button type="submit" class="btn btn-success">Enregistrer</button>
-{{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
-{{ form_row(formEvent.dates,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle dates , car avec les collections on appelle pas explicitement ces méthodes-->    
-    {{ form_end(formEvent) }}
-{% endif %}
+      <button type="submit" class="btn btn-success">Enregistrer</button>
+      {{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
+      {{ form_row(formEvent.dates,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle dates , car avec les collections on appelle pas explicitement ces méthodes-->    
+      {{ form_end(formEvent) }}
+      </div>
+    </container>
+    {% endif %}
     
 
 {% endblock %}
