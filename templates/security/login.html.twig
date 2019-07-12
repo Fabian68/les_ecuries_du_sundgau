@@ -25,12 +25,12 @@
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <div class="checkbox mb-3">
         <label>
-            <input type="checkbox" name="_remember_me"> Remember me
+            <input type="checkbox" name="_remember_me"> Se souvenir de moi
         </label>
     </div>
     <div>Vous n'avez pas de compte ? Inscrivez-vous <a href="{{ path('security_registration') }}">Inscription</a></div>
      <div>
-            <a  href="{{ path('security_forgotten_password') }}">Forgotten password</a>
+            <a  href="{{ path('security_forgotten_password') }}">Mot de passe oublier </a>
     </div>
 </form>
     {% endif %}

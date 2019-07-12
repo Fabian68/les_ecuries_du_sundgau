@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -43,6 +44,10 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $user->setImageFile(null);//la valeur doit être vidé car elle ne sert plus et n'est pas serializable
+            $this->addFlash(
+                'notice',
+                'Votre compte a bien été crée . '
+            );
             return $this->redirectToRoute('security_login');
         }
          $user->setImageFile(null);//si le formulaire est invalide la valeur doit aussi être vidé
@@ -88,7 +93,10 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $user->setImageFile(null);
-
+            $this->addFlash(
+                'notice',
+                'Votre compte a bien été modifié .'
+            );
             return $this->redirectToRoute('security_profile');
         }
         $user->setImageFile(null);
@@ -215,7 +223,10 @@ class SecurityController extends AbstractController
             $user->setMotDePasse($hash);
             $manager->persist($user);
             $manager->flush();
- 
+            $this->addFlash(
+                'notice',
+                'Votre mot de passe a bien été modifier . '
+            );      
             return $this->redirectToRoute('home');
         }else {
  
@@ -270,7 +281,6 @@ class SecurityController extends AbstractController
         else {
 
         return $this->render('security/verification_mail.html.twig', [
-            'token' => $token,
             'form'=>$form->createView()
         ]);
     }
@@ -281,7 +291,10 @@ class SecurityController extends AbstractController
     public function verificationMailValidation(ObjectManager $manager,Request $request, string $token, UserPasswordEncoderInterface $encoder)
     {
  
+
         $user = $manager->getRepository(Utilisateur::class)->findOneByValidationEmailToken($token);//permet de ne pas utiliser le token d'une autre personne
+
+        if($user != null){
 
         $form = $this->createFormBuilder()
         ->add('save', SubmitType::class, ['label' => ' Confirmer '])
@@ -296,7 +309,10 @@ class SecurityController extends AbstractController
           
             $manager->persist($user);
             $manager->flush();
- 
+            $this->addFlash(
+                'notice',
+                'Votre mail est verifié .'
+            );
             return $this->redirectToRoute('home');
         }else {
  
@@ -304,6 +320,14 @@ class SecurityController extends AbstractController
                 'token' => $token,
                 'form'=>$form->createView()
             ]);
+        }
+
+        }else {
+            $this->addFlash(
+                'notice',
+                'Token introuvable'
+            );
+            return $this->redirectToRoute('home');
         }
  
     }

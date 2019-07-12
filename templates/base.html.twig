@@ -421,6 +421,9 @@
             margin-right: 0.2em !important;
             margin-bottom: 0.2em !important;
         }
+        .flash-layout{
+            margin-top: 10em;
+        }
         </style>
 
         {% block stylesheets %}{% endblock %}
@@ -472,7 +475,13 @@
     </nav>
     </div>
     <body>
-   
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-{{ label }} flash-layout">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
