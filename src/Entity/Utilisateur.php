@@ -167,6 +167,16 @@ class Utilisateur implements UserInterface
     private $benevolat;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $validationEmailToken;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $verifiedMail;
+
+    /**
      * @return string
      */
     public function getResetToken(): string
@@ -444,6 +454,30 @@ class Utilisateur implements UserInterface
        if ($this->benevolat->contains($benevolat)) {
            $this->benevolat->removeElement($benevolat);
        }
+
+       return $this;
+   }
+
+   public function getValidationEmailToken(): ?string
+   {
+       return $this->validationEmailToken;
+   }
+
+   public function setValidationEmailToken(?string $validationEmailToken): self
+   {
+       $this->validationEmailToken = $validationEmailToken;
+
+       return $this;
+   }
+
+   public function getVerifiedMail(): ?bool
+   {
+       return $this->verifiedMail;
+   }
+
+   public function setVerifiedMail(?bool $verifiedMail): self
+   {
+       $this->verifiedMail = $verifiedMail;
 
        return $this;
    }
