@@ -166,7 +166,7 @@ class SecurityController extends AbstractController
  
             if ($user === null) {
                 $this->addFlash('danger', 'Email Inconnu');
-                return $this->redirectToRoute('event/1');
+                return $this->redirectToRoute('home');
             }
             $token = $tokenGenerator->generateToken();
  
@@ -175,16 +175,16 @@ class SecurityController extends AbstractController
                 $manager->flush();
             } catch (\Exception $e) {
                 $this->addFlash('warning', $e->getMessage());
-                return $this->redirectToRoute('event/2');
+                return $this->redirectToRoute('home');
             }
  
             $url = $this->generateUrl('security_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
  
-            $message = (new \Swift_Message('Forgot Password'))
+            $message = (new \Swift_Message('Mot de passe oublier'))
                 ->setFrom('g.ponty@dev-web.io')
                 ->setTo($user->getEmail())
                 ->setBody(
-                    "blablabla voici le token pour reseter votre mot de passe : " . $url,
+                    " Voici le lien pour modifier votre mot de passe : " . $url,
                     'text/html'
                 );
  

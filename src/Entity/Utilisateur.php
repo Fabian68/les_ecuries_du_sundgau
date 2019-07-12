@@ -28,8 +28,8 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  *         "post"={"access_control"="is_granted('ROLE_ADMIN')"}
  *     },
  *     itemOperations={
- *         "get"={"access_control"="is_granted('ROLE_USER') and object.owner == user"},
- *         "put"={"access_control"="is_granted('ROLE_USER') and previous_object.owner == user"},
+ *         "get"={"access_control"="is_granted('ROLE_ADMIN') "},
+ *         "put"={"access_control"="is_granted('ROLE_ADMIN') "},
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")

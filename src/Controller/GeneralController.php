@@ -251,7 +251,6 @@ class GeneralController extends AbstractController
             
             $manager->persist($pdf);
             $manager->flush();
-
             //return $this->redirectToRoute('events');
         }
 
