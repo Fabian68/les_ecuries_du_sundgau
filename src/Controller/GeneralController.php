@@ -51,6 +51,18 @@ class GeneralController extends AbstractController
 
         $images = $repo2->findAll();
 
+        $this->addFlash(
+            'notice',
+            'bonjour, aurevoir.'
+        );
+        $this->addFlash(
+            'notice',
+            'bonjour2, aurevoir2.'
+        );
+        $this->addFlash(
+            'notice',
+            'bonjour3, aurevoir4.'
+        );
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events,
