@@ -43,6 +43,10 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $user->setImageFile(null);//la valeur doit être vidé car elle ne sert plus et n'est pas serializable
+            $this->addFlash(
+                'notice',
+                'Votre compte a bien été crée . '
+            );
             return $this->redirectToRoute('security_login');
         }
          $user->setImageFile(null);//si le formulaire est invalide la valeur doit aussi être vidé
@@ -88,7 +92,10 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $user->setImageFile(null);
-
+            $this->addFlash(
+                'notice',
+                'Votre compte a bien été modifié .'
+            );
             return $this->redirectToRoute('security_profile');
         }
         $user->setImageFile(null);
@@ -215,7 +222,10 @@ class SecurityController extends AbstractController
             $user->setMotDePasse($hash);
             $manager->persist($user);
             $manager->flush();
- 
+            $this->addFlash(
+                'notice',
+                'Votre mot de passe a bien été modifier . '
+            );      
             return $this->redirectToRoute('home');
         }else {
  
@@ -296,7 +306,10 @@ class SecurityController extends AbstractController
           
             $manager->persist($user);
             $manager->flush();
- 
+            $this->addFlash(
+                'notice',
+                'Votre mail est verifié .'
+            );
             return $this->redirectToRoute('home');
         }else {
  

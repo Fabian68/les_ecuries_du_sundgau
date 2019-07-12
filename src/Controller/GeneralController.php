@@ -180,7 +180,10 @@ class GeneralController extends AbstractController
             
             $manager->persist($event);
             $manager->flush();
-
+            $this->addFlash(
+                'notice',
+                'Votre évènement a bien été crée .'
+            );
             return $this->redirectToRoute('events');
         }
 
@@ -251,6 +254,10 @@ class GeneralController extends AbstractController
             
             $manager->persist($pdf);
             $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Pdf envoyé .'
+            );
             //return $this->redirectToRoute('events');
         }
 
