@@ -70,16 +70,6 @@
             <div>Inscription benevole</div>
 
             {{ form_start(formBenevole) }}
-
-            <div> Nombre de Benevole necessaire le matin : {{ event.nbBenevolesMatin }}</div>
-            {{ form_row(formBenevole.save) }}
-
-            <div> Nombre de Benevole necessaire l'apres-midi : {{ event.nbBenevolesApresMidi }}</div>
-            {{ form_row(formBenevole.saveAndAdd) }}
-
-            <div> Nombre de Benevole necessaire pour le repas : {{ event.repas.nombreBenevoles }}</div>
-            {{ form_row(formBenevole.Save) }}
-
             {{ form_end(formBenevole) }} 
 
         {% endif %}
@@ -94,16 +84,31 @@
     {% if app.user %}
         {% for role in app.user.roles %}
             {% if role == 'ROLE_ADMIN_ASSO' %}
-                
+
                 {{ form_start(formAsso) }}
 
-                {{ form_row(formAsso.nbBenevolesMatin) }}
-                {{ form_row(formAsso.nbBenevolesApresMidi)}}
-                {{ form_row(formAsso.repas) }}
+                <ul id="creneaux-fields-list"
+                        data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
+                        data-widget-tags="{{ '<li></li>'|e }}"
+                        data-widget-counter="{{ formAsso.children|length }}">
+                    {% for NbBenevole in formAsso.creneauxBenevoles %}
+                        <li>
+                            {{ form_errors(NbBenevole) }}
+                            {{ form_widget(NbBenevole) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {{ form_row(formAsso.creneauxBenevoles) }}
+                
+                <button type="button"
+                class="add-another-collection-widget"
+                data-list-selector="#creneaux-fields-list">Add another date</button>
 
                 <button type="submit" class="btn btn-success">Enregistrer</button>
 
                 {{ form_end(formAsso) }}
+
 
             {% endif %}
         {% endfor %}

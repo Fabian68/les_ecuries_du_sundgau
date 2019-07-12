@@ -23,8 +23,6 @@ class EventType extends AbstractType
             ->add('proprietaire')
             ->add('texte')
             ->add('nbMaxParticipants')
-            ->add('nbBenevolesMatin')
-            ->add('nbBenevolesApresMidi')
         ;
     }
 

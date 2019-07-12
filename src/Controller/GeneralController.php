@@ -143,10 +143,8 @@ class GeneralController extends AbstractController
             
             $choixRepas = $request->get("ChoixRepas");
             if( $choixRepas ) {
-                $repas = $event->getRepas();
-                $repas->addMange($user);
-                $user->addRepa($repas);
-                $manager->persist($repas);
+                $event->addUtilisateursMange($user);
+                $user->addMange($event);
             }
 
             $manager->flush();
@@ -155,10 +153,6 @@ class GeneralController extends AbstractController
 
         $formAsso->handleRequest($request);
         if ($formAsso->isSubmitted() && $formAsso->isValid()) {
-            $nbMatin = $event->getNbBenevolesMatin();
-            $nbAprem = $event->getNbBenevolesApresMidi();
-            $event->setNbBenevolesMatin($nbMatin);
-            $event->setNbBenevolesApresMidi($nbAprem);
             $manager->flush();
             return $this->redirectToRoute('events');
         }
@@ -166,13 +160,6 @@ class GeneralController extends AbstractController
         $formBenevole->handleRequest($request);
         if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
             $user=$this->getUser();
-            if($formBenevole->get('Save')->isClicked()){
-                $repas = $event->getRepas();
-                //$repas->addCuisine($user);
-                $user->addRepa($repas);
-            } else {
-                $event->addBenevole($user);
-            }
             $manager->flush();
             return $this->redirectToRoute('events');
         }
@@ -219,12 +206,6 @@ class GeneralController extends AbstractController
                 $manager->persist($image);
             }
 
-            $repas = new Repas();
-            $repas->setNombreBenevoles(0);
-            $event->setRepas($repas);
-            $repas->addRepasEvent($event);
-            
-            $manager->persist($repas);
             $manager->persist($event);
             $manager->flush();
 

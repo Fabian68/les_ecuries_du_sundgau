@@ -3,11 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use App\Entity\Repas;
+use App\Entity\CreneauxBenevoles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class BenevoleType extends AbstractType
 {
@@ -18,10 +18,7 @@ class BenevoleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-
-        $builder->add('save', SubmitType::class, ['label' => 'Devenir benevole le matin'])
-                ->add('saveAndAdd', SubmitType::class, ['label' => 'Devenir benevole l\'après-midi'])
-                ->add('Save', SubmitType::class, ['label' => 'Devenir benevole pour le repas'])
+        $builder
         ;
     }
 
@@ -32,7 +29,7 @@ class BenevoleType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => SubmitType::class,
+                'data_class' => Event::class,
             ]
         );
     }

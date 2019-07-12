@@ -2,12 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Repas;
+use App\Entity\CreneauxBenevoles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class RepasType extends AbstractType
+class NbBenevoleType extends AbstractType
 {
 
     /**
@@ -16,8 +18,13 @@ class RepasType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-        $builder
-            ->add('nombreBenevoles')
+        $builder->add('dateDebut', DateTimeType::class,[
+                    'data' => new \DateTime("now"),
+                ])
+                ->add('dateFin', DateTimeType::class,[
+                    'data' => new \DateTime("now"),
+                ])
+                ->add('nbBenevoles')
         ;
     }
 
@@ -28,7 +35,7 @@ class RepasType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Repas::class,
+                'data_class' => CreneauxBenevoles::class,
             ]
         );
     }
