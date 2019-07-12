@@ -19,7 +19,9 @@ class ModifyAccountType extends AbstractType
             ->add('email')
             ->add('prenom')
             ->add('nom')
-            ->add('dateNaissance',DateType::class)
+            ->add('dateNaissance',DateType::class,[
+                'years' => range(1850,2024)
+            ])
             ->add('adresse')
             ->add('telephone')
             ->add('galop', EntityType::class, [
