@@ -544,6 +544,9 @@
         .creer-event-layout{
             padding: 2em;
         }
+        .flash-layout{
+            margin-top: 10em;
+        }
         </style>
 
         {% block stylesheets %}{% endblock %}
@@ -595,7 +598,13 @@
     </nav>
     </div>
     <body>
-   
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-{{ label }} flash-layout">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
