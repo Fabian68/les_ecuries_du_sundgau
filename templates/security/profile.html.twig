@@ -59,6 +59,9 @@
     {% if app.user == user %}
         <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
         <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
+        {% if app.user.verifiedMail != true %}
+        <div><a class=" btn bg-info profile-button" href="{{ path('security_verification_mail') }}">Verifier mail</a></div>
+        {% endif %}
     {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
             <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>  
