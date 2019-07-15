@@ -64,7 +64,9 @@
         {% endif %}
     {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
-            <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>  
+            <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>
+            <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
+            <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div>    
         {% endif %}
     {% endif %}
 </div>

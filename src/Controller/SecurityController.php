@@ -164,7 +164,13 @@ class SecurityController extends AbstractController
     public function description(ObjectManager $manager,Request $request){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $description = new Description();
+        // Pour avoir qu'une seule iteration d'inscription dans la BdD
+        $description = $manager->getRepository(Description::class)->findOneById('1');
+        if($description ==null){
+            $description = new Description();
+            $description->setTexte('Les écuries du sundgau est un dans un cadre idéale qui favorise l\'activitée etc etc ');
+        }
+        
         $form = $this->createForm(DescriptionType::class,$description);
         
         $form->handleRequest($request);
@@ -179,7 +185,8 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/description.html.twig',[
-            'form'=> $form->createView()
+            'form'=> $form->createView(),
+            'description'=> $description
         ]);
     }
 
