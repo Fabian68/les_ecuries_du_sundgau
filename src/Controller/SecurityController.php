@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Galops;
+use App\Entity\Description;
 use App\Entity\Utilisateur;
+use App\Form\DescriptionType;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
 use App\Form\ResetPasswordType;
@@ -16,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -154,10 +157,31 @@ class SecurityController extends AbstractController
             'user'=>$user
         ]);
     }
-    
-   
 
-    
+     /**
+     * @Route("/description",name="security_description")
+     */
+    public function description(ObjectManager $manager,Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $description = new Description();
+        $form = $this->createForm(DescriptionType::class,$description);
+        
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $manager->persist($description);
+            $manager->flush();
+
+            $this->addFlash('notice', 'Description modifié.');
+            return $this->redirectToRoute('security_profile');
+        }
+
+        return $this->render('security/description.html.twig',[
+            'form'=> $form->createView()
+        ]);
+    }
 
     /**
      * @Route("/mot_de_passe_oublier", name="security_forgotten_password")
@@ -280,7 +304,6 @@ class SecurityController extends AbstractController
         else {
 
         return $this->render('security/verification_mail.html.twig', [
-            'token' => $token,
             'form'=>$form->createView()
         ]);
     }
@@ -291,7 +314,10 @@ class SecurityController extends AbstractController
     public function verificationMailValidation(ObjectManager $manager,Request $request, string $token, UserPasswordEncoderInterface $encoder)
     {
  
+
         $user = $manager->getRepository(Utilisateur::class)->findOneByValidationEmailToken($token);//permet de ne pas utiliser le token d'une autre personne
+
+        if($user != null){
 
         $form = $this->createFormBuilder()
         ->add('save', SubmitType::class, ['label' => ' Confirmer '])
@@ -317,6 +343,14 @@ class SecurityController extends AbstractController
                 'token' => $token,
                 'form'=>$form->createView()
             ]);
+        }
+
+        }else {
+            $this->addFlash(
+                'notice',
+                'Token introuvable'
+            );
+            return $this->redirectToRoute('home');
         }
  
     }
