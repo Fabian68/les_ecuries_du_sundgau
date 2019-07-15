@@ -262,6 +262,9 @@
                 flex-direction: column;
                 align-items: center;
             }
+            .profile-card{
+                width: 90% !important;
+            }
             .flash-element{
                 width: 60% !important;
                 margin-left: 15% !important;
@@ -434,7 +437,7 @@
             margin-bottom: 0;
         }
         .container-profile{
-            width: 70%;
+            width: 90%;
             margin-left: auto;
             margin-right: auto;
             display: flex;
@@ -442,17 +445,22 @@
             margin-top: 5em;
             padding: 1em;
         }
+        .profile-card{
+            width: 50%;
+        }
         .profile-layout{
             display: flex;
         }
         .profile-info{
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
         .profile-modifs{
             display: flex;
             justify-content: center;
             margin: 2em;
+            width: 30%;
         }
         .profile-button{
             margin: 1em;
@@ -562,16 +570,18 @@
         .flash-layout{
             margin-top: 6em;
             position: fixed;
-            z-index: 20;
+            z-index: 30;
             opacity: 0.75;
             margin-bottom: -5em;
-            width: 100%;
-        }
-        .flash-element{
             width: 40%;
             margin-left: 30%;
             margin-right: 30%;
-        } 
+            display: flex;
+            flex-direction: column;
+        }
+        .adresse-layout{
+            max-height: 9em; 
+        }
         </style>
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
@@ -623,8 +633,8 @@
     </div>
     <body>
 
-        {% for label, messages in app.flashes %}
         <div class="flash-layout">
+        {% for label, messages in app.flashes %}
             {% for message in messages %}
             <div class="alert alert-dismissible alert-warning flash-element">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -633,8 +643,9 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
         {% endfor %}
+        </div>
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

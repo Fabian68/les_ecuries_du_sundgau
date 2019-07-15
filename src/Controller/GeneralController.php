@@ -95,6 +95,14 @@ class GeneralController extends AbstractController
      */
     public function localization()
     {
+        $this->addFlash(
+            'notice',
+            'bonjour, aurevoir.'
+        );
+        $this->addFlash(
+            'nan:nan',
+            'ohno, ohno.'
+        );
         return $this->render('/general/localization.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
