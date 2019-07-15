@@ -1,25 +1,51 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<br>
-<br>
-<br>
+<container class="container-profile">
+<div class="card border-warning mb-3" style="max-width: 30rem;">
+  <div class="card-header"><h2>Profil</h2></div>
+  <div class="card-body profile-layout">
     {% if not app.user %}
     <div>Vous devez vous connecter pour modifier votre profil.</div>
 {% else %}
     {{ form_start(form) }}
-     {{ form_row(form.nom,{ 'label' : 'Modifier nom','value' : user2.nom}) }}
-    {{ form_row(form.prenom,{ 'label' : 'Modifier prenom','value' : user2.prenom}) }}
-    {{ form_row(form.email,{ 'label' : 'Modifier email','value' : user2.email}) }}
-    {{ form_row(form.dateNaissance,{ 'label' : 'Modifier date de naissance','value' : user2.dateNaissance}) }}
-    {{ form_row(form.adresse,{ 'label' : 'Modifier adresse','value' : user2.adresse }) }}
-    {{ form_row(form.telephone,{ 'label' : 'Modifier numero de telephone','value' : user2.telephone}) }}
-    {{ form_row(form.galop,{ 'label' : 'Modifier galop','value' : user2.galop }) }}
-    {{ form_row(form.imageFile,{ 'label' : 'Modifier image' }) }}
-
+    <div class="profile-info">
+      <div class="profile-inner">
+      {{ form_row(form.nom,{ 'attr' : { 'class' : 'profile-data form-control' } ,'label' : 'Modifier nom','value' : user2.nom}) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.prenom,{ 'attr' : { 'class' : 'profile-data form-control' } ,'label' : 'Modifier prenom','value' : user2.prenom}) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.email,{ 'attr' : { 'class' : 'profile-data form-control' } ,'label' : 'Modifier email','value' : user2.email}) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.dateNaissance,{ 'attr' : { 'class' : 'profile-data' } ,'label' : 'Modifier date de naissance','value' : user2.dateNaissance}) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.adresse,{ 'attr' : { 'class' : 'profile-data form-control' } ,'label' : 'Modifier adresse','value' : user2.adresse }) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.telephone,{ 'attr' : { 'class' : 'profile-data form-control' } ,'label' : 'Modifier numero de telephone','value' : user2.telephone}) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.galop,{ 'attr' : { 'class' : 'profile-data' } ,'label' : 'Modifier galop','value' : user2.galop }) }}
+      </div>
+      <br>
+      <div class="profile-inner">
+      {{ form_row(form.imageFile,{ 'attr' : { 'class' : 'profile-data' } ,'label' : 'Modifier image' }) }}
+      </div>
+    </div>
+    <br>
     <button type="submit" class="btn btn-success"> Modifier </button>
     {{ form_end(form)}}
-
 {% endif %}
+  </div>    
+</div>
 {% endblock %}

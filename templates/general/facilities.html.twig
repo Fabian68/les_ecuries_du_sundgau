@@ -1,32 +1,45 @@
 {% extends 'base.html.twig' %}
 {% block scripts %}
 
+<style type="text/css">
+html body{
+    height: 100%;
+    width: 100%;
+}
+</style>
+
 <script>
 function display(i){
     var image = document.getElementById("displayScreen");   
     if(i == 1){
-        image.src = "http://placehold.it/1111x500";
+        image.src = "/images/resources/facilities/big_area.jpg";
     } else if(i == 2) {
-        image.src = "http://placehold.it/2222x1000";
+        image.src = "/images/resources/facilities/front.jpg";
+    } else if(i == 3) {
+        image.src = "/images/resources/facilities/fences.jpg";
     } else {
-        image.src = "http://placehold.it/3333x1500";
+        image.src = "/images/resources/facilities/center_to_park.jpg";
     }
 }
 </script>
 
 {% endblock %}
 {% block body %}
+<div class="container-facility">
     <div class="facility">
-        <map name="infographic">
-            <area shape="poly" coords="130,147,200,107,254,219,130,228"
+        <map name="facilities">
+            <area shape="poly" coords="40,80,60,80,60,100,40,100"
                 onclick="display(1)" alt="HTML" />
-            <area shape="poly" coords="130,147,130,228,6,219,59,107"
+            <area shape="poly" coords="200,100,220,100,220,120,200,120"
                 onclick="display(2)" alt="CSS" />
-            <area shape="poly" coords="130,147,200,107,130,4,59,107"
+            <area shape="poly" coords="150,10,170,10,170,30,150,30"
                 onclick="display(3)" alt="JavaScript" />
+            <area shape="poly" coords="30,210,50,210,50,230,30,230"
+                onclick="display(4)" alt="JavaScript" />
         </map>
-        <img class="map-layout" usemap="#infographic" src="http://placehold.it/300x300" alt="MDN infographic" />
-    
-    <img class="facility-layout" id="displayScreen" src="http://placehold.it/1600x900">
+        <img class="map-layout" usemap="#facilities" src="/images/resources/facilities/map.jpg" alt="map" />
+        <img class="facility-layout" id="displayScreen" src="/images/resources/facilities/whole_facility.jpg" />
     </div>
+    <div class="bg-facility"></div>
+</div>
 {% endblock %}
