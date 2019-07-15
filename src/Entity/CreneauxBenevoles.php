@@ -117,4 +117,16 @@ class CreneauxBenevoles
         return $this;
     }
 
+    public function getNbBenevoles(): ?int
+    {
+        return $this->nbBenevoles;
+    }
+
+    public function setNbBenevoles(int $nbBenevoles): self
+    {
+        $this->nbBenevoles = $nbBenevoles;
+
+        return $this;
+    }
+
 }

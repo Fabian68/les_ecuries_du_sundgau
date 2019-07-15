@@ -22,9 +22,7 @@ class AssoEventType extends NbBenevoleType
             'entry_type' => NbBenevoleType::class,
             'entry_options' => ['label' => false],
             'allow_add' => true,
-            'by_reference' => false,
-            
-        ]);
+            ]);
     }
 
     /**
