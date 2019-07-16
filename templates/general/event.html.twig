@@ -106,8 +106,9 @@ jQuery(document).ready(function () {
 
             <div>Inscription benevole</div>
 
-            {{ form_start(formBenevole) }}
-            {{ form_end(formBenevole) }} 
+                {{ form_start(formBenevole) }}
+                {{ form_row(formBenevole.creneaux) }}
+                {{ form_end(formBenevole) }}
 
         {% endif %}
         </div>

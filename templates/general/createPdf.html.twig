@@ -6,12 +6,11 @@
 <br>
 <br>
 <br>
-{% if is_granted('ROLE_ADMIN') %}
+<div>Ajouter pdf ( contact.pdf ou localisation.pdf ou tarif.pdf)</div>
     {{ form_start(formPdf) }}
     
 
     <button type="submit" class="btn btn-success">Enregistrer</button>
     {{ form_end(formPdf) }}
     
-{% endif %}
 {% endblock %}
