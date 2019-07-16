@@ -12,7 +12,7 @@
             overflow-x: hidden;
         }
         body {
-            background-color: #48a04c;
+            background-color: #434B38;
             background-image: url('/images/resources/fond.png');
             background-attachment: fixed;
             background-size: cover;
@@ -40,26 +40,39 @@
             font-family: serif;
         }
         .facility{
-            padding-left: 5%;
-            padding-right: 5%;
+            position: absolute;
+            z-index: 2;
+            left: 4em;
+            right: 4em;
+            top: 0;
+            bottom: 0;
+            padding-top: 7em;
+            display: flex;
+        }
+        .bg-facility{
+            position: absolute;
+            z-index: 1;
+            left: 4em;
+            right: 4em;
+            top: 0;
+            bottom: 0;
+            background: black;
+            opacity: 0.5;
+        }
+        .container-facility{
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
         .map-layout{
-            width: 100%;
-            padding-top: 5%;
+            width: 240px !important;
+            height: 240px !important; 
         }
         .facility-layout{
-            width: 100%;
-            padding: 5%;
-        }
-        @media screen and (min-width: 700px){
-            .map-layout{
-                float: left;
-                width: 35%;
-            }
-            .facility-layout{
-                float: right;
-                width: 65%;
-            }
+            flex: 1;
+            object-fit: contain;
+            overflow: auto;
+            margin-bottom: 12em;
         }
         .events-layout{
             width: 46em;
@@ -82,6 +95,7 @@
             }
             .image-band-layout{
                 height: 11em !important;
+                margin-top: 4.6em !important;
             }
             .carousel-pusher{
                 width: 50% !important;
@@ -90,11 +104,14 @@
             .image-thumbnail{
                 margin-left: 0.5em !important;
                 margin-right: 0.5em !important;
-                height: 10em !important;
-                max-width: 10em !important;
+                max-height: 10em !important;
+                width: 10em !important;
             }
             .image-thumbnail:hover{
                 max-width: 30% !important;
+            }
+            .facility-layout{
+                margin-bottom: 6em !important;
             }
         }
 
@@ -197,22 +214,62 @@
                 top: 4.2rem !important;
             }
             .image-thumbnail{
-                height: 5em !important;
-                max-width: 5em !important;
+                max-height: 5em !important;
+                width: 5em !important;
             }
             .image-thumbnail:hover{
-                transform: scale(3.0) !important;
-                max-width: 30% !important;
+                transform: scale(3.0) translate(0,30%) !important; 
             }
             .carousel-pusher{
                 margin-left: -13em !important;
             }
             .image-band-layout{
                 height: 6em !important;
+                margin-top: 4.4em !important; 
             }
             .galop-layout{
                 margin: 0.2em !important;
             }
+            .form-container{
+                flex-direction: column;
+            }
+            .asso-layout{
+                margin-top: -4em !important;
+            }
+            .facility{
+                flex-direction: column;
+                left: 0;
+                right: 0;
+                padding-top: 6em;
+            }
+            .facility-layout{
+                margin-bottom: 1em;
+            }
+            .bg-facility{
+                right: 0 !important;
+                left: 0 !important;
+            }
+            .map-layout{
+                align-self: center;
+            }
+            .registration-layout{
+                width: 90% !important;
+                margin-top: 5em !important;
+            }
+            .container-profile{
+                margin-top: 3em;
+                width: 95% !important;
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-card{
+                width: 90% !important;
+            }
+            .flash-element{
+                width: 60% !important;
+                margin-left: 15% !important;
+                margin-right: 15% !important;
+            } 
         }
         .header-custom{
             top: 0;
@@ -256,6 +313,12 @@
         .index-more-button{
             text-align: right;
         }
+        .event-more-button{
+            margin-top: 1em;
+        }
+        .event-text-transition{
+            margin-bottom: 1em;
+        }
         .container-login{
             display: flex;
             justify-content: center;
@@ -280,6 +343,10 @@
             align-self: center;
             justify-content: center;
             max-width: 6em;
+            color: white;
+        }
+        .galop-layout:hover{
+            color: white !important;
         }
         .galops-layout{
             flex: 3;
@@ -308,7 +375,7 @@
             background-color: #5b7a50;
             width: 100%;
             height: 8em;
-            margin-top: 3em;
+            margin-top: 5em;
             margin-bottom: -5em;
             justify-content: space-around;
             transition: all .2s ease-in-out;
@@ -344,14 +411,16 @@
             background-color: black;
         }
         .image-thumbnail{
-            height: 7em;
-            max-width: 7em;
+            width: 7em;
+            max-height: 7em;
+            object-fit: contain;
             padding: 0.5em;
             transition: all .2s ease-in-out;
         }
         .image-thumbnail:hover{
-            transform: scale(2.0); 
-            max-width: 30%;
+            transform: scale(2.0) translate(0,23%);
+        }
+        .image-container{
         }
         .carousel-custom{
             overflow: visible;
@@ -368,7 +437,7 @@
             margin-bottom: 0;
         }
         .container-profile{
-            width: 50%;
+            width: 90%;
             margin-left: auto;
             margin-right: auto;
             display: flex;
@@ -376,17 +445,22 @@
             margin-top: 5em;
             padding: 1em;
         }
+        .profile-card{
+            width: 50%;
+        }
         .profile-layout{
             display: flex;
         }
         .profile-info{
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
         .profile-modifs{
             display: flex;
             justify-content: center;
             margin: 2em;
+            width: 30%;
         }
         .profile-button{
             margin: 1em;
@@ -399,33 +473,116 @@
             height: min-content;
         }
         @media screen and (max-width: 475px){
+            .image-band-layout{
+                margin-top: 4.4em !important;
+            }
             .image-thumbnail{
                 height: 4em !important;
                 max-width: 4em !important;
             }
             .image-thumbnail:hover{
                 max-width: 30% !important;
-                transform: scale(4.0) !important;
+                transform: scale(4.0) translate(0,30%) !important;
             }
             .carousel-pusher{
                 margin-left: -10.5em !important;
             }
+            .flash-element{
+                width: 90% !important;
+                margin-left: 5% !important;
+                margin-right: 5% !important;
+            } 
             .galop-layout{
                 margin: 0.05em !important;
                 padding: 0.4em !important;
                 padding-right: 0.6em !important;
                 padding-left: 0.6em !important;
             }
+            .registration-layout{
+                width: 95%;
+            }
+            .reg-outer{
+                flex-direction: column !important;
+            }
         }
         .navbar-logo-custom{
             margin-right: 0.2em !important;
             margin-bottom: 0.2em !important;
         }
+        .asso-layout{
+            padding-top: 0em;
+            margin-top: -7em;
+        }
+        .form-container{
+            display: flex;
+            margin-bottom: 0.5em;
+        }
+        .form-element{
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+        }
+        .registration-layout{
+            margin-top: 7em;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        .reg-row-layout{
+            display: flex;
+            width: 100%;
+        }
+        .reg-inner{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1em;
+            justify-content: flex-start;
+        }
+        .reg-pusher{
+            margin-right: 1em;
+        }
+        .reg-outer{
+            display: flex;
+            flex-direction: row;
+            align-content: space-between;
+        }
+        .upload-btn{
+            margin-bottom: 1em;
+        }
+        .profile-image{
+            width: 100%;
+            height: 100%;
+            margin-bottom: 1em;
+        }
+        .container-creer-event{
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: center;
+            margin-top: 3em;
+            padding: 1em;
+        }
+        .creer-event-layout{
+            padding: 2em;
+        }
         .flash-layout{
-            margin-top: 10em;
+            margin-top: 6em;
+            position: fixed;
+            z-index: 30;
+            opacity: 0.75;
+            margin-bottom: -5em;
+            width: 40%;
+            margin-left: 30%;
+            margin-right: 30%;
+            display: flex;
+            flex-direction: column;
+        }
+        .adresse-layout{
+            max-height: 9em; 
         }
         </style>
-
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
     </head>
@@ -475,13 +632,20 @@
     </nav>
     </div>
     <body>
+
+        <div class="flash-layout">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="flash-{{ label }} flash-layout">
+            <div class="alert alert-dismissible alert-warning flash-element">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <div class="flash-{{ label }}">
                     {{ message }}
                 </div>
+            </div>
             {% endfor %}
         {% endfor %}
+        </div>
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

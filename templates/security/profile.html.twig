@@ -3,7 +3,7 @@
 {% block body %}
 
 <container class="container-profile">
-<div class="card border-warning mb-3" style="max-width: 20rem;">
+<div class="card border-warning mb-3 profile-card">
   <div class="card-header"><h2>Profil</h2></div>
   <div class="card-body profile-layout">
     {% if not app.user %}
@@ -12,7 +12,7 @@
     <div class="profile-info">
       <div class="profile-inner">
       {% if user.imageName is not null %}
-      <img class="event-img-layout" src="/images/profile/{{ user.imageName }}">
+      <img class="profile-image" src="/images/profile/{{ user.imageName }}">
       {% endif %}
         <div>Nom : </div>
         <fieldset class="profile-data">
@@ -40,7 +40,7 @@
       <div class="profile-inner">
         <div>Adresse : </div>
         <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ app.user.adresse}}" readonly="">
+            <textarea class="form-control adresse-layout" id="readOnlyInput" placeholder="{{ app.user.adresse}}" readonly=""></textarea>
         </fieldset>
       </div>
       <div class="profile-inner">
@@ -64,7 +64,9 @@
         {% endif %}
     {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
-            <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>  
+            <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>
+            <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
+            <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div>    
         {% endif %}
     {% endif %}
 </div>

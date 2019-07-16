@@ -4,15 +4,6 @@
 
 {% block body %}
 
-<div class="custom-container">
-    <div class="card text-white bg-transparent-blue mb-3" style="max-width: 60rem;">
-    <div class="card-body">
-        <h4 class="card-title">Présentation</h4>
-        <p class="card-text">Ceci est un exemple de présentation.</br> Plusieurs paragraphes peuvent être représentés, présentant ainsi les écuries. Ce site web est encore en construction.</p>
-    </div>
-    </div>
-</div>
-
 {% set var = 0 %}
 {% set active = 'active' %}
 
@@ -51,6 +42,15 @@
     </a>
   </div>
 
+  <div class="custom-container">
+    <div class="card text-white bg-transparent-blue mb-3" style="max-width: 60rem;">
+      <div class="card-body">
+        <h4 class="card-title">Présentation</h4>
+        <p class="card-text">Ceci est un exemple de présentation.</br> Plusieurs paragraphes peuvent être représentés, présentant ainsi les écuries. Ce site web est encore en construction.</p>
+      </div>
+    </div>
+  </div>
+
 <section class="events-layout big-screen mobile-layout">
 
     {% for event in events %}
@@ -78,7 +78,7 @@
                 <div class="galops-text">Galops:</div>
                 <div class="galops-inner index-galops">
                   {% for galop in event.galops %}
-                    <div class="btn btn-outline-warning galop-layout">{{galop.niveau}}</div>
+                    <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
                   {% endfor %}
                 </div>
               </div>

@@ -46,15 +46,27 @@ jQuery(document).ready(function () {
         <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
         </div>
         </div>
-        <div class="galops-layout">galops:
-            {% for galop in event.galops %}
-                <div class="btn btn-outline-warning galop-layout">{{galop.niveau}}</div>
-            {% endfor %}
-        </div>
         <div class="card-body">
-            <table><tr class="bg-light">
-            <td class="tarif-text bg-secondary"> Tarifs: </td><td>- de 12 ans:</td><td class="tarif-text"> {{ event.tarifMoinsDe12 }}€ </td><td>+ de 12 ans:</td><td class="tarif-text"> {{ event.plusDe12 }}€ </td><td>Propriétaire:</td><td class="tarif-text"> {{ event.proprietaire }}€ </td>
-            </tr></table>
+            <div class="tarifs-galops-container bg-secondary">
+                <table class="tarifs-layout">
+                  <tr>
+                    <td  class="bg-secondary">- de 12 ans:</td><td class="bg-light"> {{ event.tarifMoinsDe12 }}€ </td>
+                  </tr>
+                  <tr>
+                    <td class="bg-secondary">+ de 12 ans:</td><td class="bg-light"> {{ event.plusDe12 }}€ </td>
+                  </tr>
+                  <tr>
+                    <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.proprietaire }}€ </td>
+                  </tr>  
+                </table>
+                <div class="galops-layout"><div class="bg-secondary galops-text">Galops:</div>
+                  <div class="bg-light galops-inner">
+                  {% for galop in event.galops %}
+                    <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
+                  {% endfor %}
+                  </div>
+                </div>
+              </div>
             <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
             </br>
             {{ event.texte }}
@@ -101,18 +113,17 @@ jQuery(document).ready(function () {
         {% endif %}
         </div>
     </event>
-    <HR width="50%" size="10" noshade />
     
 </section>
-
-<section>
 
     {% if app.user %}
         {% for role in app.user.roles %}
             {% if role == 'ROLE_ADMIN_ASSO' %}
-
+            <HR width="50%" size="10" noshade />
+            <section class="events-layout big-screen mobile-layout asso-layout">
+              <div class="card mb-3 card-body">
                 {{ form_start(formAsso) }}
-
+                
                 <ul id="creneaux-fields-list"
                         data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
                         data-widget-tags="{{ '<li></li>'|e }}"
@@ -134,12 +145,10 @@ jQuery(document).ready(function () {
                 {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
 
                 {{ form_end(formAsso) }}
-
-
+              </div>
+            </section>
             {% endif %}
         {% endfor %}
     {% endif %}
-
-</section>
 
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+
+    
+
+    {{ form_start(form) }}
+    {{ form_row(form.texte,{ 'label' : 'Modifier description','value' : description.texte }) }}
+    <button type="submit" class="btn btn-success"> Modifier </button>
+    {{ form_end(form)}}
+
+
+{% endblock %}

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Galops;
+use App\Entity\Description;
 use App\Entity\Utilisateur;
+use App\Form\DescriptionType;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
 use App\Form\ResetPasswordType;
@@ -155,10 +157,38 @@ class SecurityController extends AbstractController
             'user'=>$user
         ]);
     }
-    
-   
 
-    
+     /**
+     * @Route("/description",name="security_description")
+     */
+    public function description(ObjectManager $manager,Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        // Pour avoir qu'une seule iteration d'inscription dans la BdD
+        $description = $manager->getRepository(Description::class)->findOneById('1');
+        if($description ==null){
+            $description = new Description();
+            $description->setTexte('Les écuries du sundgau est un dans un cadre idéale qui favorise l\'activitée etc etc ');
+        }
+        
+        $form = $this->createForm(DescriptionType::class,$description);
+        
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $manager->persist($description);
+            $manager->flush();
+
+            $this->addFlash('notice', 'Description modifié.');
+            return $this->redirectToRoute('security_profile');
+        }
+
+        return $this->render('security/description.html.twig',[
+            'form'=> $form->createView(),
+            'description'=> $description
+        ]);
+    }
 
     /**
      * @Route("/mot_de_passe_oublier", name="security_forgotten_password")
