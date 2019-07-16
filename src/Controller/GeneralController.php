@@ -127,10 +127,12 @@ class GeneralController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
+
+        $creneau = $event->getCreneauxBenevoles();
         
         $formAsso = $this->createForm(AssoEventType::class,$event);
 
-        $formBenevole = $this->createForm(BenevoleType::class);
+        $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

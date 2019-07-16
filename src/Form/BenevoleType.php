@@ -8,6 +8,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\CreneauxBenevolesRepository;
 
 class BenevoleType extends AbstractType
 {
@@ -16,9 +19,17 @@ class BenevoleType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $option
      */
-    public function buildForm(FormBuilderInterface $builder, array $option)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
+        $builder->add('creneaux', EntityType::class, [
+            'query_builder' => function(CreneauxBenevolesRepository $repo) use ($options) {
+                return $repo->getCreneauxForQueryBuilder($options['id']);
+            },
+            'choice_label' => 'creneauxFormatted',
+            'multiple' => true,
+            'expanded' => true,
+            'class' => CreneauxBenevoles::class,
+        ])
         ;
     }
 
@@ -29,7 +40,8 @@ class BenevoleType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Event::class,
+                'data_class' => CreneauxBenevoles::class,
+                'id' => 2,
             ]
         );
     }

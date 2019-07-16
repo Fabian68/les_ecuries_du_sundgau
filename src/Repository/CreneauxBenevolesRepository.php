@@ -19,6 +19,14 @@ class CreneauxBenevolesRepository extends ServiceEntityRepository
         parent::__construct($registry, CreneauxBenevoles::class);
     }
 
+    public function getCreneauxForQueryBuilder($id)
+    {
+        return $this->createQueryBuilder('cre')
+                    ->join('cre.event', 'ev')
+                    ->andWhere('ev.id = :id')
+                    ->setParameter('id', $id);
+    }
+
     // /**
     //  * @return CreneauxBenevoles[] Returns an array of CreneauxBenevoles objects
     //  */

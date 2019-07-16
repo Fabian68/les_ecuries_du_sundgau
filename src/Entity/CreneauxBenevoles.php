@@ -58,6 +58,12 @@ class CreneauxBenevoles
         return $this->dateDebut;
     }
 
+    public function getCreneauxFormatted()
+    {
+        $string = ' Le ' . $this->dateDebut->format( 'd/m/Y' ) . ' de ' . $this->dateDebut->format( 'H:i' ) .' à '. $this->dateFin->format( 'H:i' );
+        return $string;
+    }
+
     public function setDateDebut(\DateTimeInterface $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
