@@ -52,18 +52,6 @@ class GeneralController extends AbstractController
 
         $images = $repo2->findAll();
 
-        $this->addFlash(
-            'notice',
-            'bonjour, aurevoir.'
-        );
-        $this->addFlash(
-            'notice',
-            'bonjour2, aurevoir2.'
-        );
-        $this->addFlash(
-            'notice',
-            'bonjour3, aurevoir4.'
-        );
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events,
@@ -153,6 +141,7 @@ class GeneralController extends AbstractController
         $formAsso = $this->createForm(AssoEventType::class,$event);
 
         $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
+        $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -182,7 +171,6 @@ class GeneralController extends AbstractController
             }
 
             $manager->flush();
-            return $this->redirectToRoute('events');
         }
 
         $formAsso->handleRequest($request);
@@ -194,14 +182,21 @@ class GeneralController extends AbstractController
             }
             $manager->persist($event);
             $manager->flush();
-            return $this->redirectToRoute('events');
         }
 
         $formBenevole->handleRequest($request);
         if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
             $user=$this->getUser();
+            $creneauxData = $formBenevole->get('creneaux')->getData();
+            foreach ($event->getCreneauxBenevoles() as $creneauxEvent) {
+                foreach ($creneauxData as $data) {
+                    if( $data->getId() == $creneauxEvent->getId() ) {
+                        $creneauxEvent->addUtilisateur($user);
+                        $manager->persist($creneauxEvent);
+                    }
+                }
+            }
             $manager->flush();
-            return $this->redirectToRoute('events');
         }
 
         return $this->render('/general/event.html.twig', [

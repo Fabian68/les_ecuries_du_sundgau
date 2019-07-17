@@ -97,6 +97,9 @@ jQuery(document).ready(function () {
                 <div>Vous êtes inscrit pour cet évènement.</div>
             {% endif %}
 
+            </br>
+
+            <div>Inscrit</div>
             {% for utilisateur in event.utilisateurs %}
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
@@ -109,6 +112,18 @@ jQuery(document).ready(function () {
                 {{ form_start(formBenevole) }}
                 {{ form_row(formBenevole.creneaux) }}
                 {{ form_end(formBenevole) }}
+                
+            </br>
+
+            {% for creneaux in event.creneauxBenevoles %}
+                <div>Benevole pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
+                {% for utilisateur in creneaux.utilisateurs %}
+                    {{ utilisateur.prenom }}
+                    {{ utilisateur.nom}}
+                    </br>
+                {% endfor %}
+                </br>
+            {% endfor %}
 
         {% endif %}
         </div>
