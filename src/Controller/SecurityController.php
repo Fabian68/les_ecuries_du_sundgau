@@ -144,8 +144,15 @@ class SecurityController extends AbstractController
      * @Route("/profil",name="security_profile")
      * @Route("/profil/{ident}",name="security_profile_withid")
      */
-    public function profile($ident=null,ObjectManager $manager){
+    public function profile($ident=null,ObjectManager $manager,Request $request){
         $user=new Utilisateur();
+
+        $form = $this->createFormBuilder()
+        ->add('benevole', SubmitType::class)
+        ->getForm();
+
+        $form->handleRequest($request);
+
         if($ident==null){
             $user = $this->getUser();
         }else{
@@ -153,8 +160,22 @@ class SecurityController extends AbstractController
             $user=$user = $manager->getRepository(Utilisateur::class)->findOneById($ident);
         }
 
+        if($form->isSubmitted()){
+            
+            if($user->getRoles() == array('ROLE_BENEVOLE')){
+                $user->setRoles(array('ROLE_USER'));
+                $this->addFlash('notice', 'Vous ne pouvez plus vous inscrire en tant que bénévole aux évènements.');
+            }else{
+                $user->setRoles(array('ROLE_BENEVOLE'));
+                $this->addFlash('notice', 'Vous pouvez désormait vous inscrire en tant que bénévole aux évènements.');           
+            } 
+            $manager->flush(); 
+            return $this->redirectToRoute('security_profile'); 
+        }
+        
         return $this->render('security/profile.html.twig',[
-            'user'=>$user
+            'user'=>$user,
+            'form'=>$form->createView()
         ]);
     }
 

@@ -48,5 +48,5 @@ security:
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER,ROLE_ADMIN_ASSO,ROLE_USER_BENEVOLE]
         ROLE_ADMIN_ASSO: [ROLE_USER]
-        ROLE_USER_BENEVOLE: [ROLE_USER]
+        ROLE_BENEVOLE: [ROLE_USER]
 
