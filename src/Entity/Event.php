@@ -93,6 +93,16 @@ class Event
      */
     private $utilisateursMange;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $repasPossible;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $divers;
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -367,6 +377,30 @@ class Event
             $this->utilisateursMange->removeElement($utilisateursMange);
             $utilisateursMange->removeMange($this);
         }
+
+        return $this;
+    }
+
+    public function getRepasPossible(): ?bool
+    {
+        return $this->repasPossible;
+    }
+
+    public function setRepasPossible(?bool $repasPossible): self
+    {
+        $this->repasPossible = $repasPossible;
+
+        return $this;
+    }
+
+    public function getDivers(): ?bool
+    {
+        return $this->divers;
+    }
+
+    public function setDivers(?bool $divers): self
+    {
+        $this->divers = $divers;
 
         return $this;
     }
