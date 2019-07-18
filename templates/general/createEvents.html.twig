@@ -80,9 +80,26 @@ jQuery(document).ready(function () {
         class="add-another-collection-widget"
         data-list-selector="#image-fields-list">Ajouter une image</button>
 
+       <ul id="video-fields-list"
+        data-prototype="{{ form_widget(formEvent.videos.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ formEvent.children|length }}">
+        {% for videoField in formEvent.videos %}
+        <li>
+            {{ form_errors(videoField) }}
+            {{ form_widget(videoField) }}
+        </li>
+        {% endfor %}
+      </ul>
+
+      <button type="button"
+        class="add-another-collection-widget"
+        data-list-selector="#video-fields-list">Ajouter une video</button>
+
       <button type="submit" class="btn btn-success">Enregistrer</button>
       {{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
       {{ form_row(formEvent.dates,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle dates , car avec les collections on appelle pas explicitement ces méthodes-->    
+      {{ form_row(formEvent.videos,{ 'label' : false } ) }}
       {{ form_end(formEvent) }}
       </div>
     </container>
