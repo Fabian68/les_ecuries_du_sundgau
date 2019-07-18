@@ -45,13 +45,13 @@ class Event
      * @Groups("read")
      * @ORM\Column(type="float")
      */
-    private $plusDe12;
+    private $tarifPlusDe12;
 
     /**
      * @Groups("read")
      * @ORM\Column(type="float")
      */
-    private $proprietaire;
+    private $tarifProprietaire;
 
     /**
      * @Groups("read")
@@ -162,26 +162,26 @@ class Event
         return $this;
     }
 
-    public function getPlusDe12(): ?float
+    public function getTarifPlusDe12(): ?float
     {
-        return $this->plusDe12;
+        return $this->tarifPlusDe12;
     }
 
-    public function setPlusDe12(float $plusDe12): self
+    public function setTarifPlusDe12(float $tarifPlusDe12): self
     {
-        $this->plusDe12 = $plusDe12;
+        $this->tarifPlusDe12 = $tarifPlusDe12;
 
         return $this;
     }
 
-    public function getProprietaire(): ?float
+    public function getTarifProprietaire(): ?float
     {
-        return $this->proprietaire;
+        return $this->tarifProprietaire;
     }
 
-    public function setProprietaire(float $proprietaire): self
+    public function setTarifProprietaire(float $tarifProprietaire): self
     {
-        $this->proprietaire = $proprietaire;
+        $this->tarifProprietaire = $tarifProprietaire;
 
         return $this;
     }

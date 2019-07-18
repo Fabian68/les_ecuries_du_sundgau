@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190718075332 extends AbstractMigration
+final class Version20190718100801 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -27,7 +27,7 @@ final class Version20190718075332 extends AbstractMigration
         $this->addSql('CREATE TABLE dates_evenements (id INT AUTO_INCREMENT NOT NULL, event_id INT NOT NULL, date_debut DATETIME NOT NULL, date_fin DATETIME NOT NULL, INDEX IDX_A00387DD71F7E88B (event_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE description (id INT AUTO_INCREMENT NOT NULL, texte LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE document (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE event (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, texte LONGTEXT NOT NULL, tarif_moins_de12 DOUBLE PRECISION NOT NULL, plus_de12 DOUBLE PRECISION NOT NULL, proprietaire DOUBLE PRECISION NOT NULL, nb_max_participants INT NOT NULL, repas_possible TINYINT(1) DEFAULT NULL, divers TINYINT(1) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE event (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, texte LONGTEXT NOT NULL, tarif_moins_de12 DOUBLE PRECISION NOT NULL, tarif_plus_de12 DOUBLE PRECISION NOT NULL, tarif_proprietaire DOUBLE PRECISION NOT NULL, nb_max_participants INT NOT NULL, repas_possible TINYINT(1) DEFAULT NULL, divers TINYINT(1) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE event_galops (event_id INT NOT NULL, galops_id INT NOT NULL, INDEX IDX_E6B02A3871F7E88B (event_id), INDEX IDX_E6B02A386EA63067 (galops_id), PRIMARY KEY(event_id, galops_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE files_pdf (id INT AUTO_INCREMENT NOT NULL, file_name VARCHAR(255) DEFAULT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE galops (id INT AUTO_INCREMENT NOT NULL, niveau INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
