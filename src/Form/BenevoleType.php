@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Repository\CreneauxBenevolesRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BenevoleType extends AbstractType
 {
@@ -40,7 +41,7 @@ class BenevoleType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => CreneauxBenevoles::class,
+                'data_class' => null,
                 'id' => 2,
             ]
         );
