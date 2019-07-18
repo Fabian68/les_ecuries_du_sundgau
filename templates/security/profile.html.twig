@@ -68,6 +68,18 @@
             <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
             <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div>    
         {% endif %}
+         
+          {% if app.user.roles == ['ROLE_BENEVOLE'] %}
+              {{ form_start(form) }}
+                {{ form_row(form.benevole,{ 'label' : 'Se retirer de la liste des bénévoles'}) }} 
+              {{ form_end(form) }}   
+          {% elseif app.user.roles == ['ROLE_USER'] %}
+              {{ form_start(form) }}
+                {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles'}) }}
+              {{ form_end(form) }}
+          {% endif %}
+          
+        
     {% endif %}
 </div>
 </container>

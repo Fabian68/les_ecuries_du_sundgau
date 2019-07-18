@@ -41,8 +41,8 @@ class EventFixtures extends Fixture
             $event->setTexte($faker->paragraph());
             $tarif = mt_rand(10,25);
             $event->setTarifMoinsDe12($tarif/2.0);
-            $event->setPlusDe12($tarif);
-            $event->setProprietaire($tarif/4.0);
+            $event->setTarifPlusDe12($tarif);
+            $event->setTarifProprietaire($tarif/4.0);
             $event->setNbMaxParticipants(mt_rand(20,150));
             //Ajout des dates et liaison
             for ($j=0; $j <=mt_rand(1,4) ; $j++) { 
