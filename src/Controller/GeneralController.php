@@ -118,23 +118,25 @@ class GeneralController extends AbstractController
     public function event($id,Request $request,ObjectManager $manager)
     {
         
-
-        $form = $this->createForm(ParticipeType::class, $this->getUser());
-        $form->add('ChoixRepas', ChoiceType::class, array(
-            "mapped" => false,
-            "multiple" => false,
-            "attr" => array(
-                'class' => "form-control"
-            ),
-            'choices'  => array(
-                'Oui' => true,
-                'Non' => false
-            )
-        ));
-
         $repo = $this->getDoctrine()->getRepository(Event::class);
 
         $event = $repo->find($id);
+
+        $form = $this->createForm(ParticipeType::class, $this->getUser());
+        if  ($event->getRepasPossible() == 1 || $event->getRepasPossible() == null)
+        {
+            $form->add('ChoixRepas', ChoiceType::class, array(
+                "mapped" => false,
+                "multiple" => false,
+                "attr" => array(
+                    'class' => "form-control"
+                ),
+                'choices'  => array(
+                    'Oui' => true,
+                    'Non' => false
+                )
+            ));
+        }
 
         $creneau = $event->getCreneauxBenevoles();
         
