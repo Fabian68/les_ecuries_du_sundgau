@@ -61,7 +61,7 @@ class Event
 
     /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=false)
      */
     private $dates;
@@ -79,12 +79,12 @@ class Event
     private $utilisateurs;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement",orphanRemoval=true)
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event", orphanRemoval=true)
      */
     private $creneauxBenevoles;
 
@@ -103,6 +103,11 @@ class Event
      */
     private $divers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="evenement")
+     */
+    private $videos;
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -113,6 +118,7 @@ class Event
         $this->attributMoyenPaiements = new ArrayCollection();
         $this->creneauxBenevoles = new ArrayCollection();
         $this->utilisateursMange = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -401,6 +407,37 @@ class Event
     public function setDivers(?bool $divers): self
     {
         $this->divers = $divers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+            // set the owning side to null (unless already changed)
+            if ($video->getEvenement() === $this) {
+                $video->setEvenement(null);
+            }
+        }
 
         return $this;
     }
