@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Galops;
 use App\Entity\Description;
 use App\Entity\Utilisateur;
@@ -381,5 +382,23 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('home');
         }
  
+    }
+
+     /**
+     * @Route("/admin/supprimer_evenement/{id}", name="security_delete_event")
+     */
+    public function deleteEvent($id,ObjectManager $manager)
+    {
+        $event = $manager->getRepository(Event::class)->findOneById($id);
+        foreach ($event->getDates() as $date) {
+            $manager->remove($date); 
+        }
+        $manager->remove($event); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Votre évènement a bien été supprimer.'
+        );
+        return $this->redirectToRoute('home');
     }
 }
