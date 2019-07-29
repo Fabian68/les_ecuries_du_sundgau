@@ -123,7 +123,7 @@ class GeneralController extends AbstractController
         $event = $repo->find($id);
 
         $form = $this->createForm(ParticipeType::class, $this->getUser());
-        if  ($event->getRepasPossible() == 1 || $event->getRepasPossible() == null)
+        if  ($event->getRepasPossible() == 1 )
         {
             $form->add('ChoixRepas', ChoiceType::class, array(
                 "mapped" => false,
@@ -166,10 +166,12 @@ class GeneralController extends AbstractController
             $manager->persist($paiement);
             $manager->persist($userPayEvent);
             
-            $choixRepas = $form->get("ChoixRepas")->getData();
-            if( $choixRepas == true ) {
-                $event->addUtilisateursMange($user);
-                $user->addMange($event);
+            if  ($event->getRepasPossible() == 1 ) {
+                $choixRepas = $form->get("ChoixRepas")->getData();
+                if( $choixRepas == true ) {
+                    $event->addUtilisateursMange($user);
+                    $user->addMange($event);
+                }
             }
 
             $manager->flush();
