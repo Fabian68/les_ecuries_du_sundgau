@@ -240,7 +240,7 @@ class SecurityController extends AbstractController
             $url = $this->generateUrl('security_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
  
             $message = (new \Swift_Message('Mot de passe oublier'))
-                ->setFrom('g.ponty@dev-web.io')
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
                     " Voici le lien pour modifier votre mot de passe : " . $url,
@@ -314,7 +314,7 @@ class SecurityController extends AbstractController
             $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
 
             $message = (new \Swift_Message('Verification mail'))
-                ->setFrom('g.ponty@dev-web.io')
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
                     " Voici le lien pour valdier votre email : " . $url,

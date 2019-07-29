@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Event;
 use App\Entity\Galops;
 use App\Entity\Images;
+use App\Form\VideoType;
 use App\Form\ImagesType;
 use App\Entity\DatesEvenements;
 use Symfony\Component\Form\AbstractType;
@@ -40,6 +41,11 @@ class EventCreateType extends EventType
             ])
             ->add('images', CollectionType::class,[
                 'entry_type' => ImagesType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true
+            ])
+            ->add('videos', CollectionType::class,[
+                'entry_type' => VideoType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true
             ]);

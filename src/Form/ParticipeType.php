@@ -30,7 +30,6 @@ class ParticipeType extends AbstractType
                 'mapped' => false,
                 'class' => AttributMoyenPaiements::class,
                 ])
-                ->add('save', SubmitType::class, ['label' => 'S\'inscrire'])
         ;
     }
 
