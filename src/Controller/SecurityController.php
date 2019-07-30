@@ -409,7 +409,7 @@ class SecurityController extends AbstractController
     public function printPage($id,ObjectManager $manager)
     {
         $event = $manager->getRepository(Event::class)->findOneById($id);
-        $UtilisateurMoyenPaiementEvent=$manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findOneByEvent($event);
+        $UtilisateurMoyenPaiementEvent=$manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findByEvent($event);
 
         return $this->render('security/print_event.html.twig', [
             'event'=>$event,
