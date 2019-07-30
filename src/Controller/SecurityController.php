@@ -144,8 +144,15 @@ class SecurityController extends AbstractController
      * @Route("/profil",name="security_profile")
      * @Route("/profil/{ident}",name="security_profile_withid")
      */
-    public function profile($ident=null,ObjectManager $manager){
+    public function profile($ident=null,ObjectManager $manager,Request $request){
         $user=new Utilisateur();
+
+        $form = $this->createFormBuilder()
+        ->add('benevole', SubmitType::class)
+        ->getForm();
+
+        $form->handleRequest($request);
+
         if($ident==null){
             $user = $this->getUser();
         }else{
@@ -153,8 +160,22 @@ class SecurityController extends AbstractController
             $user=$user = $manager->getRepository(Utilisateur::class)->findOneById($ident);
         }
 
+        if($form->isSubmitted()){
+            
+            if($user->getRoles() == array('ROLE_BENEVOLE')){
+                $user->setRoles(array('ROLE_USER'));
+                $this->addFlash('notice', 'Vous ne pouvez plus vous inscrire en tant que bénévole aux évènements.');
+            }else{
+                $user->setRoles(array('ROLE_BENEVOLE'));
+                $this->addFlash('notice', 'Vous pouvez désormait vous inscrire en tant que bénévole aux évènements.');           
+            } 
+            $manager->flush(); 
+            return $this->redirectToRoute('security_profile'); 
+        }
+        
         return $this->render('security/profile.html.twig',[
-            'user'=>$user
+            'user'=>$user,
+            'form'=>$form->createView()
         ]);
     }
 
@@ -219,7 +240,7 @@ class SecurityController extends AbstractController
             $url = $this->generateUrl('security_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
  
             $message = (new \Swift_Message('Mot de passe oublier'))
-                ->setFrom('g.ponty@dev-web.io')
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
                     " Voici le lien pour modifier votre mot de passe : " . $url,
@@ -293,7 +314,7 @@ class SecurityController extends AbstractController
             $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
 
             $message = (new \Swift_Message('Verification mail'))
-                ->setFrom('g.ponty@dev-web.io')
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
                     " Voici le lien pour valdier votre email : " . $url,

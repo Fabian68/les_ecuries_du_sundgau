@@ -45,13 +45,13 @@ class Event
      * @Groups("read")
      * @ORM\Column(type="float")
      */
-    private $plusDe12;
+    private $tarifPlusDe12;
 
     /**
      * @Groups("read")
      * @ORM\Column(type="float")
      */
-    private $proprietaire;
+    private $tarifProprietaire;
 
     /**
      * @Groups("read")
@@ -61,7 +61,7 @@ class Event
 
     /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=false)
      */
     private $dates;
@@ -79,12 +79,12 @@ class Event
     private $utilisateurs;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement",orphanRemoval=true)
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event", orphanRemoval=true)
      */
     private $creneauxBenevoles;
 
@@ -92,6 +92,21 @@ class Event
      * @ORM\ManyToMany(targetEntity="App\Entity\Utilisateur", mappedBy="mange")
      */
     private $utilisateursMange;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $repasPossible;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $divers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="evenement")
+     */
+    private $videos;
 
     public function __construct()
     {
@@ -103,6 +118,7 @@ class Event
         $this->attributMoyenPaiements = new ArrayCollection();
         $this->creneauxBenevoles = new ArrayCollection();
         $this->utilisateursMange = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,26 +162,26 @@ class Event
         return $this;
     }
 
-    public function getPlusDe12(): ?float
+    public function getTarifPlusDe12(): ?float
     {
-        return $this->plusDe12;
+        return $this->tarifPlusDe12;
     }
 
-    public function setPlusDe12(float $plusDe12): self
+    public function setTarifPlusDe12(float $tarifPlusDe12): self
     {
-        $this->plusDe12 = $plusDe12;
+        $this->tarifPlusDe12 = $tarifPlusDe12;
 
         return $this;
     }
 
-    public function getProprietaire(): ?float
+    public function getTarifProprietaire(): ?float
     {
-        return $this->proprietaire;
+        return $this->tarifProprietaire;
     }
 
-    public function setProprietaire(float $proprietaire): self
+    public function setTarifProprietaire(float $tarifProprietaire): self
     {
-        $this->proprietaire = $proprietaire;
+        $this->tarifProprietaire = $tarifProprietaire;
 
         return $this;
     }
@@ -366,6 +382,61 @@ class Event
         if ($this->utilisateursMange->contains($utilisateursMange)) {
             $this->utilisateursMange->removeElement($utilisateursMange);
             $utilisateursMange->removeMange($this);
+        }
+
+        return $this;
+    }
+
+    public function getRepasPossible(): ?bool
+    {
+        return $this->repasPossible;
+    }
+
+    public function setRepasPossible(?bool $repasPossible): self
+    {
+        $this->repasPossible = $repasPossible;
+
+        return $this;
+    }
+
+    public function getDivers(): ?bool
+    {
+        return $this->divers;
+    }
+
+    public function setDivers(?bool $divers): self
+    {
+        $this->divers = $divers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+            // set the owning side to null (unless already changed)
+            if ($video->getEvenement() === $this) {
+                $video->setEvenement(null);
+            }
         }
 
         return $this;

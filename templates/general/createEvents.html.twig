@@ -35,6 +35,7 @@ jQuery(document).ready(function () {
     {{ form_start(formEvent) }}
 
     {{ form_row(formEvent.titre, { 'attr' : { 'class' : 'form-control' }}) }}
+    {{ form_row(formEvent.divers) }}
 
     <div class="well">
 
@@ -55,10 +56,11 @@ jQuery(document).ready(function () {
         data-list-selector="#date-fields-list">Ajouter une date</button>
 
       {{ form_row(formEvent.tarifMoinsDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
-      {{ form_row(formEvent.plusDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
-      {{ form_row(formEvent.proprietaire, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.tarifPlusDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.tarifProprietaire, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
       {{ form_row(formEvent.texte, { 'attr' : { 'class' : 'form-control' }}) }}
       {{ form_row(formEvent.nbMaxParticipants, { 'attr' : { 'class' : 'form-control' }}) }}
+      {{ form_row(formEvent.repasPossible) }}
 
       {{ form_row(formEvent.galops) }}
     
@@ -78,9 +80,26 @@ jQuery(document).ready(function () {
         class="add-another-collection-widget"
         data-list-selector="#image-fields-list">Ajouter une image</button>
 
+       <ul id="video-fields-list"
+        data-prototype="{{ form_widget(formEvent.videos.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ formEvent.children|length }}">
+        {% for videoField in formEvent.videos %}
+        <li>
+            {{ form_errors(videoField) }}
+            {{ form_widget(videoField) }}
+        </li>
+        {% endfor %}
+      </ul>
+
+      <button type="button"
+        class="add-another-collection-widget"
+        data-list-selector="#video-fields-list">Ajouter une video</button>
+
       <button type="submit" class="btn btn-success">Enregistrer</button>
       {{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
       {{ form_row(formEvent.dates,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle dates , car avec les collections on appelle pas explicitement ces méthodes-->    
+      {{ form_row(formEvent.videos,{ 'label' : false } ) }}
       {{ form_end(formEvent) }}
       </div>
     </container>

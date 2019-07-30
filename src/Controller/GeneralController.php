@@ -109,7 +109,9 @@ class GeneralController extends AbstractController
      */
     public function event($id,Request $request,ObjectManager $manager)
     {
-        
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+
+        $event = $repo->find($id);
 
         $form = $this->createForm(ParticipeType::class, $this->getUser());
         $form->add('ChoixRepas', ChoiceType::class, array(
@@ -124,15 +126,28 @@ class GeneralController extends AbstractController
             )
         ));
 
-        $repo = $this->getDoctrine()->getRepository(Event::class);
-
-        $event = $repo->find($id);
+        $form = $this->createForm(ParticipeType::class, $this->getUser());
+        if  ($event->getRepasPossible() == 1 || $event->getRepasPossible() == null)
+        {
+            $form->add('ChoixRepas', ChoiceType::class, array(
+                "mapped" => false,
+                "multiple" => false,
+                "attr" => array(
+                    'class' => "form-control"
+                ),
+                'choices'  => array(
+                    'Oui' => true,
+                    'Non' => false
+                )
+            ));
+        }
 
         $creneau = $event->getCreneauxBenevoles();
         
         $formAsso = $this->createForm(AssoEventType::class,$event);
 
         $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
+        $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -162,7 +177,6 @@ class GeneralController extends AbstractController
             }
 
             $manager->flush();
-            return $this->redirectToRoute('events');
         }
 
         $formAsso->handleRequest($request);
@@ -174,14 +188,21 @@ class GeneralController extends AbstractController
             }
             $manager->persist($event);
             $manager->flush();
-            return $this->redirectToRoute('events');
         }
 
         $formBenevole->handleRequest($request);
         if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
             $user=$this->getUser();
+            $creneauxData = $formBenevole->get('creneaux')->getData();
+            foreach ($event->getCreneauxBenevoles() as $creneauxEvent) {
+                foreach ($creneauxData as $data) {
+                    if( $data->getId() == $creneauxEvent->getId() ) {
+                        $creneauxEvent->addUtilisateur($user);
+                        $manager->persist($creneauxEvent);
+                    }
+                }
+            }
             $manager->flush();
-            return $this->redirectToRoute('events');
         }
 
         return $this->render('/general/event.html.twig', [

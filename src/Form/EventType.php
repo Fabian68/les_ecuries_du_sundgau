@@ -19,10 +19,12 @@ class EventType extends AbstractType
         $builder
             ->add('titre')
             ->add('tarifMoinsDe12')
-            ->add('plusDe12')
-            ->add('proprietaire')
+            ->add('tarifPlusDe12')
+            ->add('tarifProprietaire')
             ->add('texte')
             ->add('nbMaxParticipants')
+            ->add('repasPossible')
+            ->add('divers')
         ;
     }
 

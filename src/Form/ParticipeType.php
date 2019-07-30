@@ -39,6 +39,7 @@ class ParticipeType extends AbstractType
                         'attr' => array('class' => 'save-button')
                     ]
                 );
+        ;
     }
 
     /**

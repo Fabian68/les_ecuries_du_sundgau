@@ -60,7 +60,8 @@ class CreneauxBenevoles
 
     public function getCreneauxFormatted()
     {
-        $string = ' Le ' . $this->dateDebut->format( 'd/m/Y' ) . ' de ' . $this->dateDebut->format( 'H:i' ) .' à '. $this->dateFin->format( 'H:i' );
+        $nbBenevoleRestant = $this->nbBenevoles - $this->utilisateurs->count();
+        $string = ' Le ' . $this->dateDebut->format( 'd/m/Y' ) . ' de ' . $this->dateDebut->format( 'H:i' ) .' à '. $this->dateFin->format( 'H:i' ) . ' reste ' . $nbBenevoleRestant . ' places ';
         return $string;
     }
 

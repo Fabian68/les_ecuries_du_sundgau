@@ -53,10 +53,10 @@ jQuery(document).ready(function () {
                     <td  class="bg-secondary">- de 12 ans:</td><td class="bg-light"> {{ event.tarifMoinsDe12 }}€ </td>
                   </tr>
                   <tr>
-                    <td class="bg-secondary">+ de 12 ans:</td><td class="bg-light"> {{ event.plusDe12 }}€ </td>
+                    <td class="bg-secondary">+ de 12 ans:</td><td class="bg-light"> {{ event.tarifPlusDe12 }}€ </td>
                   </tr>
                   <tr>
-                    <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.proprietaire }}€ </td>
+                    <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.tarifProprietaire }}€ </td>
                   </tr>  
                 </table>
                 <div class="galops-layout"><div class="bg-secondary galops-text">Galops:</div>
@@ -79,24 +79,41 @@ jQuery(document).ready(function () {
         {% else %}
             </br>
             <div>Inscription</div>
-            <!-- test si le galot de l'utilisateur est dans l'évènement -->
 
-            {% set inscrit = false %}
+            {% set bonGalop = false %}
 
-            {% for participe in app.user.participe %}
-                {% if participe.id == event.id %}
-                    {% set inscrit = true %}
+            {% for galop in event.galops %}
+                {% if app.user.galop.niveau >= galop.niveau %}
+                    {%set bonGalop = true %}
                 {% endif %}
             {% endfor %}
-            {% if not inscrit %}
-                
-                {{ form_start(form) }}
-                {{ form_row(form.ChoixRepas) }}
-                {{ form_end(form) }}                
+
+            {% if bonGalop %}
+
+                {% set inscrit = false %}
+
+                {% for participe in app.user.participe %}
+                    {% if participe.id == event.id %}
+                        {% set inscrit = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if not inscrit %}
+                    
+                    {{ form_start(form) }}
+                    <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sur de vous inscrire pour cet évènement ?')"/>
+                    {{ form_end(form) }}  
+
+                {% else %}
+                    <div>Vous êtes inscrit pour cet évènement.</div>
+                {% endif %}
+
             {% else %}
-                <div>Vous êtes inscrit pour cet évènement.</div>
+                <div>Pour s'inscrire à ce stage, veuillez contacter votre enseignant.</div>
             {% endif %}
 
+            </br>
+
+            <div>Inscrit</div>
             {% for utilisateur in event.utilisateurs %}
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
@@ -104,11 +121,32 @@ jQuery(document).ready(function () {
 
             </br>
 
+            
+            {% if app.user.roles[0] == 'ROLE_BENEVOLE' %}
+
             <div>Inscription benevole</div>
 
                 {{ form_start(formBenevole) }}
                 {{ form_row(formBenevole.creneaux, {'attr' : { 'class' : 'creneaux-container bg-secondary' }}) }}
                 {{ form_end(formBenevole) }}
+
+            {% else %}
+                {% for creneaux in event.creneauxBenevoles %}
+                    <div> {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} reste {{creneaux.nbBenevoles - creneaux.utilisateurs|length}} places </div>
+                    </br>
+                {% endfor %}
+            {% endif %}
+                </br>
+
+            {% for creneaux in event.creneauxBenevoles %}
+                <div>Benevole pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
+                {% for utilisateur in creneaux.utilisateurs %}
+                    {{ utilisateur.prenom }}
+                    {{ utilisateur.nom}}
+                    </br>
+                {% endfor %}
+                </br>
+            {% endfor %}
 
         {% endif %}
         </div>
@@ -117,38 +155,36 @@ jQuery(document).ready(function () {
 </section>
 
     {% if app.user %}
-        {% for role in app.user.roles %}
-            {% if role == 'ROLE_ADMIN_ASSO' %}
-            <HR width="50%" size="10" noshade />
-            <section class="events-layout big-screen mobile-layout asso-layout">
-              <div class="card mb-3 card-body">
-                {{ form_start(formAsso) }}
-                
-                <ul id="creneaux-fields-list"
-                        data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
-                        data-widget-tags="{{ '<li></li>'|e }}"
-                        data-widget-counter="{{ formAsso.children|length }}">
-                    {% for NbBenevole in formAsso.creneauxBenevoles %}
-                        <li>
-                            {{ form_errors(NbBenevole) }}
-                            {{ form_widget(NbBenevole) }}
-                        </li>
-                    {% endfor %}
-                </ul>
-                
-                <button type="button"
-                class="add-another-collection-widget"
-                data-list-selector="#creneaux-fields-list">Add another date</button>
+        {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
+        <HR width="50%" size="10" noshade />
+        <section class="events-layout big-screen mobile-layout asso-layout">
+            <div class="card mb-3 card-body">
+            {{ form_start(formAsso) }}
+            
+            <ul id="creneaux-fields-list"
+                    data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
+                    data-widget-tags="{{ '<li></li>'|e }}"
+                    data-widget-counter="{{ formAsso.children|length }}">
+                {% for NbBenevole in formAsso.creneauxBenevoles %}
+                    <li>
+                        {{ form_errors(NbBenevole) }}
+                        {{ form_widget(NbBenevole) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <button type="button"
+            class="add-another-collection-widget"
+            data-list-selector="#creneaux-fields-list">Add another date</button>
 
-                <button type="submit" class="btn btn-success">Enregistrer</button>
+            <button type="submit" class="btn btn-success">Enregistrer</button>
 
-                {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
+            {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
 
-                {{ form_end(formAsso) }}
-              </div>
-            </section>
-            {% endif %}
-        {% endfor %}
+            {{ form_end(formAsso) }}
+            </div>
+        </section>
+        {% endif %}
     {% endif %}
 
 {% endblock %}
