@@ -107,7 +107,7 @@ jQuery(document).ready(function () {
             <div>Inscription benevole</div>
 
                 {{ form_start(formBenevole) }}
-                {{ form_row(formBenevole.creneaux) }}
+                {{ form_row(formBenevole.creneaux, {'attr' : { 'class' : 'creneaux-container bg-secondary' }}) }}
                 {{ form_end(formBenevole) }}
 
         {% endif %}

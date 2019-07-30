@@ -40,30 +40,10 @@ class GeneralController extends AbstractController
 
         $repo2 = $this->getDoctrine()->getRepository(Images::class);
 
-        //$recents = array();
-        $events = $repo->findFutureEvents();  //findBy(array(), array('id' => 'DESC'));
-        /* $iter = 0;
-        foreach($events as $event){
-            if($iter<5){
-                array_push($recents, $event);
-            }
-            $iter++;
-        } */
+        $events = $repo->findFutureEvents();
 
         $images = $repo2->findAll();
 
-        $this->addFlash(
-            'notice',
-            'bonjour, aurevoir.'
-        );
-        $this->addFlash(
-            'notice',
-            'bonjour2, aurevoir2.'
-        );
-        $this->addFlash(
-            'notice',
-            'bonjour3, aurevoir4.'
-        );
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events,
@@ -136,7 +116,7 @@ class GeneralController extends AbstractController
             "mapped" => false,
             "multiple" => false,
             "attr" => array(
-                'class' => "form-control"
+                'class' => "form-control event-choice"
             ),
             'choices'  => array(
                 'Oui' => true,
