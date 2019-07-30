@@ -35,6 +35,7 @@ class EventCreateType extends EventType
             ])
             ->add('galops', EntityType::class, [
                 'choice_label' => 'niveau',
+                'required'=>true,
                 'multiple' => true,
                 'expanded' => true,
                 'class' => Galops::class,
