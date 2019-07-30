@@ -1,87 +1,81 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-<container class="container-profile">
-<div class="card border-warning mb-3 profile-card">
-  <div class="card-header"><h2>Profil</h2></div>
-  <div class="card-body profile-layout">
-    {% if not app.user %}
-        <div>Vous devez vous connecter pour accèder a cet page ! </div>
-    {% else %}
-    <div class="profile-info">
-      <div class="profile-inner">
-      {% if user.imageName is not null %}
-      <img class="profile-image" src="/images/profile/{{ user.imageName }}">
-      {% endif %}
-        <div>Nom : </div>
-        <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.nom }}" readonly="">
-        </fieldset>
-      </div>
-      <div class="profile-inner">
-        <div>Prenom : </div>
-        <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.prenom}}" readonly="">
-        </fieldset>
-      </div>
-      <div class="profile-inner">
-        <div>Email : </div>
-        <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.email}}" readonly="">
-        </fieldset>
-      </div>
-      <div class="profile-inner">
-        <div>Date de naissance : </div>
-        <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.datenaissance|date("d/m/Y")}}" readonly="">
-        </fieldset>
-      </div>
-      <div class="profile-inner">
-        <div>Adresse : </div>
-        <fieldset class="profile-data">
-            <textarea class="form-control adresse-layout" id="readOnlyInput" placeholder="{{ app.user.adresse}}" readonly=""></textarea>
-        </fieldset>
-      </div>
-      <div class="profile-inner">
-        <div>Galop : </div>
-        <fieldset class="profile-data">
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.galop.niveau | number_format }}" readonly="">
-        </fieldset>
-      </div>
-    </div>
-  </div>    
-</div>
-
-
-<div class="profile-modifs">
-    <div class="card border-info profile-modifs-wrapper">
-    {% if app.user == user %}
-        <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
-        <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
-        {% if app.user.verifiedMail != true %}
-        <div><a class=" btn bg-info profile-button" href="{{ path('security_verification_mail') }}">Verifier mail</a></div>
+  <container class="container-profile">
+  <div class="card border-warning mb-3 profile-card">
+    <div class="card-header"><h2>Profil</h2></div>
+    <div class="card-body profile-layout">
+      {% if not app.user %}
+          <div>Vous devez vous connecter pour accèder a cet page ! </div>
+      {% else %}
+      <div class="profile-info">
+        <div class="profile-inner">
+        {% if user.imageName is not null %}
+        <img class="profile-image" src="/images/profile/{{ user.imageName }}">
         {% endif %}
-    {% endif %}
-        {% if is_granted('ROLE_ADMIN') %}
-            <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>
-            <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
-            <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div>    
-        {% endif %}
-         
-          {% if app.user.roles == ['ROLE_BENEVOLE'] %}
-              {{ form_start(form) }}
-                {{ form_row(form.benevole,{ 'label' : 'Se retirer de la liste des bénévoles'}) }} 
-              {{ form_end(form) }}   
-          {% elseif app.user.roles == ['ROLE_USER'] %}
-              {{ form_start(form) }}
-                {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles'}) }}
-              {{ form_end(form) }}
+          <div>Nom : </div>
+          <fieldset class="profile-data">
+              <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.nom }}" readonly="">
+          </fieldset>
+        </div>
+        <div class="profile-inner">
+          <div>Prenom : </div>
+          <fieldset class="profile-data">
+              <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.prenom}}" readonly="">
+          </fieldset>
+        </div>
+        <div class="profile-inner">
+          <div>Email : </div>
+          <fieldset class="profile-data">
+              <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.email}}" readonly="">
+          </fieldset>
+        </div>
+        <div class="profile-inner">
+          <div>Date de naissance : </div>
+          <fieldset class="profile-data">
+              <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.datenaissance|date("d/m/Y")}}" readonly="">
+          </fieldset>
+        </div>
+        <div class="profile-inner">
+          <div>Adresse : </div>
+          <fieldset class="profile-data">
+              <textarea class="form-control adresse-layout" id="readOnlyInput" placeholder="{{ app.user.adresse}}" readonly=""></textarea>
+          </fieldset>
+        </div>
+        <div class="profile-inner">
+          <div>Galop : </div>
+          <fieldset class="profile-data">
+              <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.galop.niveau | number_format }}" readonly="">
+          </fieldset>
+        </div>
+      </div>
+    </div>    
+  </div>
+
+  <div class="profile-modifs">
+      <div class="card border-info profile-modifs-wrapper">
+      {% if app.user == user %}
+          <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
+          <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
+          {% if app.user.verifiedMail != true %}
+          <div><a class=" btn bg-info profile-button" href="{{ path('security_verification_mail') }}">Verifier mail</a></div>
           {% endif %}
-          
-        
-    {% endif %}
-</div>
-</container>
-
+      {% endif %}
+          {% if is_granted('ROLE_ADMIN') %}
+              <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>
+              <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
+              <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div>    
+          {% endif %}
+            {% if app.user.roles == ['ROLE_BENEVOLE'] %}
+                {{ form_start(form) }}
+                  {{ form_row(form.benevole,{ 'label' : 'Se retirer de la liste des bénévoles'}) }} 
+                {{ form_end(form) }}   
+            {% elseif app.user.roles == ['ROLE_USER'] %}
+                {{ form_start(form) }}
+                  {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles'}) }}
+                {{ form_end(form) }}
+            {% endif %}    
+      {% endif %}
+  </div>
+  </container>
 {% endblock %}

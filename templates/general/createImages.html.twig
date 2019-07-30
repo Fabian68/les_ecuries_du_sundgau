@@ -6,14 +6,13 @@
 <br>
 <br>
 <br>
-{% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') %}
 
-    {{ form_start(formImage) }}
-    
+        {{ form_start(formImage) }}
+        
 
-    <button type="submit" class="btn btn-success">Enregistrer</button>
-    {{ form_end(formImage) }}
-{% endif %}
-
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        {{ form_end(formImage) }}
+    {% endif %}
 {% endblock %}
     

@@ -1,16 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-<section class="event-history">
-  {% for event in events %}
-    <a href="{{ path('event', {'id': event.id}) }}" class="event-history-item bg-custom-dark">
-      <img class="history-item-img" src="/images/properties/{{ ((event.images | first).imageName) }}"></img>
-        <div class="history-item-txt">
-            {{ event.titre }}
-        </div>
-    </a>
-  {% endfor %}
-</section>
-
+  <section class="event-history">
+    {% for event in events %}
+      <a href="{{ path('event', {'id': event.id}) }}" class="event-history-item bg-custom-dark">
+        <img class="history-item-img" src="/images/properties/{{ ((event.images | first).imageName) }}"></img>
+          <div class="history-item-txt">
+              {{ event.titre }}
+          </div>
+      </a>
+    {% endfor %}
+  </section>
 {% endblock %}
