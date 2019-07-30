@@ -26,7 +26,8 @@ class Images
 
     /**
      * @Assert\Image
-     * 
+     * @Assert\NotBlank
+     * @Assert\NotEqualTo("Aucun fichier choisi")
      * @Vich\UploadableField(mapping="property_image", fileNameProperty="imageName")
      * 
      * @var File|null

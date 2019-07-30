@@ -82,13 +82,15 @@ class Utilisateur implements UserInterface
     private $motDePasse;
 
     /**
-     * @Groups("read")
      * @Assert\EqualTo(propertyPath="motDePasse",message="Votre mot de passe doit être le même en confirmation")
      */
     public $confirm_motDePasse;
 
     public $nouveau_motDePasse;
 
+    /**
+     * @Assert\EqualTo(propertyPath="nouveau_motDePasse",message="Votre mot de passe doit être le même en confirmation")
+     */
     public $confirm_nouveauMotDePasse;
 
     public $confirm_oldMotDePasse;

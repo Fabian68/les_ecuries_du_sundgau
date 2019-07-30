@@ -99,6 +99,7 @@ class Event
     private $repasPossible;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $divers;
