@@ -88,8 +88,7 @@ class SecurityController extends AbstractController
      */
     public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager){
 
-            $form = $this->createForm(ModifyAccountType::class,$user);
-    //   $user=$this->getUser();
+        $form = $this->createForm(ModifyAccountType::class,$user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user->setUpdatedAt(new \DateTime());
@@ -124,7 +123,6 @@ class SecurityController extends AbstractController
                 // Gérer l'erreur
                 $form->get('confirm_oldMotDePasse')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
             }else{
-
             $hash = $encoder->encodePassword($user,$user->nouveau_motDePasse);
             $user->setMotDePasse($hash);
             $user->setUpdatedAt(new \DateTime());
@@ -327,8 +325,6 @@ class SecurityController extends AbstractController
 
             $this->addFlash('notice', 'Mail envoyé');
            
-       
-
             return $this->redirectToRoute('home');
         }
         else {

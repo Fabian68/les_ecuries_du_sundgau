@@ -76,14 +76,6 @@ class GeneralController extends AbstractController
      */
     public function localization()
     {
-        $this->addFlash(
-            'notice',
-            'bonjour, aurevoir.'
-        );
-        $this->addFlash(
-            'nan:nan',
-            'ohno, ohno.'
-        );
         return $this->render('/general/localization.html.twig', [
             'controller_name' => 'GeneralController',
         ]);
@@ -175,7 +167,6 @@ class GeneralController extends AbstractController
                 $event->addUtilisateursMange($user);
                 $user->addMange($event);
             }
-
             $manager->flush();
         }
 
@@ -188,6 +179,10 @@ class GeneralController extends AbstractController
             }
             $manager->persist($event);
             $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Vos créneaux bénévol ont bien été crée'
+            );
         }
 
         $formBenevole->handleRequest($request);
@@ -203,6 +198,10 @@ class GeneralController extends AbstractController
                 }
             }
             $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Vous vous êtes bien inscrit en tant que bénévole a cet évènement'
+            );
         }
 
         $formDelete = $this->createFormBuilder()
