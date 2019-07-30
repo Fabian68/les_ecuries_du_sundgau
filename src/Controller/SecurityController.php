@@ -12,6 +12,7 @@ use App\Form\ModifyAccountType;
 use App\Form\ResetPasswordType;
 use App\Form\ChangePasswordType;
 use Symfony\Component\Form\FormError;
+use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -400,5 +401,19 @@ class SecurityController extends AbstractController
             'Votre évènement a bien été supprimer.'
         );
         return $this->redirectToRoute('home');
+    }
+
+     /**
+     * @Route("/admin/imprimer_evenement/{id}", name="security_print_event")
+     */
+    public function printPage($id,ObjectManager $manager)
+    {
+        $event = $manager->getRepository(Event::class)->findOneById($id);
+        $UtilisateurMoyenPaiementEvent=$manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findOneByEvent($event);
+
+        return $this->render('security/print_event.html.twig', [
+            'event'=>$event,
+            'UtilisateurMoyenPaiementEvent'=>$UtilisateurMoyenPaiementEvent
+        ]);  
     }
 }

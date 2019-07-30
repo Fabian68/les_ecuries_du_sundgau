@@ -187,4 +187,13 @@ jQuery(document).ready(function () {
         {% endif %}
     {% endif %}
 
+    {% if is_granted('ROLE_ADMIN') %}
+             {{ form_start(formDelete) }}
+                    <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+             {{ form_end(formDelete) }}
+
+              {{ form_start(formPrint) }}
+             {{ form_end(formPrint) }}
+    {% endif %}
+
 {% endblock %}

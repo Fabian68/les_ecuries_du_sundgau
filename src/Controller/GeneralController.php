@@ -201,12 +201,29 @@ class GeneralController extends AbstractController
             $manager->flush();
         }
 
+        $formDelete = $this->createFormBuilder()
+        ->getForm();
+        $formDelete->handleRequest($request);
+        if ($formDelete->isSubmitted() && $formDelete->isValid() && 'delete' === $formDelete->getClickedButton()->getName()) {
+            return $this->redirectToRoute('security_delete_event',['id'=>$id]);
+        }
+
+        $formPrint = $this->createFormBuilder()
+        ->add('print', SubmitType::class, ['label' => 'Imprimer'])
+        ->getForm();
+        $formPrint->handleRequest($request);
+        if ($formPrint->isSubmitted() && $formPrint->isValid() && 'print' === $formPrint->getClickedButton()->getName()) {      
+            return $this->redirectToRoute('security_print_event',['id'=>$id]);
+        }
+
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
             'form'=> $form->createView(),
             'formAsso' => $formAsso->createView(),
-            'formBenevole' => $formBenevole->createView()
+            'formBenevole' => $formBenevole->createView(),
+            'formDelete' => $formDelete->createView(),
+            'formPrint' => $formPrint->createView()
         ]);
     }
 

@@ -1,0 +1,25 @@
+<TABLE BORDER="1">
+    <CAPTION>Liste participant de l'évènement {{ event.titre }}</CAPTION>
+        <TR>
+            <TH>Nom et Prénom</TH>
+            <TH>Mange a midi</TH>
+            <TH>Paie sur place</TH>
+            <TH>Prélevement</TH>
+        </TR>
+
+        {% for user in event.utilisateurs %}
+            <TR>
+                <TH>{{user.nom}} {{user.prenom}}</TH>
+                <TH>{% if user.mange is not null %}
+                    X
+                {% endif %}</TH>
+                <TH>Paie
+                {% for user2 in UtilisateurMoyenPaiementEvent | filter(user2.utilisateurs == user) %}
+                    {{user2.AttributMoyenPaiement.libelle}}
+                {% endfor %}
+                </TH>
+                <TH>Prélevement</TH>
+            </TR>    
+        {% endfor %}
+
+</TABLE>
