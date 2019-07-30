@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
 * @ApiResource(normalizationContext={"groups"={"read"} })
@@ -29,6 +30,7 @@ class DatesEvenements
     /**
      * @Groups("read")
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan(propertyPath="dateDebut",message="Cet date doit être superieur à la première date")
      */
     private $dateFin;
 

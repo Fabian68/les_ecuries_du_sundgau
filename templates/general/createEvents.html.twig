@@ -42,10 +42,10 @@ jQuery(document).ready(function () {
       <ul id="date-fields-list"
         data-prototype="{{ form_widget(formEvent.dates.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
-        data-widget-counter="{{ formEvent.children|length }}">
+        data-widget-counter="{{ (formEvent.children|length) }}">
         {% for dateField in formEvent.dates %}
         <li>
-            {{ form_errors(dateField) }}
+            {{ form_errors(dateField) }} 
             {{ form_widget(dateField) }}
         </li>
         {% endfor %}
@@ -67,11 +67,11 @@ jQuery(document).ready(function () {
       <ul id="image-fields-list"
         data-prototype="{{ form_widget(formEvent.images.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
-        data-widget-counter="{{ formEvent.children|length }}">
+        data-widget-counter="{{ (formEvent.children|length)+1 }}">
         {% for imageField in formEvent.images %}
         <li>
             {{ form_errors(imageField) }}
-            {{ form_widget(imageField) }}
+            {{ form_widget(imageField,{ 'attr': { 'class': 'file','data-show-preview': 'false'}} ) }}
         </li>
         {% endfor %}
       </ul>

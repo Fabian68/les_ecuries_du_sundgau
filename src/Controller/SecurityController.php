@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Galops;
 use App\Entity\Description;
 use App\Entity\Utilisateur;
@@ -11,6 +12,7 @@ use App\Form\ModifyAccountType;
 use App\Form\ResetPasswordType;
 use App\Form\ChangePasswordType;
 use Symfony\Component\Form\FormError;
+use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -381,5 +383,37 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('home');
         }
  
+    }
+
+     /**
+     * @Route("/admin/supprimer_evenement/{id}", name="security_delete_event")
+     */
+    public function deleteEvent($id,ObjectManager $manager)
+    {
+        $event = $manager->getRepository(Event::class)->findOneById($id);
+        foreach ($event->getDates() as $date) {
+            $manager->remove($date); 
+        }
+        $manager->remove($event); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Votre évènement a bien été supprimer.'
+        );
+        return $this->redirectToRoute('home');
+    }
+
+     /**
+     * @Route("/admin/imprimer_evenement/{id}", name="security_print_event")
+     */
+    public function printPage($id,ObjectManager $manager)
+    {
+        $event = $manager->getRepository(Event::class)->findOneById($id);
+        $UtilisateurMoyenPaiementEvent=$manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findByEvent($event);
+
+        return $this->render('security/print_event.html.twig', [
+            'event'=>$event,
+            'UtilisateurMoyenPaiementEvent'=>$UtilisateurMoyenPaiementEvent
+        ]);  
     }
 }

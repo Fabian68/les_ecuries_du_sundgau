@@ -19,6 +19,7 @@ class Video
 
     /**
      * @Assert\Url
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $lien;

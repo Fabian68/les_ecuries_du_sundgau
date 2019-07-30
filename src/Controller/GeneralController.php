@@ -205,12 +205,29 @@ class GeneralController extends AbstractController
             $manager->flush();
         }
 
+        $formDelete = $this->createFormBuilder()
+        ->getForm();
+        $formDelete->handleRequest($request);
+        if ($formDelete->isSubmitted() && $formDelete->isValid() && 'delete' === $formDelete->getClickedButton()->getName()) {
+            return $this->redirectToRoute('security_delete_event',['id'=>$id]);
+        }
+
+        $formPrint = $this->createFormBuilder()
+        ->add('print', SubmitType::class, ['label' => 'Imprimer'])
+        ->getForm();
+        $formPrint->handleRequest($request);
+        if ($formPrint->isSubmitted() && $formPrint->isValid() && 'print' === $formPrint->getClickedButton()->getName()) {      
+            return $this->redirectToRoute('security_print_event',['id'=>$id]);
+        }
+
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
             'form'=> $form->createView(),
             'formAsso' => $formAsso->createView(),
-            'formBenevole' => $formBenevole->createView()
+            'formBenevole' => $formBenevole->createView(),
+            'formDelete' => $formDelete->createView(),
+            'formPrint' => $formPrint->createView()
         ]);
     }
 
@@ -230,21 +247,37 @@ class GeneralController extends AbstractController
      
         if ($form->isSubmitted() && $form->isValid()) {
             //var_dump($event->getDates());
-                        
-            foreach ($event->getDates() as $date) {
-                $event->addDate($date);
-                $date->setEvent($event);
-                $manager->persist($date);
+              
+            if(count($event->getDates()) == 0 ){
+                $this->addFlash(
+                    'warning',
+                    'Vous devez ajouter au moins une date !'
+                );
+                return $this->redirectToRoute('createEvent');
+            }else{
+                foreach ($event->getDates() as $date) {
+                    $event->addDate($date);
+                    $date->setEvent($event);
+                    $manager->persist($date);
+                }
             }
             foreach ($event->getGalops() as $galop) {
                 $event->addGalops($galop);
                // $galop->addEvenement($event);
                 $manager->persist($galop);
             }
-            foreach ($event->getImages() as $image) {
-                $event->addImage($image);
-                $image->setEvenement($event); 
-                $manager->persist($image);
+            if(count($event->getImages()) == 0 ){
+                $this->addFlash(
+                    'warning',
+                    'Vous devez ajouter au moins une image !'
+                );
+                return $this->redirectToRoute('createEvent');
+            }else{
+                foreach ($event->getImages() as $image) {
+                    $event->addImage($image);
+                    $image->setEvenement($event); 
+                    $manager->persist($image);
+                }
             }
 
             $manager->persist($event);
