@@ -208,7 +208,7 @@ class GeneralController extends AbstractController
         $formDelete = $this->createFormBuilder()
         ->getForm();
         $formDelete->handleRequest($request);
-        if ($formDelete->isSubmitted() && $formDelete->isValid() && 'delete' === $formDelete->getClickedButton()->getName()) {
+        if ($formDelete->isSubmitted() && $formDelete->isValid()) {
             return $this->redirectToRoute('security_delete_event',['id'=>$id]);
         }
 

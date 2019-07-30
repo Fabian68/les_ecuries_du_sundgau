@@ -394,6 +394,9 @@ class SecurityController extends AbstractController
         foreach ($event->getDates() as $date) {
             $manager->remove($date); 
         }
+        foreach ($event->getCreneauxBenevoles() as $creneaux) {
+            $manager->remove($creneaux); 
+        }
         $manager->remove($event); 
         $manager->flush();
         $this->addFlash(
