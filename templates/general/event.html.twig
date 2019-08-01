@@ -67,17 +67,25 @@
                     </div>
                     </div>
                 </div>
-                <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
-                </br>
-                {{ event.texte }}
-                </br>
-            </div>
-            <div class="card-footer">
-                <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
-            {% if not app.user %}
-                <div>Connecter vous pour vous inscrire a l'evenement ! </div>
+              </div>
+            <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
+            </br>
+            {{ event.texte }}
+            </br>
+        </div>
+        <div class="card-footer">
+            <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
+        {% if not app.user %}
+            <div>Connecter vous pour vous inscrire a l'evenement ! </div>
+        {% else %}
+            </br>
+
+            {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
+
+                <div>Il n'y a plus de place restante pour cet évènement.</div>
+
             {% else %}
-                </br>
+
                 <div>Inscription</div>
 
                 {% set bonGalop = false %}
@@ -100,7 +108,7 @@
                     {% if not inscrit %}
                         
                         {{ form_start(form) }}
-                        <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sur de vous inscrire pour cet évènement ?')"/>
+                            <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sur de vous inscrire pour cet évènement ?')"/>
                         {{ form_end(form) }}  
 
                     {% else %}
@@ -111,13 +119,16 @@
                     <div>Pour s'inscrire à ce stage, veuillez contacter votre enseignant.</div>
                 {% endif %}
 
-                </br>
+            {% endif %}
 
-                <div>Inscrit</div>
-                {% for utilisateur in event.utilisateurs %}
-                    {{ utilisateur.prenom }}
-                    {{ utilisateur.nom}}
-                {% endfor %}
+            </br>
+
+            <div>Inscrit</div>
+            {% for utilisateur in event.utilisateurs %}
+                {{ utilisateur.prenom }}
+                {{ utilisateur.nom}}
+                </br>
+            {% endfor %}
 
                 </br>
 
