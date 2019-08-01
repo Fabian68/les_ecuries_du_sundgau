@@ -56,6 +56,10 @@ class EventController extends AbstractController
 
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
+        $formCancel = $this->createFormBuilder()
+        ->add('annuler', SubmitType::class)
+        ->getForm();
+        $formCancel->handleRequest($request);
         if($session->has('paiement')){
 
             $paiement = $session->get('paiement');
@@ -63,8 +67,9 @@ class EventController extends AbstractController
             $userPayEvent = $session->get('userPayEvent');
             $choixRepas = $session->get('choixRepas');
            
-        
-            if ($formEventRegistrationTreatment->isSubmitted() && $formEventRegistrationTreatment->isValid()) {
+            if ($formCancel->isSubmitted() && $formCancel->isValid()){
+                $session->clear();                  
+            }elseif($formEventRegistrationTreatment->isSubmitted() && $formEventRegistrationTreatment->isValid()) {
                 $choixPrix=$event->getChoixPrix();
                 //dump($choixPrix);
                 if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
@@ -75,7 +80,8 @@ class EventController extends AbstractController
                     return $this->render('/general/eventRegistrationTreatment.html.twig', [
                         'controller_name' => 'GeneralController',
                         'event' => $event,
-                        'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
+                        'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView(),
+                        'formCancel'=> $formCancel->createView()
                     ]);
                 }
                 $paiement = $this->getDoctrine()
@@ -116,7 +122,8 @@ class EventController extends AbstractController
                 return $this->render('/general/eventRegistrationTreatment.html.twig', [
                     'controller_name' => 'EventController',
                     'event' => $event,
-                    'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
+                    'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView(),
+                    'formCancel'=> $formCancel->createView()
                 ]);
             }
         }
@@ -154,7 +161,8 @@ class EventController extends AbstractController
                 return $this->render('/general/eventRegistrationTreatment.html.twig', [
                     'controller_name' => 'EventController',
                     'event' => $event,
-                    'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
+                    'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView(),
+                    'formCancel'=> $formCancel->createView()
                 ]);
         
             }else{
@@ -340,6 +348,11 @@ class EventController extends AbstractController
     public function deleteEvent($id,ObjectManager $manager)
     {
         $event = $manager->getRepository(Event::class)->findOneById($id);
+        $UtilisateursMoyenPaiementEvent = $manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findByEvent($event);
+       
+        foreach($UtilisateursMoyenPaiementEvent as $UMPE){
+            $manager->remove($UMPE);
+        }
         foreach ($event->getDates() as $date) {
             $manager->remove($date); 
         }
