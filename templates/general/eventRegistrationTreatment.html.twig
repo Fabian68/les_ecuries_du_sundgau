@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<br>
+        {{dump(event)}}
+        {{ form_start(formEventRegistrationTreatment) }}
+        <div>Vous accepter de payer  {{ form_row(formEventRegistrationTreatment.choixPrix) }} montant par prélèvement.</div>   
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        {{ form_end(formEventRegistrationTreatment) }}
+{% endblock %}

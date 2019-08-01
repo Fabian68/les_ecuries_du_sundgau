@@ -42,60 +42,54 @@
     </a>
   </div>
 
-  <div class="custom-container">
-    <div class="card text-white bg-transparent-blue mb-3" style="max-width: 60rem;">
-      <div class="card-body">
-        <h4 class="card-title">Présentation</h4>
-        <p class="card-text">Ceci est un exemple de présentation.</br> Plusieurs paragraphes peuvent être représentés, présentant ainsi les écuries. Ce site web est encore en construction.</p>
-      </div>
-    </div>
-  </div>
-
 <section class="events-layout big-screen mobile-layout">
 
     {% for event in events %}
-        <event class="card mb-3">
-            <h2 class="card-header index-event-title mobile-title bg-light">{{ event.titre }}</h2>
-            <div class="card-subtitle bg-event-date">
-            <div class="corners">
-            <img class="corner-top-left" src="/images/resources/corner_top_left.png">
-            <img class="corner-bottom-left" src="/images/resources/corner_bottom_left.png">
+      <event class="card mb-3 event-element">
+        <div class="event-outer">
+          <div class="event-image">
+            <div class="index-img-layout bg-secondary">
+              <img class="event-image-inner" src="/images/properties/{{ ((event.images | first).imageName) }}">
             </div>
+          </div>
+          <div class="event-content">
+            <div class="event-title bg-light">
+              <h3 class="index-event-title mobile-title">{{ event.titre }}</h2>
+            </div>
+            <div class="card-subtitle bg-event-date event-date">
+              <div class="corners">
+                <img class="corner-top-left" src="/images/resources/corner_top_left.png">
+                <img class="corner-bottom-left" src="/images/resources/corner_bottom_left.png">
+              </div>
               <div class="event-container">
                 <ul class="event-date-layout">
                 {% for date in event.dates %}
-                    <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
+                  {% if loop.index < 4 %}
+                  <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'd MMMM') }}</div>, <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div>-<div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div>{% if loop.last == false and loop.index == 3 %} ...{% endif %}</li>
+                  {% endif %}
                 {% endfor %}
                 </ul>
               </div>
-            <div class="corners">
-            <img class="corner-top-right" src="/images/resources/corner_top_right.png">
-            <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
+              <div class="corners right-corners">
+                <img class="corner-top-right" src="/images/resources/corner_top_right.png">
+                <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
+              </div>
             </div>
-            </div>
-            <div class="card-body index-content-event-layout">
-              <div class="galops-layout index-galops-container table-active">  
-                <div class="galops-text">Galops:</div>
+            <div class="galops-container event-galops">
+              <div class="galops-layout">
                 <div class="galops-inner index-galops">
-                  {% for galop in event.galops %}
-                    <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
-                  {% endfor %}
+                {% for galop in event.galops %}
+                  <div class="btn bg-warning galop-layout">G{{galop.niveau}}</div>
+                {% endfor %}
                 </div>
               </div>
-                <container class="index-event-content mobile-index-layout">
-                <div class="index-img-layout">
-                <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
-                </div>
-                <div class="index-text-layout">
-                {{ event.texte }}
-                </br>
-                </br>
-                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary index-more-button">Lire la suite</a>
-                </div>
-                </container>
+              <div>
+                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary index-more-button">s'inscrire</a>
+              </div>
             </div>
-        </event>
-        <HR width="50%" size="10" noshade />
+          </div>
+        </div>
+      </event>
     {% endfor %}
 
 </section>

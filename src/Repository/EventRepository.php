@@ -26,7 +26,7 @@ class EventRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
                     ->join("e.dates", "dates")
                     ->where("dates.dateDebut > :date")
-                    ->orderBy("dates.dateDebut", "DESC")
+                    ->orderBy("dates.dateDebut", "ASC")
                     ->setParameter('date', $today)
                     ->getQuery()
                     ->getResult();

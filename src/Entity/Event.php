@@ -99,6 +99,7 @@ class Event
     private $repasPossible;
 
     /**
+     * @Groups("read")
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $divers;
@@ -107,6 +108,9 @@ class Event
      * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="evenement")
      */
     private $videos;
+
+   
+    private $choixPrix=0;
 
     public function __construct()
     {
@@ -442,6 +446,16 @@ class Event
         return $this;
     }
 
+    public function getChoixPrix(): ?int
+    {
+        return $this->choixPrix;
+    }
 
+    public function setChoixPrix(int $choixPrix): self
+    {
+        $this->choixPrix = $choixPrix;
+
+        return $this;
+    }
 
 }

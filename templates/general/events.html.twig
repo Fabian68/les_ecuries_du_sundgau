@@ -1,57 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-<section class="events-layout big-screen mobile-layout">
+  <section class="event-history">
     {% for event in events %}
-        <event class="card mb-3">
-            <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
-            <div class="card-subtitle bg-event-date">
-            <div class="corners">
-            <img class="corner-top-left" src="/images/resources/corner_top_left.png">
-            <img class="corner-bottom-left" src="/images/resources/corner_bottom_left.png">
-            </div>
-                <ul class="event-date-layout">
-                {% for date in event.dates %}
-                    <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
-                {% endfor %}
-                </ul>
-            <div class="corners">
-            <img class="corner-top-right" src="/images/resources/corner_top_right.png">
-            <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
-            </div>
-            </div>
-            <div class="card-body">
-              <div class="tarifs-galops-container bg-secondary">
-                <table class="tarifs-layout">
-                  <tr>
-                    <td  class="bg-secondary">- de 12 ans:</td><td class="bg-light"> {{ event.tarifMoinsDe12 }}€ </td>
-                  </tr>
-                  <tr>
-                    <td class="bg-secondary">+ de 12 ans:</td><td class="bg-light"> {{ event.tarifPlusDe12 }}€ </td>
-                  </tr>
-                  <tr>
-                    <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.tarifProprietaire }}€ </td>
-                  </tr>  
-                </table>
-                <div class="galops-layout"><div class="bg-secondary galops-text">Galops:</div>
-                  <div class="bg-light galops-inner">
-                  {% for galop in event.galops %}
-                    <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
-                  {% endfor %}
-                  </div>
-                </div>
-              </div>  
-                 <img class="event-img-layout event-text-transition" src="/images/properties/{{ ((event.images | first).imageName) }}">
-                </br>
-                {{ event.texte }}
-                </br>
-                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary event-more-button">Lire la suite</a>
-            </div>
-        </event>
-        <HR width="50%" size="10" noshade />
+      <a href="{{ path('event', {'id': event.id}) }}" class="event-history-item bg-custom-dark">
+        <img class="history-item-img" src="/images/properties/{{ ((event.images | first).imageName) }}"></img>
+          <div class="history-item-txt">
+              {{ event.titre }}
+          </div>
+      </a>
     {% endfor %}
-
-</section>
-
+  </section>
 {% endblock %}

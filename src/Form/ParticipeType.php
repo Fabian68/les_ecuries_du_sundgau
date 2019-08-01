@@ -28,8 +28,17 @@ class ParticipeType extends AbstractType
                 'choice_label' => 'Libelle',
                 'multiple' => false,
                 'mapped' => false,
+                'attr' => array(
+                    'class' => 'form-control event-choice'
+                ),
                 'class' => AttributMoyenPaiements::class,
                 ])
+                ->add('save', SubmitType::class, 
+                    [
+                        'label' => 'S\'inscrire',
+                        'attr' => array('class' => 'save-button')
+                    ]
+                );
         ;
     }
 

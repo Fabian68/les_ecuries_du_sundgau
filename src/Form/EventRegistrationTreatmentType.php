@@ -2,25 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Utilisateur;
+use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ResetPasswordType extends AbstractType
+class EventRegistrationTreatmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-           ->add('nouveau_motDePasse',PasswordType::class)
-           ->add('confirm_nouveauMotDePasse',PasswordType::class)
+            ->add('choixPrix')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Utilisateur::class,
+            'data_class' => Event::class,
         ]);
     }
 }

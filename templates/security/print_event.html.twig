@@ -1,0 +1,35 @@
+<TABLE BORDER="1">
+    <CAPTION>Liste participant de l'évènement {{ event.titre }}</CAPTION>
+        <TR>
+            <TH>Nom et Prénom</TH>
+            <TH>Mange a midi</TH>
+            <TH>Paie sur place</TH>
+            <TH>Prélevement</TH>
+        </TR>
+
+        {% for user in event.utilisateurs %}
+            <TR>
+                <TH>{{user.nom}} {{user.prenom}}</TH>
+                <TH>
+                    {% for user2 in event.utilisateursMange %}
+                        {% if user == user2 %}
+                            X
+                        {% endif %}    
+                    {% endfor %}
+                </TH>
+                {% for ump in UtilisateurMoyenPaiementEvent %}
+                    {% if ump.utilisateur == user %}
+                        {% if ump.attributMoyenPaiements.id == 1 %}
+                            <TH></TH>
+                            <TH>X</TH>
+                        {% elseif ump.attributMoyenPaiements.id == 2 %}
+                            <TH>X</TH>
+                            <TH></TH>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </TR>    
+        {% endfor %}
+      
+
+</TABLE>
