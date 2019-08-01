@@ -55,16 +55,6 @@ class GeneralController extends AbstractController
     }
 
     /**
-     * @Route("/localisation", name="localization")
-     */
-    public function localization()
-    {
-        return $this->render('/general/localization.html.twig', [
-            'controller_name' => 'GeneralController',
-        ]);
-    }
-
-    /**
      * @Route("/admin/creationPdf", name="createPdf")
      */
     public function createPdf(Request $request,ObjectManager $manager)
