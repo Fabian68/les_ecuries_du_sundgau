@@ -109,6 +109,9 @@ class Event
      */
     private $videos;
 
+   
+    private $choixPrix=0;
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -443,6 +446,16 @@ class Event
         return $this;
     }
 
+    public function getChoixPrix(): ?int
+    {
+        return $this->choixPrix;
+    }
 
+    public function setChoixPrix(int $choixPrix): self
+    {
+        $this->choixPrix = $choixPrix;
+
+        return $this;
+    }
 
 }

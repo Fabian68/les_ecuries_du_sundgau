@@ -3,31 +3,33 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\Images;
 use App\Entity\Repas;
+use App\Entity\Images;
 use App\Form\EventType;
+use App\Form\RepasType;
 use App\Entity\FilesPdf;
 use App\Form\ImagesType;
+use App\Form\BenevoleType;
 use App\Form\FilesPdfType;
+use App\Form\AssoEventType;
+use App\Form\ParticipeType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
-use App\Form\ParticipeType;
-use App\Form\RepasType;
-use App\Form\AssoEventType;
-use App\Form\BenevoleType;
 use App\Entity\AttributMoyenPaiements;
+use App\Form\EventRegistrationTreatmentType;
 use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class GeneralController extends AbstractController
 {
@@ -99,24 +101,57 @@ class GeneralController extends AbstractController
     /**
      * @Route("/evenement/{id}", name="event")
      */
-    public function event($id,Request $request,ObjectManager $manager)
+    public function event($id,Request $request,ObjectManager $manager) 
     {
+        $session = $request->getSession();
+        $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
-
         $event = $repo->find($id);
 
-        $form = $this->createForm(ParticipeType::class, $this->getUser());
-        $form->add('ChoixRepas', ChoiceType::class, array(
-            "mapped" => false,
-            "multiple" => false,
-            "attr" => array(
-                'class' => "form-control event-choice"
-            ),
-            'choices'  => array(
-                'Oui' => true,
-                'Non' => false
-            )
-        ));
+        $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
+        $formEventRegistrationTreatment->handleRequest($request);
+        if($session->has('paiement')){
+
+            $paiement = $session->get('paiement');
+            dump($paiement);
+            $userPayEvent = $session->get('userPayEvent');
+            $choixRepas = $session->get('choixRepas');
+           
+        
+            if ($formEventRegistrationTreatment->isSubmitted() && $formEventRegistrationTreatment->isValid()) {
+                $paiement = $this->getDoctrine()
+                ->getRepository(AttributMoyenPaiements::class)
+                ->find($paiement);
+                if( $choixRepas == true ) {
+                    $event->addUtilisateursMange($user);
+                    $user->addMange($event);
+                }
+                $event->addUtilisateur($user);
+                $user->addParticipe($event);
+                $userPayEvent->setAttributMoyenPaiement($paiement);
+                $userPayEvent->setUtilisateur($user);
+                $userPayEvent->setEvent($event);
+                $userPayEvent->setAttributMoyenPaiements($paiement);
+                $userPayEvent->setUtilisateurs($user);
+                $userPayEvent->setEvents($event);
+                $manager->persist($paiement);
+                $manager->persist($userPayEvent);
+               
+                
+                $this->addFlash(
+                    'notice',
+                    'Vous êtes bien inscrit a l\'évenement'
+                );
+                $manager->flush();
+                $session->clear();          
+            }else {
+                return $this->render('/general/eventRegistrationTreatment.html.twig', [
+                    'controller_name' => 'GeneralController',
+                    'event' => $event,
+                    'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
+                ]);
+            }
+        }
 
         $form = $this->createForm(ParticipeType::class, $this->getUser());
         if  ($event->getRepasPossible() == 1 || $event->getRepasPossible() == null)
@@ -133,43 +168,52 @@ class GeneralController extends AbstractController
                 )
             ));
         }
-
-        $creneau = $event->getCreneauxBenevoles();
-        
-        $formAsso = $this->createForm(AssoEventType::class,$event);
-
-        $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
-        $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user=$this->getUser();
-            $event->addUtilisateur($user);
-            $user->addParticipe($event);
-            
-            $paiement = new AttributMoyenPaiements();
             $idpaiement = $form['Paiement']->getData();
             $paiement = $this->getDoctrine()
                              ->getRepository(AttributMoyenPaiements::class)
                              ->find($idpaiement);
             $userPayEvent = new UtilisateurMoyenPaiementEvent();
-            $userPayEvent->setAttributMoyenPaiement($paiement);
-            $userPayEvent->setUtilisateur($user);
-            $userPayEvent->setEvent($event);
-            $userPayEvent->setAttributMoyenPaiements($paiement);
-            $userPayEvent->setUtilisateurs($user);
-            $userPayEvent->setEvents($event);
-            $manager->persist($paiement);
-            $manager->persist($userPayEvent);
-            
+            dump($paiement);
             $choixRepas = $form->get("ChoixRepas")->getData();
-            if( $choixRepas == true ) {
-                $event->addUtilisateursMange($user);
-                $user->addMange($event);
+            if($paiement->getId() == 1){
+                
+                $session->set('paiement', $paiement);
+                $session->set('userPayEvent', $userPayEvent);
+                $session->set('choixRepas', $choixRepas);
+ 
+                return $this->render('/general/eventRegistrationTreatment.html.twig', [
+                    'controller_name' => 'GeneralController',
+                    'event' => $event,
+                    'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
+                ]);
+        
+            }else{
+                if( $choixRepas == true ) {
+                    $event->addUtilisateursMange($user);
+                    $user->addMange($event);
+                }
+                $event->addUtilisateur($user);
+                $user->addParticipe($event);
+                $userPayEvent->setAttributMoyenPaiement($paiement);
+                $userPayEvent->setUtilisateur($user);
+                $userPayEvent->setEvent($event);
+                $userPayEvent->setAttributMoyenPaiements($paiement);
+                $userPayEvent->setUtilisateurs($user);
+                $userPayEvent->setEvents($event);
+                $manager->persist($paiement);
+                $manager->persist($userPayEvent);
+                
+                $this->addFlash(
+                    'notice',
+                    'Vous êtes bien inscrit a l\'évenement'
+                );
+                $manager->flush();
             }
-            $manager->flush();
         }
-
+        $creneau = $event->getCreneauxBenevoles();
+        $formAsso = $this->createForm(AssoEventType::class,$event);
         $formAsso->handleRequest($request);
         if ($formAsso->isSubmitted() && $formAsso->isValid()) {
             foreach ($event->getCreneauxBenevoles() as $creneaux) {
@@ -185,9 +229,10 @@ class GeneralController extends AbstractController
             );
         }
 
+        $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
+        $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
         $formBenevole->handleRequest($request);
         if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
-            $user=$this->getUser();
             $creneauxData = $formBenevole->get('creneaux')->getData();
             foreach ($event->getCreneauxBenevoles() as $creneauxEvent) {
                 foreach ($creneauxData as $data) {
@@ -218,7 +263,7 @@ class GeneralController extends AbstractController
         if ($formPrint->isSubmitted() && $formPrint->isValid() && 'print' === $formPrint->getClickedButton()->getName()) {      
             return $this->redirectToRoute('security_print_event',['id'=>$id]);
         }
-
+            
         return $this->render('/general/event.html.twig', [
             'controller_name' => 'GeneralController',
             'event' => $event,
@@ -230,6 +275,7 @@ class GeneralController extends AbstractController
         ]);
     }
 
+   
     /**
      * @Route("/creationEvenement", name="createEvent")
      * @Route("/evenement/{id}/edit", name="editEvent")
