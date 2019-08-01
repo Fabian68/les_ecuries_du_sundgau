@@ -2,14 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\CreneauxBenevoles;
+use App\Entity\DatesEvenements;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class NbBenevoleType extends AbstractType
+class DateEvenementsEditType extends AbstractType
 {
 
     /**
@@ -18,10 +17,9 @@ class NbBenevoleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-        $builder->add('dateDebut', DateTimeType::class)
-                ->add('dateFin', DateTimeType::class)
-                ->add('nbBenevoles')
-        ;
+        $builder
+            ->add('dateDebut', DateTimeType::class)
+            ->add('dateFin', DateTimeType::class);
     }
 
     /**
@@ -31,7 +29,7 @@ class NbBenevoleType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => CreneauxBenevoles::class,
+                'data_class' => DatesEvenements::class,
             ]
         );
     }

@@ -10,8 +10,10 @@ use App\Entity\FilesPdf;
 use App\Form\ImagesType;
 use App\Form\FilesPdfType;
 use App\Form\EventCreateType;
+use App\Form\EventEditType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
+use App\Form\DateEvenementsEditType;
 use App\Form\ParticipeType;
 use App\Form\RepasType;
 use App\Form\AssoEventType;
@@ -221,13 +223,15 @@ class GeneralController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if(!$event) {
             $event = new Event();
+            $form = $this->createForm(EventCreateType::class, $event);
         }
-        $form = $this->createForm(EventCreateType::class, $event);
+        else {
+            $form = $this->createForm(EventEditType::class, $event);
+        }
 
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
-            //var_dump($event->getDates());
                         
             foreach ($event->getDates() as $date) {
                 $event->addDate($date);
@@ -236,7 +240,6 @@ class GeneralController extends AbstractController
             }
             foreach ($event->getGalops() as $galop) {
                 $event->addGalops($galop);
-               // $galop->addEvenement($event);
                 $manager->persist($galop);
             }
             foreach ($event->getImages() as $image) {

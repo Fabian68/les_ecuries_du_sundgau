@@ -78,37 +78,46 @@ jQuery(document).ready(function () {
             <div>Connecter vous pour vous inscrire a l'evenement ! </div>
         {% else %}
             </br>
-            <div>Inscription</div>
 
-            {% set bonGalop = false %}
+            {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
 
-            {% for galop in event.galops %}
-                {% if app.user.galop.niveau >= galop.niveau %}
-                    {%set bonGalop = true %}
-                {% endif %}
-            {% endfor %}
-
-            {% if bonGalop %}
-
-                {% set inscrit = false %}
-
-                {% for participe in app.user.participe %}
-                    {% if participe.id == event.id %}
-                        {% set inscrit = true %}
-                    {% endif %}
-                {% endfor %}
-                {% if not inscrit %}
-                    
-                    {{ form_start(form) }}
-                    <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sur de vous inscrire pour cet évènement ?')"/>
-                    {{ form_end(form) }}  
-
-                {% else %}
-                    <div>Vous êtes inscrit pour cet évènement.</div>
-                {% endif %}
+                <div>Il n'y a plus de place restante pour cet évènement.</div>
 
             {% else %}
-                <div>Pour s'inscrire à ce stage, veuillez contacter votre enseignant.</div>
+
+                <div>Inscription</div>
+
+                {% set bonGalop = false %}
+
+                {% for galop in event.galops %}
+                    {% if app.user.galop.niveau >= galop.niveau %}
+                        {%set bonGalop = true %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if bonGalop %}
+
+                    {% set inscrit = false %}
+
+                    {% for participe in app.user.participe %}
+                        {% if participe.id == event.id %}
+                            {% set inscrit = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not inscrit %}
+                        
+                        {{ form_start(form) }}
+                            <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sur de vous inscrire pour cet évènement ?')"/>
+                        {{ form_end(form) }}  
+
+                    {% else %}
+                        <div>Vous êtes inscrit pour cet évènement.</div>
+                    {% endif %}
+
+                {% else %}
+                    <div>Pour s'inscrire à ce stage, veuillez contacter votre enseignant.</div>
+                {% endif %}
+
             {% endif %}
 
             </br>
@@ -117,6 +126,7 @@ jQuery(document).ready(function () {
             {% for utilisateur in event.utilisateurs %}
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
+                </br>
             {% endfor %}
 
             </br>
