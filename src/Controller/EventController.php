@@ -307,7 +307,7 @@ class EventController extends AbstractController
                // $galop->addEvenement($event);
                 $manager->persist($galop);
             }
-            if((count($event->getImages()) == 0)&&(count($event->getImages()) == 0) ){
+            if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
                     'Vous devez ajouter au moins une image ou une video !'
@@ -320,7 +320,7 @@ class EventController extends AbstractController
                     $manager->persist($image);
                 }
                 foreach ($event->getVideos() as $video) {
-                    $event->addImage($video);
+                    $event->addVideo($video);
                     $video->setEvenement($event); 
                     $manager->persist($video);
                 }
