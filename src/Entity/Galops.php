@@ -119,4 +119,13 @@ class Galops
 
         return $this;
     }
+
+    public function getDisplayNiveau():?string 
+    {
+        if($this->niveau==-1){
+            return 'Aucun galop';
+        }else{
+            return strval($this->getNiveau());
+        }
+    }
 }

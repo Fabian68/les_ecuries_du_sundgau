@@ -34,10 +34,12 @@ class EventEditType extends EventType
                 'by_reference' => false,
             ])
             ->add('galops', EntityType::class, [
-                'choice_label' => 'niveau',
                 'multiple' => true,
                 'expanded' => true,
                 'class' => Galops::class,
+                'choice_label' => function ($galops) {
+                    return $galops->getDisplayNiveau();
+                }
             ])
             ->add('images', CollectionType::class,[
                 'entry_type' => ImagesType::class,
