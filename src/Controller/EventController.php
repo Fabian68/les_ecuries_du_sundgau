@@ -47,7 +47,7 @@ class EventController extends AbstractController
     /**
      * @Route("/evenement/{id}", name="event")
      */
-    public function event($id,Request $request,ObjectManager $manager) 
+    public function event($id,Request $request,ObjectManager $manager,\Swift_Mailer $mailer) 
     {
         $session = $request->getSession();
         $user = $this->getUser();
@@ -65,6 +65,19 @@ class EventController extends AbstractController
            
         
             if ($formEventRegistrationTreatment->isSubmitted() && $formEventRegistrationTreatment->isValid()) {
+                $choixPrix=$event->getChoixPrix();
+                //dump($choixPrix);
+                if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
+                    $this->addFlash(
+                        'Warning',
+                        'Le tarif entrer ne correspond a aucun tarif'
+                    );
+                    return $this->render('/general/eventRegistrationTreatment.html.twig', [
+                        'controller_name' => 'GeneralController',
+                        'event' => $event,
+                        'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
+                    ]);
+                }
                 $paiement = $this->getDoctrine()
                 ->getRepository(AttributMoyenPaiements::class)
                 ->find($paiement);
@@ -82,17 +95,26 @@ class EventController extends AbstractController
                 $userPayEvent->setEvents($event);
                 $manager->persist($paiement);
                 $manager->persist($userPayEvent);
-               
-                
+
+                $manager->flush();
+
+                $message = (new \Swift_Message('Prélèvement'))
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
+                ->setTo('administrateur@les-ecuries-du-sundgau.fr')
+                ->setBody(
+                    "L'utilisateur " . $user->getNom() . " " . $user->getPrenom() . " accepte d'être prélevé pour l'évènement " . $event->getTitre() . " la somme de " . $choixPrix . " euros.",
+                    'text/html'
+                );
+ 
+                $mailer->send($message);
                 $this->addFlash(
                     'notice',
                     'Vous êtes bien inscrit a l\'évenement'
                 );
-                $manager->flush();
                 $session->clear();          
             }else {
                 return $this->render('/general/eventRegistrationTreatment.html.twig', [
-                    'controller_name' => 'GeneralController',
+                    'controller_name' => 'EventController',
                     'event' => $event,
                     'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView()
                 ]);
@@ -247,6 +269,26 @@ class EventController extends AbstractController
                 return $this->redirectToRoute('createEvent');
             }else{
                 foreach ($event->getDates() as $date) {
+                    $dateDebut=$date->getDateDebut();
+                    $dateFin=$date->getDateFin();
+                    if($dateDebut>$dateFin){
+                        $this->addFlash(
+                            'warning',
+                            'La date de début doit être inferieur a la date de fin !'
+                        );
+                        return $this->redirectToRoute('createEvent');
+                    }
+                    if($dateDebut->diff($dateFin,true)->days!=0){
+                        $this->addFlash(
+                            'warning',
+                            'La date de début et la date de fin doivent être sur le même jour !'
+                        );
+                        return $this->redirectToRoute('createEvent');
+                    
+                    }
+                }
+
+                foreach ($event->getDates() as $date) {
                     $event->addDate($date);
                     $date->setEvent($event);
                     $manager->persist($date);
@@ -257,10 +299,10 @@ class EventController extends AbstractController
                // $galop->addEvenement($event);
                 $manager->persist($galop);
             }
-            if(count($event->getImages()) == 0 ){
+            if((count($event->getImages()) == 0)&&(count($event->getImages()) == 0) ){
                 $this->addFlash(
                     'warning',
-                    'Vous devez ajouter au moins une image !'
+                    'Vous devez ajouter au moins une image ou une video !'
                 );
                 return $this->redirectToRoute('createEvent');
             }else{
@@ -268,6 +310,11 @@ class EventController extends AbstractController
                     $event->addImage($image);
                     $image->setEvenement($event); 
                     $manager->persist($image);
+                }
+                foreach ($event->getVideos() as $video) {
+                    $event->addImage($video);
+                    $video->setEvenement($event); 
+                    $manager->persist($video);
                 }
             }
 
