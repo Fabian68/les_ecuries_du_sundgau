@@ -109,21 +109,56 @@ class SecurityController extends AbstractController
      /**
      * @Route("/profil/modifier",name="security_profile_modify")
      */
-    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager){
+    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator){
+
+        $session = $request->getSession();
 
         $form = $this->createForm(ModifyAccountType::class,$user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user->setUpdatedAt(new \DateTime());
-        
-            $manager->persist($user);
-            $manager->flush();
-            $user->setImageFile(null);
+           
             $this->addFlash(
                 'notice',
                 'Votre compte a bien été modifié .'
             );
+            $mail = $session->get('mail');
+            if($user->getEmail()!=$mail){
+                $user->setVerifiedMail(false);
+                $token = $tokenGenerator->generateToken();
+                try{
+                    $user->setValidationEmailToken($token);
+                    $manager->flush();
+                } catch (\Exception $e) {
+                    $this->addFlash('warning', $e->getMessage());
+                    return $this->redirectToRoute('home');
+                }
+    
+                $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+    
+                $message = (new \Swift_Message('Verification mail'))
+                    ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        " Voici le lien pour valdier votre email : " . $url,
+                        'text/html'
+                    );
+    
+                $mailer->send($message);
+    
+                $this->addFlash('notice', 'Mailde verification du nouveau mail envoyer');   
+            }
+            $manager->persist($user);
+            $manager->flush();
+            $user->setImageFile(null);
+            $session->clear();
             return $this->redirectToRoute('security_profile');
+        }else{
+            if($session->has('mail')==false){
+            $mail=$user->getEmail();
+            $session->set('mail', $mail);
+            dump($mail);
+            }
         }
         $user->setImageFile(null);
         return $this->render('security/profile_modify.html.twig', [
