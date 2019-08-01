@@ -108,7 +108,7 @@ class EventController extends AbstractController
                 ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo('administrateur@les-ecuries-du-sundgau.fr')
                 ->setBody(
-                    "L'utilisateur " . $user->getNom() . " " . $user->getPrenom() . " accepte d'être prélevé pour l'évènement " . $event->getTitre() . " la somme de " . $choixPrix . " euros.",
+                    "Signataire : " . $event->getSignataire() . "<br> L'utilisateur " . $user->getNom() . " " . $user->getPrenom() . " accepte d'être prélevé pour l'évènement " . $event->getTitre() . " la somme de " . $choixPrix . " euros.",
                     'text/html'
                 );
  
