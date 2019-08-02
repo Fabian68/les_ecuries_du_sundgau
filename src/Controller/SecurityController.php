@@ -399,4 +399,37 @@ class SecurityController extends AbstractController
         }
         return $this->redirectToRoute('home');
     }
+
+    /**
+     * @Route("/admin/utilisateurs", name="security_show_all_users")
+     */
+    public function showAllUsers(ObjectManager $manager){
+        $user = $manager->getRepository(Utilisateur::class)->findAll(); 
+        return $this->render('security/show_all_users.html.twig', [
+           'users'=>$user
+        ]);
+    }
+
+    /**
+     * @Route("/admin/supprimer_utilisateur/{id}", name="security_delete_user")
+     */
+    public function deleteUser($id,ObjectManager $manager){
+        $user = $manager->getRepository(Utilisateur::class)->findOneById($id); 
+        dump($user);
+        if($user==null){
+            $this->addFlash(
+                'warning',
+                'Utilisateur introuvable'
+            );
+        }else{
+            $manager->remove($user); 
+            $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Utilisateur supprimer.'
+            );
+            return $this->redirectToRoute('security_show_all_users');
+
+        }    
+    }
 }
