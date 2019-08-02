@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Repas;
 use App\Entity\Images;
+use App\Entity\Video;
 use App\Form\EventType;
 use App\Form\RepasType;
 use App\Form\ImagesType;
@@ -49,10 +50,17 @@ class EventController extends AbstractController
      */
     public function event($id,Request $request,ObjectManager $manager,\Swift_Mailer $mailer) 
     {
+
         $session = $request->getSession();
         $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
+        if($event->getDivers()){
+            return $this->render('/event/divers.html.twig', [
+                'controller_name' => 'EventController',
+                'event' => $event,
+            ]);  
+        }
 
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
@@ -320,6 +328,9 @@ class EventController extends AbstractController
                     $manager->persist($image);
                 }
                 foreach ($event->getVideos() as $video) {
+                    $choix = explode("=",$video->getLien());
+                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setLien($videoLien);
                     $event->addVideo($video);
                     $video->setEvenement($event); 
                     $manager->persist($video);
@@ -332,7 +343,7 @@ class EventController extends AbstractController
                 'notice',
                 'Votre évènement a bien été crée .'
             );
-            return $this->redirectToRoute('events');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('/general/createEvents.html.twig', [
