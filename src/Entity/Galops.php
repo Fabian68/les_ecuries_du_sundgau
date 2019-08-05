@@ -29,7 +29,7 @@ class Galops
     private $niveau;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="relation")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="galops")
      */
     private $evenements;
 
