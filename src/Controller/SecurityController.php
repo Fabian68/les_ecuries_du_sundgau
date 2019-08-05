@@ -6,7 +6,7 @@ use App\Entity\Event;
 use App\Entity\Galops;
 use App\Entity\Description;
 use App\Entity\Utilisateur;
-use App\Form\DescriptionType;
+use App\Form\AllDescriptionType;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
 use App\Form\ResetPasswordType;
@@ -188,13 +188,13 @@ class SecurityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         // Pour avoir qu'une seule iteration d'inscription dans la BdD
-        $description = $manager->getRepository(Description::class)->findOneById('1');
+        $description = $manager->getRepository(Description::class)->findAll();
         if($description ==null){
             $description = new Description();
             $description->setTexte('Les écuries du sundgau est un dans un cadre idéale qui favorise l\'activitée etc etc ');
         }
         
-        $form = $this->createForm(DescriptionType::class,$description);
+        $form = $this->createForm(AllDescriptionType::class,$description);
         
         $form->handleRequest($request);
      
@@ -214,7 +214,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/mot_de_passe_oublier", name="security_forgotten_password")
+     * @Route("/mot_de_passe_oublie", name="security_forgotten_password")
      */
     public function forgottenPassword(ObjectManager $manager,Request $request,UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator ): Response
     {
@@ -241,7 +241,7 @@ class SecurityController extends AbstractController
  
             $url = $this->generateUrl('security_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
  
-            $message = (new \Swift_Message('Mot de passe oublier'))
+            $message = (new \Swift_Message('Mot de passe oublié'))
                 ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
@@ -293,48 +293,56 @@ class SecurityController extends AbstractController
     /**
      * @Route("/verifier_mail", name="security_verification_mail")
      */
-    public function verificationEmail(UserInterface $user,ObjectManager $manager,Request $request,UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator ): Response
+    public function verificationEmail(ObjectManager $manager,Request $request,UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator ): Response
     {
-        $form = $this->createFormBuilder()
-       ->add('save', SubmitType::class, ['label' => ' Envoyer mail verification '])
-       ->getForm();
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $user = $this->getUser();
+        if($user != null){
+            $form = $this->createFormBuilder()
+        ->add('save', SubmitType::class, ['label' => ' Envoyer mail verification '])
+        ->getForm();
 
-       $form->handleRequest($request);
+        $form->handleRequest($request);
 
-       if($form->isSubmitted() && $form->isValid()) { 
+        if($form->isSubmitted() && $form->isValid()) {
 
-            $token = $tokenGenerator->generateToken();
-    
-            try{
-                $user->setValidationEmailToken($token);
-                $manager->flush();
-            } catch (\Exception $e) {
-                $this->addFlash('warning', $e->getMessage());
+                $token = $tokenGenerator->generateToken();
+        
+                try{
+                    $user->setValidationEmailToken($token);
+                    $manager->flush();
+                } catch (\Exception $e) {
+                    $this->addFlash('warning', $e->getMessage());
+                    return $this->redirectToRoute('home');
+                }
+
+                $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $message = (new \Swift_Message('Verification mail'))
+                    ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        " Voici le lien pour valdier votre email : " . $url,
+                        'text/html'
+                    );
+
+                $mailer->send($message);
+
+                $this->addFlash('notice', 'Mail envoyé');
+            
+        
+
                 return $this->redirectToRoute('home');
             }
+            else {
 
-            $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
-
-            $message = (new \Swift_Message('Verification mail'))
-                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    " Voici le lien pour valdier votre email : " . $url,
-                    'text/html'
-                );
-
-            $mailer->send($message);
-
-            $this->addFlash('notice', 'Mail envoyé');
-           
-       
-
-            return $this->redirectToRoute('home');
+            return $this->render('security/verification_mail.html.twig', [
+                'form'=>$form->createView()
+            ]);       
         }
-        else {
-
+    } else {
         return $this->render('security/verification_mail.html.twig', [
-            'form'=>$form->createView()
+            form
         ]);
     }
 }

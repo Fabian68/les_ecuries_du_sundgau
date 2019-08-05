@@ -18,6 +18,7 @@ use App\Form\AssoEventType;
 use App\Form\BenevoleType;
 use App\Entity\AttributMoyenPaiements;
 use App\Entity\UtilisateurMoyenPaiementEvent;
+use App\Entity\Description;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,14 +41,19 @@ class GeneralController extends AbstractController
 
         $repo2 = $this->getDoctrine()->getRepository(Images::class);
 
+        $repo3 = $this->getDoctrine()->getRepository(Description::class);
+
         $events = $repo->findFutureEvents();
 
         $images = $repo2->findAll();
 
+        $descs = $repo3->findAll();
+
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events,
-            'images' => $images
+            'images' => $images,
+            'descs' => $descs
         ]);
     }
 
