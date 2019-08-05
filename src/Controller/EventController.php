@@ -333,9 +333,10 @@ class EventController extends AbstractController
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
                     $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setEvenement($event);
                    /* $video->setLien($videoLien);
                     $event->addVideo($video);
-                    $video->setEvenement($event); 
+                     
                     $manager->persist($video);*/
                 }
             }

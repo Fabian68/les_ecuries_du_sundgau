@@ -42,6 +42,7 @@ class Images
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $evenement;
 
