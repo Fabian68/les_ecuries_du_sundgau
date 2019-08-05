@@ -2,20 +2,24 @@
 
 namespace App\Form;
 
+use App\Form\DescriptionType;
 use App\Entity\Description;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class DescriptionType extends AbstractType
+class AllDescriptionType extends DescriptionType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('texte')
-            ->add('imageFile',FileType::class,[
-                'required' =>false
+            ->add('description', EntityType::class,[
+                'required'=>true,
+                'multiple'=>true,
+                'expanded'=>true,
+                'class'=> Description::class,
             ])
         ;
     }
@@ -23,7 +27,7 @@ class DescriptionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Description::class,
+            'data_class' => null,
         ]);
     }
 }
