@@ -452,7 +452,7 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($tmp->getVideos() as $video) {
-                $event->addImage($video);
+                $event->addVideo($video);
                 $video->setEvenement($event); 
                 $manager->persist($video);
             }
