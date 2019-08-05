@@ -162,6 +162,7 @@ class EventController extends AbstractController
                 if( $choixRepas == true ) {
                     $event->addUtilisateursMange($user);
                     $user->addMange($event);
+                }
             }else{
                 $choixRepas = false;
             }
