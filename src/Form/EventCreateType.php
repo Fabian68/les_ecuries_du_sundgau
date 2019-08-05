@@ -39,7 +39,7 @@ class EventCreateType extends EventType
                 'expanded' => true,
                 'class' => Galops::class,
                 'choice_label' => function ($galops) {
-                    return $galops->getDisplayNiveau();
+                    return $galops->getDisplayNiveau(true);
                 }
             ])
             ->add('images', CollectionType::class,[

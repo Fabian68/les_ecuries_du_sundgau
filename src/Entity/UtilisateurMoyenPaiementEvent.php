@@ -31,20 +31,7 @@ class UtilisateurMoyenPaiementEvent
      */
     private $event;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\AttributMoyenPaiements", inversedBy="utilisateurMoyenPaiementEvent")
-     */
-    private $attributMoyenPaiements;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="utilisateurMoyenPaiementEvent")
-     */
-    private $utilisateurs;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="utilisateurMoyenPaiementEvent")
-     */
-    private $events;
 
     public function getId(): ?int
     {
@@ -83,42 +70,6 @@ class UtilisateurMoyenPaiementEvent
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
-
-        return $this;
-    }
-
-    public function getAttributMoyenPaiements(): ?AttributMoyenPaiements
-    {
-        return $this->attributMoyenPaiements;
-    }
-
-    public function setAttributMoyenPaiements(?AttributMoyenPaiements $attributMoyenPaiements): self
-    {
-        $this->attributMoyenPaiements = $attributMoyenPaiements;
-
-        return $this;
-    }
-
-    public function getUtilisateurs(): ?Utilisateur
-    {
-        return $this->utilisateurs;
-    }
-
-    public function setUtilisateurs(?Utilisateur $utilisateurs): self
-    {
-        $this->utilisateurs = $utilisateurs;
-
-        return $this;
-    }
-
-    public function getEvents(): ?Event
-    {
-        return $this->events;
-    }
-
-    public function setEvents(?Event $events): self
-    {
-        $this->events = $events;
 
         return $this;
     }

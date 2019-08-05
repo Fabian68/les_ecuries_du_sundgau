@@ -61,7 +61,7 @@ class Event
 
     /**
      * @Groups("read")
-     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\DatesEvenements", mappedBy="event", orphanRemoval=true,cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $dates;
@@ -79,12 +79,12 @@ class Event
     private $utilisateurs;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="evenement",orphanRemoval=true,cascade={"persist", "remove"})
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\CreneauxBenevoles", mappedBy="event", orphanRemoval=true,cascade={"persist", "remove"})
      */
     private $creneauxBenevoles;
 
@@ -105,7 +105,7 @@ class Event
     private $divers;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="evenement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="evenement",cascade={"persist", "remove"})
      */
     private $videos;
 

@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="security_registration")
      */
-    public function registration(Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder): Response
+    public function registration(Request $request,ObjectManager $manager,UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator): Response
     {  
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationType::class,$user);
@@ -135,7 +135,6 @@ class SecurityController extends AbstractController
                 }
     
                 $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
-    
                 $message = (new \Swift_Message('Verification mail'))
                     ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                     ->setTo($user->getEmail())
@@ -143,7 +142,6 @@ class SecurityController extends AbstractController
                         " Voici le lien pour valdier votre email : " . $url,
                         'text/html'
                     );
-    
                 $mailer->send($message);
     
                 $this->addFlash('notice', 'Mailde verification du nouveau mail envoyer');   
@@ -398,5 +396,38 @@ class SecurityController extends AbstractController
             );
         }
         return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/admin/utilisateurs", name="security_show_all_users")
+     */
+    public function showAllUsers(ObjectManager $manager){
+        $user = $manager->getRepository(Utilisateur::class)->findAll(); 
+        return $this->render('security/show_all_users.html.twig', [
+           'users'=>$user
+        ]);
+    }
+
+    /**
+     * @Route("/admin/supprimer_utilisateur/{id}", name="security_delete_user")
+     */
+    public function deleteUser($id,ObjectManager $manager){
+        $user = $manager->getRepository(Utilisateur::class)->findOneById($id); 
+        dump($user);
+        if($user==null){
+            $this->addFlash(
+                'warning',
+                'Utilisateur introuvable'
+            );
+        }else{
+            $manager->remove($user); 
+            $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Utilisateur supprimer.'
+            );
+            return $this->redirectToRoute('security_show_all_users');
+
+        }    
     }
 }
