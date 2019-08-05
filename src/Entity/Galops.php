@@ -29,7 +29,7 @@ class Galops
     private $niveau;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="relation")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="galops")
      */
     private $evenements;
 
@@ -120,10 +120,15 @@ class Galops
         return $this;
     }
 
-    public function getDisplayNiveau():?string 
+    public function getDisplayNiveau($onEvent=false):?string 
     {
+        
         if($this->niveau==-1){
-            return 'Aucun galop';
+            if($onEvent==false){
+                return 'Aucun galop';
+            }else{
+                return 'Visible par tous';    
+            }
         }else{
             return strval($this->getNiveau());
         }

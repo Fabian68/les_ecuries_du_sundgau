@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Repas;
 use App\Entity\Images;
+use App\Entity\Video;
 use App\Form\EventType;
 use App\Form\RepasType;
 use App\Form\ImagesType;
@@ -38,7 +39,6 @@ class EventController extends AbstractController
     public function events()
     {
         $repo = $this->getDoctrine()->getRepository(Event::class);
-
         $events = $repo->findAllDesc();
 
         return $this->render('/general/events.html.twig', [
@@ -56,6 +56,12 @@ class EventController extends AbstractController
         $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
+        if($event->getDivers()){
+            return $this->render('/event/divers.html.twig', [
+                'controller_name' => 'EventController',
+                'event' => $event,
+            ]);  
+        }
 
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
@@ -64,7 +70,6 @@ class EventController extends AbstractController
         ->getForm();
         $formCancel->handleRequest($request);
         if($session->has('paiement')){
-
             $paiement = $session->get('paiement');
             dump($paiement);
             $userPayEvent = $session->get('userPayEvent');
@@ -99,9 +104,6 @@ class EventController extends AbstractController
                 $userPayEvent->setAttributMoyenPaiement($paiement);
                 $userPayEvent->setUtilisateur($user);
                 $userPayEvent->setEvent($event);
-                $userPayEvent->setAttributMoyenPaiements($paiement);
-                $userPayEvent->setUtilisateurs($user);
-                $userPayEvent->setEvents($event);
                 $manager->persist($paiement);
                 $manager->persist($userPayEvent);
 
@@ -146,6 +148,7 @@ class EventController extends AbstractController
                 )
             ));
         }
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $idpaiement = $form['Paiement']->getData();
@@ -155,8 +158,7 @@ class EventController extends AbstractController
             $userPayEvent = new UtilisateurMoyenPaiementEvent();
             dump($paiement);
             $choixRepas = $form->get("ChoixRepas")->getData();
-            if($paiement->getId() == 1){
-                
+            if($paiement->getId() == 1){  
                 $session->set('paiement', $paiement);
                 $session->set('userPayEvent', $userPayEvent);
                 $session->set('choixRepas', $choixRepas);
@@ -167,7 +169,6 @@ class EventController extends AbstractController
                     'formEventRegistrationTreatment'=> $formEventRegistrationTreatment->createView(),
                     'formCancel'=> $formCancel->createView()
                 ]);
-        
             }else{
                 if( $choixRepas == true ) {
                     $event->addUtilisateursMange($user);
@@ -178,9 +179,6 @@ class EventController extends AbstractController
                 $userPayEvent->setAttributMoyenPaiement($paiement);
                 $userPayEvent->setUtilisateur($user);
                 $userPayEvent->setEvent($event);
-                $userPayEvent->setAttributMoyenPaiements($paiement);
-                $userPayEvent->setUtilisateurs($user);
-                $userPayEvent->setEvents($event);
                 $manager->persist($paiement);
                 $manager->persist($userPayEvent);
                 
@@ -191,6 +189,7 @@ class EventController extends AbstractController
                 $manager->flush();
             }
         }
+        
         $creneau = $event->getCreneauxBenevoles();
         $formAsso = $this->createForm(AssoEventType::class,$event);
         $formAsso->handleRequest($request);
@@ -261,7 +260,6 @@ class EventController extends AbstractController
      */
     public function createEvents(Event $event = null, Request $request,ObjectManager $manager)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $create = false;
         if(!$event) {
             $event = new Event();
@@ -272,11 +270,9 @@ class EventController extends AbstractController
             $form = $this->createForm(EventEditType::class, $event);
         }
 
+        $form = $this->createForm(EventCreateType::class, $event);
         $form->handleRequest($request);
-     
-        if ($form->isSubmitted() && $form->isValid()) {
-            //var_dump($event->getDates());
-              
+        if ($form->isSubmitted() && $form->isValid()) {           
             if(count($event->getDates()) == 0 ){
                 $this->addFlash(
                     'warning',
@@ -299,22 +295,22 @@ class EventController extends AbstractController
                             'warning',
                             'La date de début et la date de fin doivent être sur le même jour !'
                         );
-                        return $this->redirectToRoute('createEvent');
-                    
+                        return $this->redirectToRoute('createEvent');                 
                     }
                 }
-
+                /*
                 foreach ($event->getDates() as $date) {
                     $event->addDate($date);
                     $date->setEvent($event);
                     $manager->persist($date);
-                }
+                }*/
             }
+            /*
             foreach ($event->getGalops() as $galop) {
                 $event->addGalops($galop);
                // $galop->addEvenement($event);
                 $manager->persist($galop);
-            }
+            }*/
             if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
@@ -322,15 +318,20 @@ class EventController extends AbstractController
                 );
                 return $this->redirectToRoute('createEvent');
             }else{
+                
                 foreach ($event->getImages() as $image) {
-                    $event->addImage($image);
+                   // $event->addImage($image);
                     $image->setEvenement($event); 
-                    $manager->persist($image);
+                    //$manager->persist($image);
                 }
                 foreach ($event->getVideos() as $video) {
+                    $choix = explode("=",$video->getLien());
+                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setEvenement($event);
+                   /* $video->setLien($videoLien);
                     $event->addVideo($video);
-                    $video->setEvenement($event); 
-                    $manager->persist($video);
+                     
+                    $manager->persist($video);*/
                 }
             }
 
@@ -340,7 +341,7 @@ class EventController extends AbstractController
                 'notice',
                 'Votre évènement a bien été crée .'
             );
-            return $this->redirectToRoute('events');
+            return $this->redirectToRoute('home');
         }
 
         if($create) {
@@ -370,12 +371,13 @@ class EventController extends AbstractController
         foreach($UtilisateursMoyenPaiementEvent as $UMPE){
             $manager->remove($UMPE);
         }
+        /*
         foreach ($event->getDates() as $date) {
             $manager->remove($date); 
         }
         foreach ($event->getCreneauxBenevoles() as $creneaux) {
             $manager->remove($creneaux); 
-        }
+        }*/
         $manager->remove($event); 
         $manager->flush();
         $this->addFlash(
@@ -453,6 +455,9 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($tmp->getVideos() as $video) {
+                $choix = explode("=",$video->getLien());
+                $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                $video->setEvenement($event);
                 $event->addVideo($video);
                 $video->setEvenement($event); 
                 $manager->persist($video);

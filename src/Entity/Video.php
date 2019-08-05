@@ -26,6 +26,7 @@ class Video
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="videos")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $evenement;
 
