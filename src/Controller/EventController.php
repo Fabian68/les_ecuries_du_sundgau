@@ -170,9 +170,12 @@ class EventController extends AbstractController
                     'formCancel'=> $formCancel->createView()
                 ]);
             }else{
-                if( $choixRepas == true ) {
-                    $event->addUtilisateursMange($user);
-                    $user->addMange($event);
+                if  ($event->getRepasPossible() == 1 ) {
+                    $choixRepas = $form->get("ChoixRepas")->getData();
+                    if( $choixRepas == true ) {
+                        $event->addUtilisateursMange($user);
+                        $user->addMange($event);
+                    }
                 }
                 $event->addUtilisateur($user);
                 $user->addParticipe($event);
