@@ -135,7 +135,6 @@ class SecurityController extends AbstractController
                 }
     
                 $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
-    
                 $message = (new \Swift_Message('Verification mail'))
                     ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                     ->setTo($user->getEmail())
@@ -143,7 +142,6 @@ class SecurityController extends AbstractController
                         " Voici le lien pour valdier votre email : " . $url,
                         'text/html'
                     );
-    
                 $mailer->send($message);
     
                 $this->addFlash('notice', 'Mailde verification du nouveau mail envoyer');   

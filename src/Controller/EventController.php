@@ -104,9 +104,6 @@ class EventController extends AbstractController
                 $userPayEvent->setAttributMoyenPaiement($paiement);
                 $userPayEvent->setUtilisateur($user);
                 $userPayEvent->setEvent($event);
-                $userPayEvent->setAttributMoyenPaiements($paiement);
-                $userPayEvent->setUtilisateurs($user);
-                $userPayEvent->setEvents($event);
                 $manager->persist($paiement);
                 $manager->persist($userPayEvent);
 
@@ -182,9 +179,6 @@ class EventController extends AbstractController
                 $userPayEvent->setAttributMoyenPaiement($paiement);
                 $userPayEvent->setUtilisateur($user);
                 $userPayEvent->setEvent($event);
-                $userPayEvent->setAttributMoyenPaiements($paiement);
-                $userPayEvent->setUtilisateurs($user);
-                $userPayEvent->setEvents($event);
                 $manager->persist($paiement);
                 $manager->persist($userPayEvent);
                 
@@ -460,6 +454,9 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($tmp->getVideos() as $video) {
+                $choix = explode("=",$video->getLien());
+                $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                $video->setEvenement($event);
                 $event->addVideo($video);
                 $video->setEvenement($event); 
                 $manager->persist($video);

@@ -37,19 +37,11 @@ class AttributMoyenPaiements
      */
     private $utilisateurMoyenPaiementEvents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="attributMoyenPaiements")
-     */
-    private $utilisateurMoyenPaiementEvent;
-
-   
-
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
         $this->evenements = new ArrayCollection();
         $this->utilisateurMoyenPaiementEvents = new ArrayCollection();
-        $this->utilisateurMoyenPaiementEvent = new ArrayCollection();
     }
 
     public function getId(): ?int
