@@ -6,7 +6,7 @@ use App\Entity\Event;
 use App\Entity\Galops;
 use App\Entity\Description;
 use App\Entity\Utilisateur;
-use App\Form\DescriptionType;
+use App\Form\AllDescriptionType;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
 use App\Form\ResetPasswordType;
@@ -272,13 +272,13 @@ class SecurityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         // Pour avoir qu'une seule iteration d'inscription dans la BdD
-        $description = $manager->getRepository(Description::class)->findOneById('1');
+        $description = $manager->getRepository(Description::class)->findAll();
         if($description ==null){
             $description = new Description();
             $description->setTexte('Les écuries du sundgau est un dans un cadre idéale qui favorise l\'activitée etc etc ');
         }
         
-        $form = $this->createForm(DescriptionType::class,$description);
+        $form = $this->createForm(AllDescriptionType::class,$description);
         
         $form->handleRequest($request);
      
@@ -298,7 +298,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/mot_de_passe_oublier", name="security_forgotten_password")
+     * @Route("/mot_de_passe_oublie", name="security_forgotten_password")
      */
     public function forgottenPassword(ObjectManager $manager,Request $request,UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator ): Response
     {
@@ -325,7 +325,7 @@ class SecurityController extends AbstractController
  
             $url = $this->generateUrl('security_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
  
-            $message = (new \Swift_Message('Mot de passe oublier'))
+            $message = (new \Swift_Message('Mot de passe oublié'))
                 ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(

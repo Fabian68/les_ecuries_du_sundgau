@@ -178,6 +178,11 @@ class Utilisateur implements UserInterface
      */
     private $verifiedMail;
 
+     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="utilisateur")
+     */
+    private $utilisateurMoyenPaiementEvents;
+
     /**
      * @return string
      */
@@ -480,6 +485,18 @@ class Utilisateur implements UserInterface
    public function setVerifiedMail(?bool $verifiedMail): self
    {
        $this->verifiedMail = $verifiedMail;
+
+       return $this;
+   }
+
+   public function getAttributMoyenPaiement(): ?AttributMoyenPaiements
+   {
+       return $this->attributMoyenPaiement;
+   }
+
+   public function setAttributMoyenPaiement(?AttributMoyenPaiements $attributMoyenPaiement): self
+   {
+       $this->attributMoyenPaiement = $attributMoyenPaiement;
 
        return $this;
    }

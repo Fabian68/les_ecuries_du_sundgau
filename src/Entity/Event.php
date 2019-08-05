@@ -109,7 +109,11 @@ class Event
      */
     private $videos;
 
-   
+     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UtilisateurMoyenPaiementEvent", mappedBy="event")
+     */
+    private $utilisateurMoyenPaiementEvents;
+
     private $choixPrix=0;
 
     private $signataire='';
@@ -474,6 +478,18 @@ class Event
     public function setSignataire(string $signataire): self
     {
         $this->signataire = $signataire;
+        return $this;
+    }
+
+    public function getAttributMoyenPaiement(): ?AttributMoyenPaiements
+    {
+        return $this->attributMoyenPaiement;
+    }
+
+    public function setAttributMoyenPaiement(?AttributMoyenPaiements $attributMoyenPaiement): self
+    {
+        $this->attributMoyenPaiement = $attributMoyenPaiement;
+
         return $this;
     }
 

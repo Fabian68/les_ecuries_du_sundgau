@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Description;
 use App\Entity\Event;
 use App\Entity\Images;
 use App\Entity\FilesPdf;
@@ -23,14 +24,19 @@ class GeneralController extends AbstractController
 
         $repo2 = $this->getDoctrine()->getRepository(Images::class);
 
+        $repo3 = $this->getDoctrine()->getRepository(Description::class);
+
         $events = $repo->findFutureEvents();
 
         $images = $repo2->findAll();
 
+        $descs = $repo3->findAll();
+
         return $this->render('/general/index.html.twig', [
             'controller_name' => 'GeneralController',
             'events' => $events,
-            'images' => $images
+            'images' => $images,
+            'descs' => $descs
         ]);
     }
 

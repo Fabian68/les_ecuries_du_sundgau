@@ -46,7 +46,7 @@
             right: 4em;
             top: 0;
             bottom: 0;
-            padding-top: 7em;
+            padding-top: 8em;
             display: flex;
         }
         .bg-facility{
@@ -67,6 +67,7 @@
         .map-layout{
             width: 240px !important;
             height: 240px !important; 
+            margin: 2em;
         }
         .facility-layout{
             flex: 1;
@@ -87,15 +88,6 @@
         .event-img-layout{
             width: 100%;
         }
-        .presentation{
-            height: 6em;
-            max-height: 8em !important;
-            width: 30em;
-            overflow: hidden;
-        }
-        .presentation p{
-            overflow: auto;
-        }
         @media screen and (min-width: 1100px){
             .big-screen{
                 width: 90%;
@@ -114,7 +106,6 @@
             }
             .image-band-layout{
                 height: 11em !important;
-                margin-top: 8em !important;
             }
             .carousel-pusher{
                 width: 50% !important;
@@ -235,19 +226,19 @@
         @media screen and (max-width: 850px){
             .corner-top-left{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .corner-bottom-left{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .corner-bottom-right{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .corner-top-right{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .event-image{
                 flex: 1 !important;
@@ -299,7 +290,6 @@
             }
             .image-band-layout{
                 height: 6em !important;
-                margin-top: 8em !important; 
             }
             .galop-layout{
                 margin: 0.2em !important;
@@ -325,6 +315,7 @@
             }
             .map-layout{
                 align-self: center;
+                margin-top: 4em;
             }
             .registration-layout{
                 width: 90% !important;
@@ -353,23 +344,14 @@
                 flex: 28% !important;
                 margin: 0.5em !important;
             }
-            .custom-container{
-                flex: 50% !important;
-                align-self: flex-end !important;
-            }
-            .presentation{
-                font-size: 0.7em !important;
-                width: auto !important;
-                margin-left: 2em;
-            }
             .event-history{
                 margin-top: 8em !important;
             }
             .layout-pdf{
                 top: 6.3rem !important; 
             }
-            .image-band-layout{
-                margin-top: 6em !important;
+            .map-layout{
+                margin-top: 2em !important;
             }
         }
         .header-custom{
@@ -380,21 +362,29 @@
             display: flex;
             flex-direction: column;
         }
+        @font-face {
+            font-family: titleFont;
+            src: url("/fonts/segoesc.ttf");
+        }
         .website-title{
-            font-size: 2em;
+            font-size: 3.5em;
+            margin-top: 0.2em !important;
             padding: 0.05em;
             padding-left: 0.5em;
             padding-right: 0.5em;
             margin: 0;
             text-align: left;
             background-color: #77d1bd;
+            font-family: titleFont;
+            color: #e8de4f;
         }
         .bg-transparent-blue{
             background-color: #418aa2;
             opacity: .4;
         }
         .custom-container{
-            background-color: #77d1bd;
+            display: flex;
+            justify-content: space-around;
         }
         .index-event-content{
             display: flex;
@@ -525,7 +515,7 @@
             background-color: #77d1bd;
             width: 100%;
             height: 8em;
-            margin-top: 8em;
+            margin-top: 1em;
             padding-top: 0.5em;
             margin-bottom: -5em;
             justify-content: space-around;
@@ -828,21 +818,94 @@
             position: relative;
             z-index: 3;
         }
+        .general-window{
+            margin-top: 13em;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 20em;
+        }
+        .pres-image-container{
+            width: 100%;
+            background-color: #77d1bd;
+            padding-left: 3em;
+            padding-right: 3em;
+            padding-top: 9em;
+        }
+        .pres-image{
+            display: flex;
+            height: 6em;
+        }
+        .pres-thumbnail{
+            height: 100%;
+        }
+        .presentation{
+            overflow: auto;
+            padding-left: 0.5em;
+            padding-right: 1em;
+        }
+        .event-layout{
+            width: 100%;
+            margin-top: 8em;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+        }
+        .event-info{
+            flex: 2;
+            margin: 2em;
+        }
+        .event-thumbnail{
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            flex: 1;
+            margin: 2em;
+            margin-left: -1em;
+            transition: all .4s ease-in-out;
+        }
+        .event-thumbnail-image{
+            object-fit: contain;
+            width: 100%;
+        }
+        .thumbnail-container{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .event-controls{
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            flex: 1;
+            margin: 2em;
+            margin-right: -25%;
+            transition: all .4s ease-in-out;
+        }
+        .arrow-container{
+            display: flex;
+            align-items: center;
+        }
+        .arrow{
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .arrow p{
+            margin: auto !important;
+            text-align: center;
+            font-size: 1.5em;
+            color: white;
+        }
         </style>
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
     </head>
     <div class="header-custom">
-    <div class="title-pres">
-      <h1 class="website-title mobile-web-title">Les Écuries du Sundgau</h1>
-      <div class="custom-container">
-        <div class="text-white">
-          <div class="presentation">
-            <p>Ceci est un exemple de présentation.</br> Plusieurs paragraphes peuvent être représentés, présentant ainsi les écuries. Ce site web est encore en construction.</p>
-          </div>
-        </div>
+      <div class="title-pres">
+        <h1 class="website-title mobile-web-title">Les Écuries du Sundgau</h1>
       </div>
-    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-navbar-custom navbar-custom">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -863,7 +926,7 @@
                 <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('contact') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/contact.png" alt="contact"> Contact</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('facilities') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/installations.png" alt="facilities"> Le Centre</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('facilities') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/installations.png" alt="facilities"> Les Installations </a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">

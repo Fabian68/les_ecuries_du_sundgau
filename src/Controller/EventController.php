@@ -73,13 +73,11 @@ class EventController extends AbstractController
             $paiement = $session->get('paiement');
             dump($paiement);
             $userPayEvent = $session->get('userPayEvent');
-            $choixRepas = $session->get('choixRepas');
            
             if ($formCancel->isSubmitted() && $formCancel->isValid()){
                 $session->clear();                  
             }elseif($formEventRegistrationTreatment->isSubmitted() && $formEventRegistrationTreatment->isValid()) {
                 $choixPrix=$event->getChoixPrix();
-                //dump($choixPrix);
                 if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
                     $this->addFlash(
                         'Warning',
@@ -95,7 +93,7 @@ class EventController extends AbstractController
                 $paiement = $this->getDoctrine()
                 ->getRepository(AttributMoyenPaiements::class)
                 ->find($paiement);
-                if( $choixRepas == true ) {
+                if($event->getRepasPossible() ) {
                     $event->addUtilisateursMange($user);
                     $user->addMange($event);
                 }
@@ -157,11 +155,9 @@ class EventController extends AbstractController
                              ->find($idpaiement);
             $userPayEvent = new UtilisateurMoyenPaiementEvent();
             dump($paiement);
-            $choixRepas = $form->get("ChoixRepas")->getData();
             if($paiement->getId() == 1){  
                 $session->set('paiement', $paiement);
                 $session->set('userPayEvent', $userPayEvent);
-                $session->set('choixRepas', $choixRepas);
  
                 return $this->render('/general/eventRegistrationTreatment.html.twig', [
                     'controller_name' => 'EventController',

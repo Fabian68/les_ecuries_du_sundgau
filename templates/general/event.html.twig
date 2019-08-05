@@ -3,6 +3,16 @@
 {% block body %}
 
     <script>
+    function showControls(){
+        document.getElementById("image").style.setProperty('margin-left', '-25%');
+        document.getElementById("controls").style.setProperty('margin-right', '-1em');
+    }
+
+    function showImage(){
+        document.getElementById("image").style.setProperty('margin-left', '-1em');
+        document.getElementById("controls").style.setProperty('margin-right', '-25%');
+    }
+
     // add-collection-widget.js
     jQuery(document).ready(function () {
         jQuery('.add-another-collection-widget').click(function (e) {
@@ -28,67 +38,120 @@
     });
     </script>
 
-    <section class="events-layout big-screen mobile-layout">
-        <event class="card mb-3">
+    <section class="event-layout">
+        <div id="image" class="card bg-secondary event-thumbnail">
+          <div class="thumbnail-container bg-white"><img class="event-thumbnail-image" src="/images/properties/{{ ((event.images | first).imageName) }}"></div>
+          <div class="bg-secondary arrow-container" onclick="showImage()"><div class="arrow"><p> > <br> > <br> > </p></div></div>
+        </div>
+        
+        <event class="card mb-3 event-info">
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
             <div class="card-subtitle bg-event-date">
-            <div class="corners">
-            <img class="corner-top-left" src="/images/resources/corner_top_left.png">
-            <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
-            </div>
-                <ul class="event-date-layout">
+              <div class="corners">
+                <img class="corner-top-left" src="/images/resources/corner_top_left.png">
+                <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
+              </div>
+              <ul class="event-date-layout">
                 {% for date in event.dates %}
                     <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                 {% endfor %}
-                </ul>
-            <div class="corners">
-            <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
-            <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
-            </div>
+              </ul>
+              <div class="corners">
+                <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
+                <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
+              </div>
             </div>
             <div class="card-body">
                 <div class="tarifs-galops-container bg-secondary">
                     <table class="tarifs-layout">
-                    <tr>
-                        <td  class="bg-secondary">- de 12 ans:</td><td class="bg-light"> {{ event.tarifMoinsDe12 }}€ </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-secondary">+ de 12 ans:</td><td class="bg-light"> {{ event.tarifPlusDe12 }}€ </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.tarifProprietaire }}€ </td>
-                    </tr>  
+                        <tr>
+                          <td  class="bg-secondary">- de 12 ans:</td><td class="bg-light"> {{ event.tarifMoinsDe12 }}€ </td>
+                        </tr>
+                        <tr>
+                          <td class="bg-secondary">+ de 12 ans:</td><td class="bg-light"> {{ event.tarifPlusDe12 }}€ </td>
+                        </tr>
+                        <tr>
+                          <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.tarifProprietaire }}€ </td>
+                        </tr>  
                     </table>
-                    <div class="galops-layout"><div class="bg-secondary galops-text">Galops:</div>
-                    <div class="bg-light galops-inner">
-                    {% for galop in event.galops %}
-                        <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
-                    {% endfor %}
-                    </div>
+                    <div class="galops-layout">
+                        <div class="bg-secondary galops-text">Galops:</div>
+                        <div class="bg-light galops-inner">
+                          {% for galop in event.galops %}
+                            <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
+                          {% endfor %}
+                        </div>
                     </div>
                 </div>
-              </div>
-            <img class="event-img-layout" src="/images/properties/{{ ((event.images | first).imageName) }}">
-            </br>
-            {{ event.texte }}
-            </br>
-        </div>
-        <div class="card-footer">
-            <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
-        {% if not app.user %}
-            <div>Connecter vous pour vous inscrire a l'evenement ! </div>
-        {% else %}
-            </br>
+                </br>
+                  {{ event.texte }}
+                </br>
+            </div>
+            <div class="card-footer">
+                {% if app.user %}
+                {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
+                <section class="">
+                    <div class="">
+                    {{ form_start(formAsso) }}
+                    
+                    <ul id="creneaux-fields-list"
+                            data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
+                            data-widget-tags="{{ '<li></li>'|e }}"
+                            data-widget-counter="{{ formAsso.children|length }}">
+                        {% for NbBenevole in formAsso.creneauxBenevoles %}
+                            <li>
+                                {{ form_errors(NbBenevole) }}
+                                {{ form_widget(NbBenevole) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <button type="button"
+                    class="add-another-collection-widget"
+                    data-list-selector="#creneaux-fields-list">Add another date</button>
 
-            {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
+                    </br>
+                    <button type="submit" class="btn btn-success index-more-button">Enregistrer</button>
+
+                    {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
+
+                    {{ form_end(formAsso) }}
+                    </div>
+                </section>
+                {% endif %}
+            {% endif %}
+
+            {% if is_granted('ROLE_ADMIN') %}
+                    {{ form_start(formDelete) }}
+                            <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+                    {{ form_end(formDelete) }}
+
+                    {{ form_start(formPrint) }}
+                    {{ form_end(formPrint) }}
+                    
+                    <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
+                    <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
+                    <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
+            {% endif %}  
+            </div>
+        </event>
+        <div id="controls" class="card bg-secondary event-controls">
+          <div class="bg-secondary arrow-container" onclick="showControls()"><div class="arrow"><p> < <br> < <br> < </p></div></div>
+          <div class="card-body bg-white">
+            <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
+            {% if not app.user %}
+              <div>Connecter vous pour vous inscrire a l'evenement ! </div>
+            {% else %}
+              </br>
+              {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
 
                 <div>Il n'y a plus de place restante pour cet évènement.</div>
 
-            {% else %}
+              {% else %}
 
                 <div>Inscription</div>
 
-                {% set bonGalop = false %}
+              {% set bonGalop = false %}
 
                 {% for galop in event.galops %}
                     {% if (app.user.galop.niveau >= galop.niveau) and (galop.niveau != -1) %}
@@ -160,54 +223,8 @@
                 {% endfor %}
 
             {% endif %}
-            </div>
-        </event>  
+          </div>  
+        </div>
     </section>
-
-    {% if app.user %}
-        {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
-        <HR width="50%" size="10" noshade />
-        <section class="events-layout big-screen mobile-layout asso-layout">
-            <div class="card mb-3 card-body">
-            {{ form_start(formAsso) }}
-            
-            <ul id="creneaux-fields-list"
-                    data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ formAsso.children|length }}">
-                {% for NbBenevole in formAsso.creneauxBenevoles %}
-                    <li>
-                        {{ form_errors(NbBenevole) }}
-                        {{ form_widget(NbBenevole) }}
-                    </li>
-                {% endfor %}
-            </ul>
-            
-            <button type="button"
-            class="add-another-collection-widget"
-            data-list-selector="#creneaux-fields-list">Add another date</button>
-
-            <button type="submit" class="btn btn-success">Enregistrer</button>
-
-            {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
-
-            {{ form_end(formAsso) }}
-            </div>
-        </section>
-        {% endif %}
-    {% endif %}
-
-    {% if is_granted('ROLE_ADMIN') %}
-             {{ form_start(formDelete) }}
-                    <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
-             {{ form_end(formDelete) }}
-
-             {{ form_start(formPrint) }}
-             {{ form_end(formPrint) }}
-             
-             <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
-             <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
-             <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
-    {% endif %}
 
 {% endblock %}
