@@ -127,6 +127,12 @@ class Event
         $this->videos = new ArrayCollection();
     }
 
+    function __clone()
+    {
+        $this->images = clone $this->images;
+        $this->videos = clone $this->videos;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

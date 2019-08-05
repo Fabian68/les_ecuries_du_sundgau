@@ -91,7 +91,7 @@
                 {% set bonGalop = false %}
 
                 {% for galop in event.galops %}
-                    {% if app.user.galop.niveau >= galop.niveau %}
+                    {% if (app.user.galop.niveau >= galop.niveau) and (galop.niveau != -1) %}
                         {%set bonGalop = true %}
                     {% endif %}
                 {% endfor %}
@@ -202,8 +202,12 @@
                     <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
              {{ form_end(formDelete) }}
 
-              {{ form_start(formPrint) }}
+             {{ form_start(formPrint) }}
              {{ form_end(formPrint) }}
+             
+             <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
+             <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
+             <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
     {% endif %}
 
 {% endblock %}

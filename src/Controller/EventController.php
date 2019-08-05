@@ -15,6 +15,9 @@ use App\Form\ParticipeType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
+use App\Form\EventEditType;
+use App\Form\AddPictureType;
+use App\Form\AddVideoType;
 use App\Entity\AttributMoyenPaiements;
 use App\Form\EventRegistrationTreatmentType;
 use App\Entity\UtilisateurMoyenPaiementEvent;
@@ -134,7 +137,7 @@ class EventController extends AbstractController
         }
 
         $form = $this->createForm(ParticipeType::class, $this->getUser());
-        if  ($event->getRepasPossible() == 1 || $event->getRepasPossible() == null)
+        if  ($event->getRepasPossible() == 1)
         {
             $form->add('ChoixRepas', ChoiceType::class, array(
                 "mapped" => false,
@@ -263,8 +266,14 @@ class EventController extends AbstractController
      */
     public function createEvents(Event $event = null, Request $request,ObjectManager $manager)
     {
+        $create = false;
         if(!$event) {
             $event = new Event();
+            $create = true;
+            $form = $this->createForm(EventCreateType::class, $event);
+        }
+        else {
+            $form = $this->createForm(EventEditType::class, $event);
         }
 
         $form = $this->createForm(EventCreateType::class, $event);
@@ -340,11 +349,20 @@ class EventController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('/general/createEvents.html.twig', [
-            'controller_name' => 'GeneralController',
-            'formEvent' => $form->createView()
+        if($create) {
+            return $this->render('/general/createEvents.html.twig', [
+                'controller_name' => 'GeneralController',
+                'formEvent' => $form->createView()
 
-        ]);
+            ]);
+        }
+        else {
+            return $this->render('/general/editEvent.html.twig', [
+                'controller_name' => 'GeneralController',
+                'formEvent' => $form->createView()
+
+            ]);
+        }
     }
 
      /**
@@ -385,6 +403,74 @@ class EventController extends AbstractController
         return $this->render('security/print_event.html.twig', [
             'event'=>$event,
             'UtilisateurMoyenPaiementEvent'=>$UtilisateurMoyenPaiementEvent
+        ]);  
+    }
+
+    /**
+     * @Route("/admin/evenement/{id}/ajouter_une_image", name="add_pictures")
+     */
+    public function addPictures(Event $event, Request $request, ObjectManager $manager)
+    {
+        $id = $event->getId();
+
+        $tmp = clone $event;
+
+        foreach ($tmp->getImages() as $image) {
+            $tmp->removeImage($image);
+        }
+
+        $form = $this->createForm(AddPictureType::class, $tmp);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($tmp->getImages() as $image) {
+                $event->addImage($image);
+                $image->setEvenement($event); 
+                $manager->persist($image);
+            }
+            $manager->persist($event);
+            $manager->flush();
+            return $this->redirectToRoute('event', array('id' => $id));
+        }
+
+        return $this->render('general/addPicture.html.twig', [
+                'controller_name' => 'EventController',
+                'formEvent' => $form->createView()
+        ]);  
+    }
+
+    /**
+     * @Route("/admin/evenement/{id}/ajouter_une_video", name="add_video")
+     */
+    public function addVideo(Event $event, Request $request, ObjectManager $manager)
+    {
+        $id = $event->getId();
+
+        $tmp = clone $event;
+
+        foreach ($tmp->getVideos() as $video) {
+            $tmp->removeVideo($video);
+        }
+
+        $form = $this->createForm(AddVideoType::class, $tmp);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($tmp->getVideos() as $video) {
+                $event->addVideo($video);
+                $video->setEvenement($event); 
+                $manager->persist($video);
+            }
+            $manager->persist($event);
+            $manager->flush();
+            return $this->redirectToRoute('event', array('id' => $id));
+        }
+
+        return $this->render('general/addVideo.html.twig', [
+                'controller_name' => 'EventController',
+                'formEvent' => $form->createView()
         ]);  
     }
 }
