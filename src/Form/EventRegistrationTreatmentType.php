@@ -13,6 +13,7 @@ class EventRegistrationTreatmentType extends AbstractType
     {
         $builder
             ->add('choixPrix')
+            ->add('signataire')
         ;
     }
 

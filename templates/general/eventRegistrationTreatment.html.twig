@@ -6,9 +6,17 @@
 <br>
 <br>
 <br>
-        {{dump(event)}}
+<br>
+<br>
+<br>
+<br>
+<div>En soummettant ce formulaire vous accepter d'être prélever pour le montant écris.</div>
+<div>Taif :plus12 {{event.tarifMoinsDe12}} , plus12,{{event.tarifPlusDe12}},proprietaire {{event.tarifProprietaire}}</div>
         {{ form_start(formEventRegistrationTreatment) }}
-        <div>Vous accepter de payer  {{ form_row(formEventRegistrationTreatment.choixPrix) }} montant par prélèvement.</div>   
+        <div>Je soussigné  {{ form_row(formEventRegistrationTreatment.signataire,{'label': ''}) }}accepte de payer  {{ form_row(formEventRegistrationTreatment.choixPrix,{'label': ''}) }} montant par prélèvement.</div>   
         <button type="submit" class="btn btn-success">Enregistrer</button>
         {{ form_end(formEventRegistrationTreatment) }}
+
+        {{ form_start(formCancel) }}
+        {{ form_end(formCancel) }}
 {% endblock %}

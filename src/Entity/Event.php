@@ -112,6 +112,8 @@ class Event
    
     private $choixPrix=0;
 
+    private $signataire='';
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -461,6 +463,17 @@ class Event
     {
         $this->choixPrix = $choixPrix;
 
+        return $this;
+    }
+
+    public function getSignataire(): ?string
+    {
+        return $this->signataire;
+    }
+
+    public function setSignataire(string $signataire): self
+    {
+        $this->signataire = $signataire;
         return $this;
     }
 

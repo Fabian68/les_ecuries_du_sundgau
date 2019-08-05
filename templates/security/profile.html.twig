@@ -58,7 +58,9 @@
           <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
           <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
           {% if app.user.verifiedMail != true %}
-          <div><a class=" btn bg-info profile-button" href="{{ path('security_verification_mail') }}">Verifier mail</a></div>
+            {{ form_start(formMailVerification) }}
+            {{ form_row(formMailVerification.mail_verification,{ 'label' : 'Envoyer mail verification compte'}) }}
+            {{ form_end(formMailVerification) }}
           {% endif %}
       {% endif %}
           {% if is_granted('ROLE_ADMIN') %}
@@ -72,7 +74,7 @@
                 {{ form_end(form) }}   
             {% elseif app.user.roles == ['ROLE_USER'] %}
                 {{ form_start(form) }}
-                  {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles'}) }}
+                {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles'}) }}
                 {{ form_end(form) }}
             {% endif %}    
       {% endif %}

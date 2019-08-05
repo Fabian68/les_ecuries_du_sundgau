@@ -26,7 +26,9 @@ class ModifyAccountType extends AbstractType
             ->add('telephone')
             ->add('galop', EntityType::class, [
                 'class'=> Galops::class,
-                'choice_label' => 'niveau'
+                'choice_label' => function ($galops) {
+                    return $galops->getDisplayNiveau();
+                }
             ])
             ->add('imageFile',FileType::class,[
                 'required' =>false

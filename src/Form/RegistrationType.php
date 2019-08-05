@@ -25,7 +25,9 @@ class RegistrationType extends AbstractType
             ->add('nom')
             ->add('galop', EntityType::class, [
                 'class'=> Galops::class,
-                'choice_label' => 'niveau'
+                'choice_label' => function ($galops) {
+                    return $galops->getDisplayNiveau();
+                }
             ])
             ->add('imageFile',FileType::class,[
                 'required' =>false
