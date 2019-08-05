@@ -95,12 +95,12 @@ class EventController extends AbstractController
                 $paiement = $this->getDoctrine()
                 ->getRepository(AttributMoyenPaiements::class)
                 ->find($paiement);
+                $event->addUtilisateur($user);
+                $user->addParticipe($event);
                 if( $choixRepas == true ) {
                     $event->addUtilisateursMange($user);
                     $user->addMange($event);
                 }
-                $event->addUtilisateur($user);
-                $user->addParticipe($event);
                 $userPayEvent->setAttributMoyenPaiement($paiement);
                 $userPayEvent->setUtilisateur($user);
                 $userPayEvent->setEvent($event);
@@ -157,7 +157,14 @@ class EventController extends AbstractController
                              ->find($idpaiement);
             $userPayEvent = new UtilisateurMoyenPaiementEvent();
             dump($paiement);
-            $choixRepas = $form->get("ChoixRepas")->getData();
+            if  ($event->getRepasPossible() == 1 ) {
+                $choixRepas = $form->get("ChoixRepas")->getData();
+                if( $choixRepas == true ) {
+                    $event->addUtilisateursMange($user);
+                    $user->addMange($event);
+            }else{
+                $choixRepas = false;
+            }
             if($paiement->getId() == 1){  
                 $session->set('paiement', $paiement);
                 $session->set('userPayEvent', $userPayEvent);
