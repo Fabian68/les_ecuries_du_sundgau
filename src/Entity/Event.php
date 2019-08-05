@@ -109,6 +109,11 @@ class Event
      */
     private $videos;
 
+   
+    private $choixPrix=0;
+
+    private $signataire='';
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -120,6 +125,12 @@ class Event
         $this->creneauxBenevoles = new ArrayCollection();
         $this->utilisateursMange = new ArrayCollection();
         $this->videos = new ArrayCollection();
+    }
+
+    function __clone()
+    {
+        $this->images = clone $this->images;
+        $this->videos = clone $this->videos;
     }
 
     public function getId(): ?int
@@ -443,6 +454,27 @@ class Event
         return $this;
     }
 
+    public function getChoixPrix(): ?int
+    {
+        return $this->choixPrix;
+    }
 
+    public function setChoixPrix(int $choixPrix): self
+    {
+        $this->choixPrix = $choixPrix;
+
+        return $this;
+    }
+
+    public function getSignataire(): ?string
+    {
+        return $this->signataire;
+    }
+
+    public function setSignataire(string $signataire): self
+    {
+        $this->signataire = $signataire;
+        return $this;
+    }
 
 }

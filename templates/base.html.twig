@@ -226,19 +226,19 @@
         @media screen and (max-width: 850px){
             .corner-top-left{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .corner-bottom-left{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .corner-bottom-right{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .corner-top-right{
                 height: 40% !important;
-                width: 80% !important;
+                width: 100% !important;
             }
             .event-image{
                 flex: 1 !important;
@@ -842,6 +842,61 @@
             overflow: auto;
             padding-left: 0.5em;
             padding-right: 1em;
+        }
+        .event-layout{
+            width: 100%;
+            margin-top: 8em;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+        }
+        .event-info{
+            flex: 2;
+            margin: 2em;
+        }
+        .event-thumbnail{
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            flex: 1;
+            margin: 2em;
+            margin-left: -1em;
+            transition: all .4s ease-in-out;
+        }
+        .event-thumbnail-image{
+            object-fit: contain;
+            width: 100%;
+        }
+        .thumbnail-container{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .event-controls{
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            flex: 1;
+            margin: 2em;
+            margin-right: -25%;
+            transition: all .4s ease-in-out;
+        }
+        .arrow-container{
+            display: flex;
+            align-items: center;
+        }
+        .arrow{
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .arrow p{
+            margin: auto !important;
+            text-align: center;
+            font-size: 1.5em;
+            color: white;
         }
         </style>
         {% block stylesheets %}{% endblock %}

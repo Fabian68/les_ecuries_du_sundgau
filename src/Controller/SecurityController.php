@@ -52,6 +52,29 @@ class SecurityController extends AbstractController
                 'notice',
                 'Votre compte a bien été crée . '
             );
+
+            $token = $tokenGenerator->generateToken();
+            try{
+                $user->setValidationEmailToken($token);
+                $manager->flush();
+            } catch (\Exception $e) {
+                $this->addFlash('warning', $e->getMessage());
+                return $this->redirectToRoute('home');
+            }
+
+            $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $message = (new \Swift_Message('Verification mail'))
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    " Voici le lien pour valdier votre email : " . $url,
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
+            $this->addFlash('notice', 'Mail de verification envoyé');  
             return $this->redirectToRoute('security_login');
         }
          $user->setImageFile(null);//si le formulaire est invalide la valeur doit aussi être vidé
@@ -86,22 +109,56 @@ class SecurityController extends AbstractController
      /**
      * @Route("/profil/modifier",name="security_profile_modify")
      */
-    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager){
+    public function profile_modify(UserInterface $user ,Request $request,ObjectManager $manager,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator){
 
-            $form = $this->createForm(ModifyAccountType::class,$user);
-    //   $user=$this->getUser();
+        $session = $request->getSession();
+
+        $form = $this->createForm(ModifyAccountType::class,$user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user->setUpdatedAt(new \DateTime());
-        
-            $manager->persist($user);
-            $manager->flush();
-            $user->setImageFile(null);
+           
             $this->addFlash(
                 'notice',
                 'Votre compte a bien été modifié .'
             );
+            $mail = $session->get('mail');
+            if($user->getEmail()!=$mail){
+                $user->setVerifiedMail(false);
+                $token = $tokenGenerator->generateToken();
+                try{
+                    $user->setValidationEmailToken($token);
+                    $manager->flush();
+                } catch (\Exception $e) {
+                    $this->addFlash('warning', $e->getMessage());
+                    return $this->redirectToRoute('home');
+                }
+    
+                $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+    
+                $message = (new \Swift_Message('Verification mail'))
+                    ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        " Voici le lien pour valdier votre email : " . $url,
+                        'text/html'
+                    );
+    
+                $mailer->send($message);
+    
+                $this->addFlash('notice', 'Mailde verification du nouveau mail envoyer');   
+            }
+            $manager->persist($user);
+            $manager->flush();
+            $user->setImageFile(null);
+            $session->clear();
             return $this->redirectToRoute('security_profile');
+        }else{
+            if($session->has('mail')==false){
+            $mail=$user->getEmail();
+            $session->set('mail', $mail);
+            dump($mail);
+            }
         }
         $user->setImageFile(null);
         return $this->render('security/profile_modify.html.twig', [
@@ -124,7 +181,6 @@ class SecurityController extends AbstractController
                 // Gérer l'erreur
                 $form->get('confirm_oldMotDePasse')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
             }else{
-
             $hash = $encoder->encodePassword($user,$user->nouveau_motDePasse);
             $user->setMotDePasse($hash);
             $user->setUpdatedAt(new \DateTime());
@@ -146,13 +202,13 @@ class SecurityController extends AbstractController
      * @Route("/profil",name="security_profile")
      * @Route("/profil/{ident}",name="security_profile_withid")
      */
-    public function profile($ident=null,ObjectManager $manager,Request $request){
+    public function profile($ident=null,ObjectManager $manager,Request $request, UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator ): Response
+    {
         $user=new Utilisateur();
 
         $form = $this->createFormBuilder()
         ->add('benevole', SubmitType::class)
         ->getForm();
-
         $form->handleRequest($request);
 
         if($ident==null){
@@ -161,8 +217,7 @@ class SecurityController extends AbstractController
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
             $user=$user = $manager->getRepository(Utilisateur::class)->findOneById($ident);
         }
-
-        if($form->isSubmitted()){
+        if($form->isSubmitted()&&$form->isValid()){
             
             if($user->getRoles() == array('ROLE_BENEVOLE')){
                 $user->setRoles(array('ROLE_USER'));
@@ -175,9 +230,40 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security_profile'); 
         }
         
+        $formMailVerification = $this->createFormBuilder()
+        ->add('mail_verification', SubmitType::class)
+        ->getForm();
+        $formMailVerification->handleRequest($request);
+        if($formMailVerification->isSubmitted() && $formMailVerification->isValid()) { 
+
+            $token = $tokenGenerator->generateToken();
+            try{
+                $user->setValidationEmailToken($token);
+                $manager->flush();
+            } catch (\Exception $e) {
+                $this->addFlash('warning', $e->getMessage());
+                return $this->redirectToRoute('home');
+            }
+
+            $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $message = (new \Swift_Message('Verification mail'))
+                ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    " Voici le lien pour valdier votre email : " . $url,
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
+            $this->addFlash('notice', 'Mail envoyé');    
+        }
+
         return $this->render('security/profile.html.twig',[
             'user'=>$user,
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
+            'formMailVerification'=>$formMailVerification->createView()
         ]);
     }
 
@@ -289,85 +375,15 @@ class SecurityController extends AbstractController
             ]);
         }
     }
-
-    /**
-     * @Route("/verifier_mail", name="security_verification_mail")
-     */
-    public function verificationEmail(ObjectManager $manager,Request $request,UserPasswordEncoderInterface $encoder,\Swift_Mailer $mailer,TokenGeneratorInterface $tokenGenerator ): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-        $user = $this->getUser();
-        if($user != null){
-            $form = $this->createFormBuilder()
-        ->add('save', SubmitType::class, ['label' => ' Envoyer mail verification '])
-        ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-
-                $token = $tokenGenerator->generateToken();
-        
-                try{
-                    $user->setValidationEmailToken($token);
-                    $manager->flush();
-                } catch (\Exception $e) {
-                    $this->addFlash('warning', $e->getMessage());
-                    return $this->redirectToRoute('home');
-                }
-
-                $url = $this->generateUrl('security_verification_mail_validation', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
-
-                $message = (new \Swift_Message('Verification mail'))
-                    ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
-                    ->setTo($user->getEmail())
-                    ->setBody(
-                        " Voici le lien pour valdier votre email : " . $url,
-                        'text/html'
-                    );
-
-                $mailer->send($message);
-
-                $this->addFlash('notice', 'Mail envoyé');
-            
-        
-
-                return $this->redirectToRoute('home');
-            }
-            else {
-
-            return $this->render('security/verification_mail.html.twig', [
-                'form'=>$form->createView()
-            ]);       
-        }
-    } else {
-        return $this->render('security/verification_mail.html.twig', [
-            form
-        ]);
-    }
-}
     /**
      * @Route("/verifier_mail_validation/{token}", name="security_verification_mail_validation")
      */
     public function verificationMailValidation(ObjectManager $manager,Request $request, string $token, UserPasswordEncoderInterface $encoder)
     {
- 
-
         $user = $manager->getRepository(Utilisateur::class)->findOneByValidationEmailToken($token);//permet de ne pas utiliser le token d'une autre personne
-
         if($user != null){
-
-        $form = $this->createFormBuilder()
-        ->add('save', SubmitType::class, ['label' => ' Confirmer '])
-        ->getForm();
-
-        $form->handleRequest($request);
-    
-        if($form->isSubmitted() && $form->isValid()) { 
-           
             $user->setValidationEmailToken(null);
             $user->setVerifiedMail(true);
-          
             $manager->persist($user);
             $manager->flush();
             $this->addFlash(
@@ -375,53 +391,12 @@ class SecurityController extends AbstractController
                 'Votre mail est verifié .'
             );
             return $this->redirectToRoute('home');
-        }else {
- 
-            return $this->render('security/verification_mail_validation.html.twig', [
-                'token' => $token,
-                'form'=>$form->createView()
-            ]);
-        }
-
-        }else {
+        }else{
             $this->addFlash(
                 'notice',
                 'Token introuvable'
             );
-            return $this->redirectToRoute('home');
         }
- 
-    }
-
-     /**
-     * @Route("/admin/supprimer_evenement/{id}", name="security_delete_event")
-     */
-    public function deleteEvent($id,ObjectManager $manager)
-    {
-        $event = $manager->getRepository(Event::class)->findOneById($id);
-        foreach ($event->getDates() as $date) {
-            $manager->remove($date); 
-        }
-        $manager->remove($event); 
-        $manager->flush();
-        $this->addFlash(
-            'notice',
-            'Votre évènement a bien été supprimer.'
-        );
         return $this->redirectToRoute('home');
-    }
-
-     /**
-     * @Route("/admin/imprimer_evenement/{id}", name="security_print_event")
-     */
-    public function printPage($id,ObjectManager $manager)
-    {
-        $event = $manager->getRepository(Event::class)->findOneById($id);
-        $UtilisateurMoyenPaiementEvent=$manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findByEvent($event);
-
-        return $this->render('security/print_event.html.twig', [
-            'event'=>$event,
-            'UtilisateurMoyenPaiementEvent'=>$UtilisateurMoyenPaiementEvent
-        ]);  
     }
 }
