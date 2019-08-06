@@ -499,7 +499,8 @@ class EventController extends AbstractController
 
         return $this->render('general/addPicture.html.twig', [
                 'controller_name' => 'EventController',
-                'formEvent' => $form->createView()
+                'formEvent' => $form->createView(),
+                'event'=>$event
         ]);  
     }
 
@@ -536,7 +537,8 @@ class EventController extends AbstractController
 
         return $this->render('general/addVideo.html.twig', [
                 'controller_name' => 'EventController',
-                'formEvent' => $form->createView()
+                'formEvent' => $form->createView(),
+                'event'=>$event
         ]);  
     }
 }
