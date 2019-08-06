@@ -53,7 +53,7 @@
               </div>
               <ul class="event-date-layout">
                 {% for date in event.dates %}
-                    <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
+                    <li class="event-text"><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'd MMMM') }}</div>, <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div>-<div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                 {% endfor %}
               </ul>
               <div class="corners">
@@ -76,18 +76,20 @@
                     </table>
                     <div class="galops-layout">
                         <div class="bg-secondary galops-text">Galops:</div>
-                        <div class="bg-light galops-inner">
+                        <div class="bg-light galops-inner event-text">
                           {% for galop in event.galops %}
-                            <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
+                            <div class="event-galop-layout"><p class="btn bg-warning galop-text">{{galop.niveau}}</p></div>
                           {% endfor %}
                         </div>
                     </div>
                 </div>
                 </br>
-                  {{ event.texte }}
+                  <div class="event-body-text">
+                    {{ event.texte }}
+                  </div>
                 </br>
             </div>
-            <div class="card-footer">
+            <div class="card-footer event-body-text">
                 {% if app.user %}
                 {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
                 <section class="">
@@ -137,7 +139,7 @@
         </event>
         <div id="controls" class="card bg-secondary event-controls">
           <div class="bg-secondary arrow-container" onclick="showControls()"><div class="arrow"><p> < <br> < <br> < </p></div></div>
-          <div class="card-body bg-white">
+          <div class="card-body event-body-text bg-white">
             <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
             {% if not app.user %}
               <div>Connecter vous pour vous inscrire a l'evenement ! </div>
