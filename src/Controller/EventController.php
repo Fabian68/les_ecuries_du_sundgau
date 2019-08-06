@@ -404,7 +404,8 @@ class EventController extends AbstractController
                 return $this->redirectToRoute('createEvent');
             }else{    
                 foreach ($event->getImages() as $image) {
-                    $image->setEvenement($event); 
+                    $image->setEvenement($event);
+                    $image->setImageFile(null); 
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
