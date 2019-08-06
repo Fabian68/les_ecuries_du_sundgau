@@ -129,6 +129,10 @@ class Event
         $this->creneauxBenevoles = new ArrayCollection();
         $this->utilisateursMange = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->tarifMoinsDe12=0.0;
+        $this->tarifPlusDe12=0.0;
+        $this->tarifProprietaire=0.0;
+        $this->nbMaxParticipants=0;
     }
 
     function __clone()

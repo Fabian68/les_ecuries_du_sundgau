@@ -4,31 +4,33 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Repas;
-use App\Entity\Images;
 use App\Entity\Video;
+use App\Entity\Galops;
+use App\Entity\Images;
 use App\Form\EventType;
 use App\Form\RepasType;
 use App\Form\ImagesType;
+use App\Form\AddVideoType;
 use App\Form\BenevoleType;
 use App\Form\AssoEventType;
+use App\Form\EventEditType;
 use App\Form\ParticipeType;
+use App\Form\AddPictureType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
 use App\Form\DatesEvenementsType;
-use App\Form\EventEditType;
-use App\Form\AddPictureType;
-use App\Form\AddVideoType;
+use App\Form\EventDiversCreateType;
 use App\Entity\AttributMoyenPaiements;
 use App\Form\EventRegistrationTreatmentType;
 use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EventController extends AbstractController
@@ -341,7 +343,7 @@ class EventController extends AbstractController
                     $manager->persist($video);*/
                 }
             }
-
+            $event->setDivers(false);                
             $manager->persist($event);
             $manager->flush();
             $this->addFlash(
@@ -365,6 +367,65 @@ class EventController extends AbstractController
 
             ]);
         }
+    }
+
+    /**
+     * @Route("/admin/creationEvenementDivers", name="createEventDivers")
+     */
+    public function createEventsDivers(Request $request,ObjectManager $manager)
+    {
+        $event = new Event();
+        $formEventDiversCreate = $this->createForm(EventDiversCreateType::class, $event);
+        $formDate = $this->createFormBuilder()
+        ->add('date', DateTimeType::class, ['data' => new \DateTime("now"),'label' => 'Date'])
+        ->getForm();
+        
+        $formEventDiversCreate->handleRequest($request);
+        if ($formEventDiversCreate->isSubmitted() && $formEventDiversCreate->isValid()) { 
+           
+            $event->setDivers(true);
+
+            $galop = $manager->getRepository(Galops::class)->findOneByNiveau(-1);
+            $event->addGalop($galop);
+            $galop->addEvenement($event);
+
+            $date= $formDate->get("date")->getData();
+            $dateEvenement = new DatesEvenements();
+            $dateEvenement->setDateDebut($date);
+            $dateEvenement->setDateFin($date);
+            $dateEvenement->setEvent($event);
+            $event->addDate($dateEvenement);
+
+            if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
+                $this->addFlash(
+                    'warning',
+                    'Vous devez ajouter au moins une image ou une video !'
+                );
+                return $this->redirectToRoute('createEvent');
+            }else{    
+                foreach ($event->getImages() as $image) {
+                    $image->setEvenement($event); 
+                }
+                foreach ($event->getVideos() as $video) {
+                    $choix = explode("=",$video->getLien());
+                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setEvenement($event);
+                }
+            }
+            $manager->persist($event);
+            $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Votre évènement a bien été crée .'
+            );
+            return $this->redirectToRoute('home');
+        }    
+        return $this->render('/event/createEventsDivers.html.twig', [
+        'controller_name' => 'EventController',
+        'formEventDiversCreate' => $formEventDiversCreate->createView(),
+        'formDate' => $formDate->createView()
+        ]);
+
     }
 
      /**

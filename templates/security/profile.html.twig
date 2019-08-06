@@ -65,9 +65,10 @@
       {% endif %}
           {% if is_granted('ROLE_ADMIN') %}
               <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>
+              <div><a class=" btn bg-info profile-button" href="{{ path('createEventDivers') }}">Création évènement divers</a></div>
               <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
               <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div
-              <div><a class=" btn bg-info profile-button" href="{{ path('security_show_all_users') }}">Liste des utilisateurs</a></div>     
+              <div><a class=" btn bg-info profile-button" href="{{ path('security_show_all_users') }}">Liste des utilisateurs</a></div>    
           {% endif %}
             {% if app.user.roles == ['ROLE_BENEVOLE'] %}
                 {{ form_start(form) }}
