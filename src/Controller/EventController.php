@@ -269,7 +269,6 @@ class EventController extends AbstractController
             $form = $this->createForm(EventEditType::class, $event);
         }
 
-        $form = $this->createForm(EventCreateType::class, $event);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
             if(count($event->getDates()) == 0 ){
