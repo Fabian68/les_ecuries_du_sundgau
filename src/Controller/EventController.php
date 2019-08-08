@@ -19,6 +19,7 @@ use App\Form\ParticipeType;
 use App\Form\AddPictureType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
+use App\Entity\CreneauxBenevoles;
 use App\Form\DatesEvenementsType;
 use App\Form\EventDiversCreateType;
 use App\Entity\AttributMoyenPaiements;
@@ -271,12 +272,32 @@ class EventController extends AbstractController
     {
         $event = $manager->getRepository(Event::class)->findOneById($idEvent);
         $user = $manager->getRepository(Utilisateur::class)->findOneById($idUser);
+        $UtilisateursMoyenPaiementEvent = $manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findOneBy(array('event'=>$event,'utilisateur'=>$user));
+        dump($UtilisateursMoyenPaiementEvent);
+        $manager->remove($UtilisateursMoyenPaiementEvent);
 
         $event->removeUtilisateur($user); 
         $manager->flush();
         $this->addFlash(
             'notice',
             'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer de l\'évènment '  . $event->getTitre()
+        );
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
+    }
+
+    /**
+     * @Route("/evenement/{idEvent}/creneau/{idCreneau}/retirer_utilisateur/{idUser}", name="remove_user_on_creneau")
+     */
+    public function removeUserOnCreneau($idCreneau,$idUser,$idEvent,ObjectManager $manager)
+    {
+        $creneau = $manager->getRepository(CreneauxBenevoles::class)->findOneById($idCreneau);
+        $user = $manager->getRepository(Utilisateur::class)->findOneById($idUser);
+
+        $creneau->removeUtilisateur($user); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer du creneau ' 
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }

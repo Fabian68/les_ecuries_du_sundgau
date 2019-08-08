@@ -19,10 +19,10 @@
                 </TH>
                 {% for ump in UtilisateurMoyenPaiementEvent %}
                     {% if ump.utilisateur == user %}
-                        {% if ump.attributMoyenPaiements.id == 1 %}
+                        {% if ump.attributMoyenPaiement.id == 1 %}
                             <TH></TH>
                             <TH>X</TH>
-                        {% elseif ump.attributMoyenPaiements.id == 2 %}
+                        {% elseif ump.attributMoyenPaiement.id == 2 %}
                             <TH>X</TH>
                             <TH></TH>
                         {% endif %}

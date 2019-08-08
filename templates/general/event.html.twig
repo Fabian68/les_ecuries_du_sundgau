@@ -190,7 +190,7 @@
             {% for utilisateur in event.utilisateurs %}
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
-                 {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sur de supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
                 {% endif %}
                 </br>
@@ -213,19 +213,20 @@
                         </br>
                     {% endfor %}
                 {% endif %}
-                    </br>
-
+                    </br> 
                 {% for creneaux in event.creneauxBenevoles %}
                     <div>Benevole pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
                     {% for utilisateur in creneaux.utilisateurs %}
                         {{ utilisateur.prenom }}
                         {{ utilisateur.nom}}
-                        </br>
+                        {% if is_granted('ROLE_ADMIN_ASSO') %}
+                            <a href={{ path('remove_user_on_creneau',{'idCreneau' : creneaux.id ,'idUser' : utilisateur.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de supprimer cet bénévole de ce créneaux')">Retirer cet utilisateur</a>
+                        {% endif %}
+                            </br>
                     {% endfor %}
                     </br>
                 {% endfor %}
-
-            {% endif %}
+            {% endif %}           
           </div>  
         </div>
     </section>
