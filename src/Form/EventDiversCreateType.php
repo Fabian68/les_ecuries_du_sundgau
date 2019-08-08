@@ -8,6 +8,7 @@ use App\Form\ImagesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EventDiversCreateType extends AbstractType
@@ -16,6 +17,7 @@ class EventDiversCreateType extends AbstractType
     {
         $builder
             ->add('titre')
+            ->add('dateDivers', DateTimeType::class, ['data' => new \DateTime("now"),'label' => 'Date'])
             ->add('texte')
             ->add('images', CollectionType::class,[
                 'entry_type' => ImagesType::class,

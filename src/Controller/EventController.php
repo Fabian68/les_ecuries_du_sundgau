@@ -413,14 +413,8 @@ class EventController extends AbstractController
     {
         $event = new Event();
         $formEventDiversCreate = $this->createForm(EventDiversCreateType::class, $event);
-       
-
-        $formDate = $this->createFormBuilder();
-        $formDate->add('date', DateTimeType::class, ['data' => new \DateTime("now"),'label' => 'Date']);
-        $formDate->getForm();
         
         $formEventDiversCreate->handleRequest($request);
-       // $formDate->handleRequest($request);
         if ($formEventDiversCreate->isSubmitted() && $formEventDiversCreate->isValid()) { 
            
             $event->setDivers(true);
@@ -429,7 +423,7 @@ class EventController extends AbstractController
             $event->addGalop($galop);
             $galop->addEvenement($event);
 
-            $date= $formDate->get("date")->getData();
+            $date= $event->getDateDivers();
             $dateEvenement = new DatesEvenements();
             $dateEvenement->setDateDebut($date);
             $dateEvenement->setDateFin($date);
@@ -466,8 +460,7 @@ class EventController extends AbstractController
         }    
         return $this->render('/event/createEventsDivers.html.twig', [
         'controller_name' => 'EventController',
-        'formEventDiversCreate' => $formEventDiversCreate->createView(),
-        'formDate' => $formDate->createView()
+        'formEventDiversCreate' => $formEventDiversCreate->createView()
         ]);
 
     }
