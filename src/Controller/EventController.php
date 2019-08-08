@@ -413,11 +413,14 @@ class EventController extends AbstractController
     {
         $event = new Event();
         $formEventDiversCreate = $this->createForm(EventDiversCreateType::class, $event);
-        $formDate = $this->createFormBuilder()
-        ->add('date', DateTimeType::class, ['data' => new \DateTime("now"),'label' => 'Date'])
-        ->getForm();
+       
+
+        $formDate = $this->createFormBuilder();
+        $formDate->add('date', DateTimeType::class, ['data' => new \DateTime("now"),'label' => 'Date']);
+        $formDate->getForm();
         
         $formEventDiversCreate->handleRequest($request);
+       // $formDate->handleRequest($request);
         if ($formEventDiversCreate->isSubmitted() && $formEventDiversCreate->isValid()) { 
            
             $event->setDivers(true);
@@ -442,7 +445,7 @@ class EventController extends AbstractController
             }else{    
                 foreach ($event->getImages() as $image) {
                     $image->setEvenement($event);
-                    $image->setImageFile(null); 
+                    //$image->setImageFile(null); 
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
@@ -452,6 +455,9 @@ class EventController extends AbstractController
             }
             $manager->persist($event);
             $manager->flush();
+            foreach ($event->getImages() as $image) {
+                $image->setImageFile(null); 
+            }
             $this->addFlash(
                 'notice',
                 'Votre évènement a bien été crée .'
