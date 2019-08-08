@@ -190,6 +190,9 @@
             {% for utilisateur in event.utilisateurs %}
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
+                 {% if is_granted('ROLE_ADMIN') %}
+                    <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sur de supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
+                {% endif %}
                 </br>
             {% endfor %}
 

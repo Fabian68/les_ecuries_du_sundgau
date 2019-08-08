@@ -12,6 +12,7 @@ use App\Form\RepasType;
 use App\Form\ImagesType;
 use App\Form\AddVideoType;
 use App\Form\BenevoleType;
+use App\Entity\Utilisateur;
 use App\Form\AssoEventType;
 use App\Form\EventEditType;
 use App\Form\ParticipeType;
@@ -263,7 +264,22 @@ class EventController extends AbstractController
         ]);
     }
 
-   
+    /**
+     * @Route("/admin/evenement/{idEvent}/retirer_utilisateur/{idUser}", name="remove_user_on_event")
+     */
+    public function removeUserOnEvent($idEvent,$idUser,ObjectManager $manager)
+    {
+        $event = $manager->getRepository(Event::class)->findOneById($idEvent);
+        $user = $manager->getRepository(Utilisateur::class)->findOneById($idUser);
+
+        $event->removeUtilisateur($user); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer de l\'évènment '  . $event->getTitre()
+        );
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
+    }
     /**
      * @Route("/admin/creationEvenement", name="createEvent")
      * @Route("/admin/evenement/{id}/edit", name="editEvent")
