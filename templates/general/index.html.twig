@@ -34,7 +34,7 @@
       <div class="carousel-item {% if active == 'active' %}{{ active }}{% set active = '' %}{% endif %}">
       <div class="carousel-pusher"></div>
       {% endif %}
-        <img class="image-thumbnail" src="/images/properties/{{ image.imageName }}">
+        <img class="image-thumbnail" src="{{ (vich_uploader_asset((image),'imageFile')) | imagine_filter('my_thumb') }}">
       {% if var % 5 == 4 %}</div>{% endif %}
       {% set var = var + 1 %}
       {% set var = var % 5 %}
@@ -55,18 +55,19 @@
 <section class="events-layout big-screen mobile-layout">
 
     {% for event in events %}
-      <event class="card mb-3 event-element">
+    <a class="clickable-event event-element" href="{{ path('event', {'id' : event.id }) }}">
+      <event class="card mb-3">
         <div class="event-outer">
           <div class="event-image">
             <div class="index-img-layout bg-secondary">
-              <img class="event-image-inner" src="/images/properties/{{ ((event.images | first).imageName) }}">
+              <img class="event-image-inner" src="{{ (vich_uploader_asset((event.images | first),'imageFile')) | imagine_filter('my_thumb') }}">
             </div>
           </div>
-          <div class="event-content">
-            <div class="event-title bg-light">
+          <div class="event-content bg-light">
+            <div class="event-title index-title-wrapper">
               <h3 class="index-event-title mobile-title">{{ event.titre }}</h2>
             </div>
-            <div class="card-subtitle bg-event-date event-date">
+            <div class="bg-event-date date-container-wrapper event-date">
               <div class="corners">
                 <img class="corner-top-left" src="/images/resources/corner_top_left.png">
                 <img class="corner-bottom-left" src="/images/resources/corner_bottom_left.png">
@@ -75,7 +76,7 @@
                 <ul class="event-date-layout">
                 {% for date in event.dates %}
                   {% if loop.index < 4 %}
-                  <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'd MMMM') }}</div>, <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div>-<div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div>{% if loop.last == false and loop.index == 3 %} ...{% endif %}</li>
+                  <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM') }}</div>{% if loop.last == false and loop.index == 3 %} ...{% endif %}</li>
                   {% endif %}
                 {% endfor %}
                 </ul>
@@ -93,13 +94,11 @@
                 {% endfor %}
                 </div>
               </div>
-              <div>
-                <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-primary index-more-button">s'inscrire</a>
-              </div>
             </div>
           </div>
         </div>
       </event>
+    </a>
     {% endfor %}
 
 </section>

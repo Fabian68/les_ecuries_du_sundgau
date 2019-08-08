@@ -137,8 +137,6 @@
 
         .bg-event-date{
             background-color: #f4f957 !important;
-            display: flex;
-            justify-content: space-between;
         }
         .event-container{
             display: flex;
@@ -210,9 +208,11 @@
             margin-bottom: 1.3em;
             padding: 0.2em;
             align-items: center;
+            margin-left: -1.4em;
+            margin-right: -1.4em;
         }
         .tarifs-layout{
-            flex: 2;
+            flex: 4;
             min-width: 14em !important;
             margin-bottom: 0 !important;
         }
@@ -382,6 +382,9 @@
             .map-layout{
                 margin-top: 2em !important;
             }
+            .date-container-wrapper{
+                max-height: 4.5em;
+            }
         }
         .header-custom{
             top: 0;
@@ -448,6 +451,12 @@
         }
         .event-date{
             flex: 5;
+            display: flex;
+            justify-content: space-between;
+        }
+        .event-corners{
+            display: flex;
+            justify-content: space-between;
         }
         .event-galops{
             flex: 3;
@@ -466,8 +475,12 @@
         }
         .index-event-title{
             font-size: 2em;
-            padding-top: 0.1em !important;
+            padding-top: 0.2em !important;
             padding-bottom: 0.3em !important;
+        }
+        .index-title-wrapper{
+            max-height: 5.5em !important;
+            margin-bottom: 0.5em !important;
         }
         .index-more-button{
             text-align: right;
@@ -510,14 +523,16 @@
         .galop-layout:hover{
             color: white !important;
         }
+        .event-galops-layout{
+            min-width: 5em;
+            min-height: 7em;
+        }
         .galops-layout{
             flex: 2;
             display: flex;
             flex-direction: column;
             text-align: left;
             align-content: center;
-            min-width: 5em;
-            min-height: 7em;
         }
         .galops-text{
             flex: 1;
@@ -949,6 +964,17 @@
         .event-body-text{
             font-size: 1.2em;
         }
+        .clickable-event{
+            text-decoration: none !important;
+        }
+        @media screen and (max-width: 991px){
+            .navtext > ul > li > a{
+                font-size: 2em !important;
+            }
+            .navlogo > ul > li > a > img{
+                width: 1em !important;
+            }   
+        }
         </style>
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
@@ -962,7 +988,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
+        <div class="collapse navbar-collapse navtext navlogo" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item nav-item-custom">
                 <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('home') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/home.png" alt="home"> Accueil<span class="sr-only">(current)</span></a>

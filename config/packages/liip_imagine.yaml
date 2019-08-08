@@ -1,0 +1,22 @@
+# See dos how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+
+    filter_sets:
+
+        # the name of the "filter set"
+        # | imagine_filter('my_thumb') dans twig 
+        my_thumb:
+
+            # adjust the image quality to 75%
+            quality: 95
+
+            # list of transformations to apply (the "filters")
+            filters:
+
+                # create a thumbnail: set size to 320x180 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail: { size: [320, 180], mode: outbound }
+
+                # create a 2px black border: center the thumbnail on a black background
+                # 4px larger to create a 2px border around the final image
+                #background: { size: [124, 94], position: center, color: '#000000' }

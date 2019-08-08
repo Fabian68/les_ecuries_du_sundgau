@@ -20,9 +20,11 @@ class DatesEvenementsType extends AbstractType
         $builder
             ->add('dateDebut', DateTimeType::class,[
                 'data' => new \DateTime("now"),
+                'label' => 'Jour et horaire de début',
             ])
             ->add('dateFin', DateTimeType::class,[
                 'data' => new \DateTime("now"),
+                'label' => 'Horaire de fin',
             ]);
     }
 

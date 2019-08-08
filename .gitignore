@@ -51,3 +51,7 @@
 # Embedded web-server pid file
 /.web-server-pid
 .env
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
