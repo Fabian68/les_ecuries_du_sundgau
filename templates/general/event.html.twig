@@ -56,7 +56,7 @@
                       <li class="event-text"><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'd MMMM') }}</div>, <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div>-<div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                   {% endfor %}
                 </ul>
-                <div class="corners">
+                <div class="corners bg-event-date event-corners">
                   <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
                   <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
                 </div>
@@ -78,7 +78,9 @@
                         <div class="bg-secondary galops-text">Galops:</div>
                         <div class="bg-light galops-inner event-text">
                           {% for galop in event.galops %}
+                            {% if not (galop.niveau == -1) %}
                             <div class="event-galop-layout"><p class="btn bg-warning galop-text">{{galop.niveau}}</p></div>
+                            {% endif %}
                           {% endfor %}
                         </div>
                     </div>
