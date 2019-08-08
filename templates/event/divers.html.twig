@@ -1,13 +1,65 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+        <event class="card mb-3 event-info divers-layout">
+            <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
+            <div class="card-body">
+                </br>
+                  <div class="event-body-text">
+                    {{ event.texte }}
+                  </div>
+                </br>
+            </div>
+            <div class="card-footer event-body-text">
+                {% if app.user %}
+                {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
+                <section class="">
+                    <div class="">
+                    {{ form_start(formAsso) }}
+                    
+                    <ul id="creneaux-fields-list"
+                            data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
+                            data-widget-tags="{{ '<li></li>'|e }}"
+                            data-widget-counter="{{ formAsso.children|length }}">
+                        {% for NbBenevole in formAsso.creneauxBenevoles %}
+                            <li>
+                                {{ form_errors(NbBenevole) }}
+                                {{ form_widget(NbBenevole) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <button type="button"
+                    class="add-another-collection-widget"
+                    data-list-selector="#creneaux-fields-list">Add another date</button>
+
+                    </br>
+                    <button type="submit" class="btn btn-success index-more-button">Enregistrer</button>
+
+                    {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
+
+                    {{ form_end(formAsso) }}
+                    </div>
+                </section>
+                {% endif %}
+            {% endif %}
+
+            {% if null and is_granted('ROLE_ADMIN') %}
+                    {{ form_start(formDelete) }}
+                            <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+                    {{ form_end(formDelete) }}
+
+                    {{ form_start(formPrint) }}
+                    {{ form_end(formPrint) }}
+                    
+                    <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
+                    <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
+                    <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
+            {% endif %}  
+            </div>
+        </event>
+
     {% for video in event.videos %}
         <iframe width="560" height="315" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     {% endfor %}

@@ -3,14 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
 * @ApiResource(normalizationContext={"groups"={"read"} })
+* @ApiFilter(OrderFilter::class, properties={"id", "dates"}, arguments={"orderParameterName"="order"})
 * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
 */
 class Event
@@ -129,6 +132,10 @@ class Event
         $this->creneauxBenevoles = new ArrayCollection();
         $this->utilisateursMange = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->tarifMoinsDe12=0.0;
+        $this->tarifPlusDe12=0.0;
+        $this->tarifProprietaire=0.0;
+        $this->nbMaxParticipants=0;
     }
 
     function __clone()
