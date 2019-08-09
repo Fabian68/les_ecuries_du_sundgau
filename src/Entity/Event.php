@@ -124,7 +124,7 @@ class Event
 
     /**
      */
-    private $dateDivers='';
+    private $dateDivers;
 
     public function __construct()
     {

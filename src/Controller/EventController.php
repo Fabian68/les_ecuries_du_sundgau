@@ -316,6 +316,7 @@ class EventController extends AbstractController
             $form = $this->createForm(EventCreateType::class, $event);
         }
         else {
+            $event->setDateDivers(new \DateTime('now'));
             $form = $this->createForm(EventEditType::class, $event);
         }
 
@@ -498,6 +499,21 @@ class EventController extends AbstractController
             'Votre évènement a bien été supprimer.'
         );
         return $this->redirectToRoute('home');
+    }
+
+     /**
+     * @Route("/admin/evenement/{idEvent}/supprimer_image/{idImage}", name="security_delete_image")
+     */
+    public function deleteImage($id,ObjectManager $manager)
+    {
+        $image = $manager->getRepository(Images::class)->findOneById($idImage);
+        $manager->remove($image); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Votre image a bien été supprimer'
+        );
+        return $this->redirectToRoute('event',['id'=>$idevent]);
     }
 
      /**
