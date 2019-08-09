@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Galops;
+use App\Entity\AllDescription;
 use App\Entity\Description;
 use App\Entity\Utilisateur;
+use App\Form\DescriptionType;
 use App\Form\AllDescriptionType;
 use App\Form\RegistrationType;
 use App\Form\ModifyAccountType;
@@ -266,25 +268,61 @@ class SecurityController extends AbstractController
     }
 
      /**
-     * @Route("/description",name="security_description")
+     * @Route("/ajouter_description",name="security_add_description")
      */
-    public function description(ObjectManager $manager,Request $request){
+    public function addDescription(ObjectManager $manager,Request $request){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        // Pour avoir qu'une seule iteration d'inscription dans la BdD
-        $description = $manager->getRepository(Description::class)->findAll();
-        if($description ==null){
-            $description = new Description();
-            $description->setTexte('Les écuries du sundgau est un dans un cadre idéale qui favorise l\'activitée etc etc ');
-        }
-        
-        $form = $this->createForm(AllDescriptionType::class,$description);
+        $desc = new Description();
+               
+        $form = $this->createForm(DescriptionType::class, $desc);
         
         $form->handleRequest($request);
      
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $manager->persist($description);
+            $manager->persist($desc);
+            $manager->flush();
+
+            $this->addFlash('notice', 'Description ajouté.');
+            return $this->redirectToRoute('security_profile');
+        }
+
+        return $this->render('security/add_description.html.twig',[
+            'form'=> $form->createView(),
+            'description'=> $desc
+        ]);
+    }
+
+     /**
+     * @Route("/description",name="security_description")
+     */
+    public function description(ObjectManager $manager,Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $desc = new AllDescription();
+        // Pour avoir qu'une seule iteration d'inscription dans la BdD
+        $description = $manager->getRepository(Description::class)->findAll();
+        if($description ==null){
+            $descrip = new Description();
+            $descrip->setTexte('Les écuries du sundgau est un dans un cadre idéale qui favorise l\'activitée etc etc ');
+            $desc->addDescription($descrip);
+        }
+        else {
+            foreach ($description as $des) {
+                $desc->addDescription($des);
+            }
+        }
+        
+        $form = $this->createForm(AllDescriptionType::class, $desc);
+        
+        $form->handleRequest($request);
+     
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($desc->getDescription() as $description) {
+                $manager->persist($description);
+            }
             $manager->flush();
 
             $this->addFlash('notice', 'Description modifié.');
