@@ -18,8 +18,12 @@ class NbBenevoleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-        $builder->add('dateDebut', DateTimeType::class)
-                ->add('dateFin', DateTimeType::class)
+        $builder->add('dateDebut', DateTimeType::class, [
+                    'label' => 'Jour et horaire de début',
+                ])
+                ->add('dateFin', DateTimeType::class, [
+                    'label' => 'Horaire de fin',
+                ])
                 ->add('nbBenevoles')
         ;
     }
