@@ -10,55 +10,28 @@
                     {{ event.texte }}
                   </div>
                 </br>
+                <div class="divers-videos-layout bg-secondary">
+                  {% for video in event.videos %}
+                    <div class=".divers-video">
+                      
+                    </div>
+                  {% endfor %}
+                </div>
                 <div class="divers-images-layout">
                   {% for image in event.images %}
                     <div class="divers-image">
-                      <img class="event-thumbnail-image" src="/images/properties/{{ image.imageName }}">
+                      <img class="divers-thumbnail-image" src="/images/properties/{{ image.imageName }}">
                     </div>
                   {% endfor %}
                 </div>
             </div>
             <div class="card-footer event-body-text">
                 {% if app.user %}
-                {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
-                <section class="">
-                    <div class="">
-                    {{ form_start(formAsso) }}
-                    
-                    <ul id="creneaux-fields-list"
-                            data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
-                            data-widget-tags="{{ '<li></li>'|e }}"
-                            data-widget-counter="{{ formAsso.children|length }}">
-                        {% for NbBenevole in formAsso.creneauxBenevoles %}
-                            <li>
-                                {{ form_errors(NbBenevole) }}
-                                {{ form_widget(NbBenevole) }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    
-                    <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#creneaux-fields-list">Add another date</button>
-
-                    </br>
-                    <button type="submit" class="btn btn-success index-more-button">Enregistrer</button>
-
-                    {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
-
-                    {{ form_end(formAsso) }}
-                    </div>
-                </section>
                 {% endif %}
-            {% endif %}
-
-            {% if null and is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_ADMIN') %}
                     {{ form_start(formDelete) }}
                             <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
                     {{ form_end(formDelete) }}
-
-                    {{ form_start(formPrint) }}
-                    {{ form_end(formPrint) }}
                     
                     <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
                     <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>

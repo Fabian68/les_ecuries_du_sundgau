@@ -60,10 +60,19 @@ class EventController extends AbstractController
         $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
+
+        $formDelete = $this->createFormBuilder()
+        ->getForm();
+        $formDelete->handleRequest($request);
+        if ($formDelete->isSubmitted() && $formDelete->isValid()) {
+            return $this->redirectToRoute('security_delete_event',['id'=>$id]);
+        }
+
         if($event->getDivers()){
             return $this->render('/event/divers.html.twig', [
                 'controller_name' => 'EventController',
                 'event' => $event,
+                'formDelete' => $formDelete->createView(),
             ]);  
         }
 
@@ -237,13 +246,6 @@ class EventController extends AbstractController
                 'notice',
                 'Vous vous êtes bien inscrit en tant que bénévole a cet évènement'
             );
-        }
-
-        $formDelete = $this->createFormBuilder()
-        ->getForm();
-        $formDelete->handleRequest($request);
-        if ($formDelete->isSubmitted() && $formDelete->isValid()) {
-            return $this->redirectToRoute('security_delete_event',['id'=>$id]);
         }
 
         $formPrint = $this->createFormBuilder()

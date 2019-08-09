@@ -62,10 +62,11 @@
               <img class="event-image-inner" src="{{ (vich_uploader_asset((event.images | first),'imageFile')) | imagine_filter('my_thumb') }}">
             </div>
           </div>
-          <div class="event-content bg-light">
+          <div class="event-content bg-light {% if event.divers %}index-divers-title{% endif %}">
             <div class="event-title index-title-wrapper">
               <h3 class="index-event-title mobile-title">{{ event.titre }}</h2>
             </div>
+            {% if not event.divers %}
             <div class="bg-event-date date-container-wrapper event-date">
               <div class="corners">
                 <img class="corner-top-left" src="/images/resources/corner_top_left.png">
@@ -96,6 +97,7 @@
                 </div>
               </div>
             </div>
+            {% endif %}
           </div>
         </div>
       </event>

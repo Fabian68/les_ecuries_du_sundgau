@@ -96,10 +96,10 @@
                 font-size: 0.8em !important;
             }
             .event-image{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .event-content{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .layout-pdf{
                 top: 7.5rem !important;
@@ -249,10 +249,10 @@
                 width: 100% !important;
             }
             .event-image{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .event-content{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .mobile-layout{
                 font-size: 0.8em;
@@ -989,6 +989,36 @@
             margin: auto;
             margin-top: 9em;
             max-width: 60rem;
+        }
+        .index-divers-title{
+            flex: 1 !important;
+        }
+        .divers-images-layout{
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .divers-image{
+            position: relative;
+            flex: 50%;
+            padding: 1em;
+        }
+        .divers-thumbnail-image{
+            object-fit: cover;
+            width: 100%;
+        }
+        .divers-thumbnail-image :hover{
+            object-fit: contain;
+        }
+        .divers-videos-layout{
+            diplay: flex;
+            flex-direction: column;
+            margin-left: -1.4em;
+            margin-right: -1.4em;
+        }
+        .divers-video{
+            width: 100%;
         }
         </style>
         {% block stylesheets %}{% endblock %}
