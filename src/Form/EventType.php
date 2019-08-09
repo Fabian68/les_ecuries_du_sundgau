@@ -24,7 +24,6 @@ class EventType extends AbstractType
             ->add('texte')
             ->add('nbMaxParticipants')
             ->add('repasPossible')
-            ->add('divers')
         ;
     }
 

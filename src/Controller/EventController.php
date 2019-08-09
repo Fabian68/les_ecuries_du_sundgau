@@ -4,31 +4,35 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Repas;
-use App\Entity\Images;
 use App\Entity\Video;
+use App\Entity\Galops;
+use App\Entity\Images;
 use App\Form\EventType;
 use App\Form\RepasType;
 use App\Form\ImagesType;
+use App\Form\AddVideoType;
 use App\Form\BenevoleType;
+use App\Entity\Utilisateur;
 use App\Form\AssoEventType;
+use App\Form\EventEditType;
 use App\Form\ParticipeType;
+use App\Form\AddPictureType;
 use App\Form\EventCreateType;
 use App\Entity\DatesEvenements;
+use App\Entity\CreneauxBenevoles;
 use App\Form\DatesEvenementsType;
-use App\Form\EventEditType;
-use App\Form\AddPictureType;
-use App\Form\AddVideoType;
+use App\Form\EventDiversCreateType;
 use App\Entity\AttributMoyenPaiements;
 use App\Form\EventRegistrationTreatmentType;
 use App\Entity\UtilisateurMoyenPaiementEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EventController extends AbstractController
@@ -62,7 +66,9 @@ class EventController extends AbstractController
                 'event' => $event,
             ]);  
         }
-
+        $now = new \DateTime('now');
+        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->d);
+        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->h);
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
         $formCancel = $this->createFormBuilder()
@@ -261,7 +267,42 @@ class EventController extends AbstractController
         ]);
     }
 
-   
+    /**
+     * @Route("/admin/evenement/{idEvent}/retirer_utilisateur/{idUser}", name="remove_user_on_event")
+     */
+    public function removeUserOnEvent($idEvent,$idUser,ObjectManager $manager)
+    {
+        $event = $manager->getRepository(Event::class)->findOneById($idEvent);
+        $user = $manager->getRepository(Utilisateur::class)->findOneById($idUser);
+        $UtilisateursMoyenPaiementEvent = $manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findOneBy(array('event'=>$event,'utilisateur'=>$user));
+        dump($UtilisateursMoyenPaiementEvent);
+        $manager->remove($UtilisateursMoyenPaiementEvent);
+
+        $event->removeUtilisateur($user); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer de l\'évènment '  . $event->getTitre()
+        );
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
+    }
+
+    /**
+     * @Route("/evenement/{idEvent}/creneau/{idCreneau}/retirer_utilisateur/{idUser}", name="remove_user_on_creneau")
+     */
+    public function removeUserOnCreneau($idCreneau,$idUser,$idEvent,ObjectManager $manager)
+    {
+        $creneau = $manager->getRepository(CreneauxBenevoles::class)->findOneById($idCreneau);
+        $user = $manager->getRepository(Utilisateur::class)->findOneById($idUser);
+
+        $creneau->removeUtilisateur($user); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer du creneau ' 
+        );
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
+    }
     /**
      * @Route("/admin/creationEvenement", name="createEvent")
      * @Route("/admin/evenement/{id}/edit", name="editEvent")
@@ -341,12 +382,18 @@ class EventController extends AbstractController
                     $manager->persist($video);*/
                 }
             }
-
+            $event->setDivers(false);                
             $manager->persist($event);
             $manager->flush();
+            $message;
+            if($create == false){
+                $message= 'Votre évènement a bien été modifié .';
+            }else{
+                $message='Votre évènement a bien été crée .';
+            }
             $this->addFlash(
                 'notice',
-                'Votre évènement a bien été crée .'
+                $message
             );
             return $this->redirectToRoute('home');
         }
@@ -365,6 +412,65 @@ class EventController extends AbstractController
 
             ]);
         }
+    }
+
+    /**
+     * @Route("/admin/creationEvenementDivers", name="createEventDivers")
+     */
+    public function createEventsDivers(Request $request,ObjectManager $manager)
+    {
+        $event = new Event();
+        $formEventDiversCreate = $this->createForm(EventDiversCreateType::class, $event);
+        
+        $formEventDiversCreate->handleRequest($request);
+        if ($formEventDiversCreate->isSubmitted() && $formEventDiversCreate->isValid()) { 
+           
+            $event->setDivers(true);
+
+            $galop = $manager->getRepository(Galops::class)->findOneByNiveau(-1);
+            $event->addGalop($galop);
+            $galop->addEvenement($event);
+
+            $date= $event->getDateDivers();
+            $dateEvenement = new DatesEvenements();
+            $dateEvenement->setDateDebut($date);
+            $dateEvenement->setDateFin($date);
+            $dateEvenement->setEvent($event);
+            $event->addDate($dateEvenement);
+
+            if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
+                $this->addFlash(
+                    'warning',
+                    'Vous devez ajouter au moins une image ou une video !'
+                );
+                return $this->redirectToRoute('createEvent');
+            }else{    
+                foreach ($event->getImages() as $image) {
+                    $image->setEvenement($event);
+                    //$image->setImageFile(null); 
+                }
+                foreach ($event->getVideos() as $video) {
+                    $choix = explode("=",$video->getLien());
+                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setEvenement($event);
+                }
+            }
+            $manager->persist($event);
+            $manager->flush();
+            foreach ($event->getImages() as $image) {
+                $image->setImageFile(null); 
+            }
+            $this->addFlash(
+                'notice',
+                'Votre évènement a bien été crée .'
+            );
+            return $this->redirectToRoute('home');
+        }    
+        return $this->render('/event/createEventsDivers.html.twig', [
+        'controller_name' => 'EventController',
+        'formEventDiversCreate' => $formEventDiversCreate->createView()
+        ]);
+
     }
 
      /**
@@ -438,8 +544,8 @@ class EventController extends AbstractController
 
         return $this->render('general/addPicture.html.twig', [
                 'controller_name' => 'EventController',
-                'event'=>$event,
-                'formEvent' => $form->createView()
+                'formEvent' => $form->createView(),
+                'event'=>$event
         ]);  
     }
 
@@ -476,8 +582,8 @@ class EventController extends AbstractController
 
         return $this->render('general/addVideo.html.twig', [
                 'controller_name' => 'EventController',
-                'event'=>$event,
-                'formEvent' => $form->createView()
+                'formEvent' => $form->createView(),
+                'event'=>$event
         ]);  
     }
 }

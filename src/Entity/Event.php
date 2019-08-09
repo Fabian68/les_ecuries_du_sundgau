@@ -2,15 +2,19 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
 * @ApiResource(normalizationContext={"groups"={"read"} })
+* @ApiFilter(OrderFilter::class, properties={"id", "dates"}, arguments={"orderParameterName"="order"})
 * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
 */
 class Event
@@ -118,6 +122,10 @@ class Event
 
     private $signataire='';
 
+    /**
+     */
+    private $dateDivers='';
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -129,6 +137,11 @@ class Event
         $this->creneauxBenevoles = new ArrayCollection();
         $this->utilisateursMange = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->tarifMoinsDe12=0.0;
+        $this->tarifPlusDe12=0.0;
+        $this->tarifProprietaire=0.0;
+        $this->nbMaxParticipants=0;
+        $this->dateDivers= new \DateTime('now');
     }
 
     function __clone()
@@ -481,6 +494,17 @@ class Event
         return $this;
     }
 
+    public function getDateDivers()
+    {
+        return $this->dateDivers;
+    }
+
+    public function setDateDivers($dateDivers)
+    {
+        $this->dateDivers = $dateDivers;
+        return $this;
+    }
+    
     public function getAttributMoyenPaiement(): ?AttributMoyenPaiements
     {
         return $this->attributMoyenPaiement;

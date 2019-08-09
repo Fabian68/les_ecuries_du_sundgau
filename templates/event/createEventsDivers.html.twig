@@ -29,45 +29,21 @@
       });
   });
   </script>
-    {% if is_granted('ROLE_ADMIN') %}
+   
     <container class="container-creer-event">
       <div class="card mb-3 creer-event-layout">
-      {{ form_start(formEvent) }}
-
-      {{ form_row(formEvent.titre, { 'attr' : { 'class' : 'form-control' }}) }}
-
-      <div class="well">
-
-        <ul id="date-fields-list"
-          data-prototype="{{ form_widget(formEvent.dates.vars.prototype)|e }}"
-          data-widget-tags="{{ '<li></li>'|e }}"
-          data-widget-counter="{{ (formEvent.children|length) }}">
-          {% for dateField in formEvent.dates %}
-          <li>
-              {{ form_errors(dateField) }} 
-              {{ form_widget(dateField) }}
-          </li>
-          {% endfor %}
-        </ul>
-
-        <button type="button"
-          class="add-another-collection-widget"
-          data-list-selector="#date-fields-list">Ajouter une date</button>
-
-        {{ form_row(formEvent.tarifMoinsDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
-        {{ form_row(formEvent.tarifPlusDe12, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
-        {{ form_row(formEvent.tarifProprietaire, { 'attr' : { 'placeholder' : '€' , 'class' : 'form-control' }}) }}
-        {{ form_row(formEvent.texte, { 'attr' : { 'class' : 'form-control' }}) }}
-        {{ form_row(formEvent.nbMaxParticipants, { 'attr' : { 'class' : 'form-control' }}) }}
-        {{ form_row(formEvent.repasPossible) }}
-
-        {{ form_row(formEvent.galops) }}
       
+      {{ form_start(formEventDiversCreate) }}
+
+      {{ form_row(formEventDiversCreate.titre, { 'attr' : { 'class' : 'form-control' }}) }}
+      {{ form_row(formEventDiversCreate.dateDivers, { 'attr' : { 'class' : 'form-control' }}) }}
+      {{ form_row(formEventDiversCreate.texte, { 'attr' : { 'class' : 'form-control' }}) }}
+
         <ul id="image-fields-list"
-          data-prototype="{{ form_widget(formEvent.images.vars.prototype)|e }}"
+          data-prototype="{{ form_widget(formEventDiversCreate.images.vars.prototype)|e }}"
           data-widget-tags="{{ '<li></li>'|e }}"
-          data-widget-counter="{{ (formEvent.children|length)+1 }}">
-          {% for imageField in formEvent.images %}
+          data-widget-counter="{{ (formEventDiversCreate.children|length)+1 }}">
+          {% for imageField in formEventDiversCreate.images %}
           <li>
               {{ form_errors(imageField) }}
               {{ form_widget(imageField,{ 'attr': { 'class': 'file','data-show-preview': 'false'}} ) }}
@@ -80,10 +56,10 @@
           data-list-selector="#image-fields-list">Ajouter une image</button>
 
         <ul id="video-fields-list"
-          data-prototype="{{ form_widget(formEvent.videos.vars.prototype)|e }}"
+          data-prototype="{{ form_widget(formEventDiversCreate.videos.vars.prototype)|e }}"
           data-widget-tags="{{ '<li></li>'|e }}"
-          data-widget-counter="{{ formEvent.children|length }}">
-          {% for videoField in formEvent.videos %}
+          data-widget-counter="{{ formEventDiversCreate.children|length }}">
+          {% for videoField in formEventDiversCreate.videos %}
           <li>
               {{ form_errors(videoField) }}
               {{ form_widget(videoField) }}
@@ -96,13 +72,10 @@
           data-list-selector="#video-fields-list">Ajouter une video</button>
 
         <button type="submit" class="btn btn-success">Enregistrer</button>
-        {{ form_row(formEvent.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
-        {{ form_row(formEvent.dates,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle dates , car avec les collections on appelle pas explicitement ces méthodes-->    
-        {{ form_row(formEvent.videos,{ 'label' : false } ) }}
-        {{ form_end(formEvent) }}
+        {{ form_row(formEventDiversCreate.images,{ 'label' : false } ) }}<!-- pour eviter l'affichage du libelle images-->  
+  
+        {{ form_row(formEventDiversCreate.videos,{ 'label' : false } ) }}
+        {{ form_end(formEventDiversCreate) }}
         </div>
       </container>
-    {% endif %}
-      
-
 {% endblock %}
