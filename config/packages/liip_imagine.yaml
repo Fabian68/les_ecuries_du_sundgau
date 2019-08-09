@@ -2,8 +2,6 @@
 liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: "gd"
-<<<<<<< HEAD
-=======
     filter_sets:
         # the name of the "filter set"
         my_thumb:
@@ -20,4 +18,3 @@ liip_imagine:
                 # create a 2px black border: center the thumbnail on a black background
                 # 4px larger to create a 2px border around the final image
                 background: { size: [124, 94], position: center, color: '#000000' }
->>>>>>> 047744cacf55bd8e8982cc93e4fab6e62d33495f
