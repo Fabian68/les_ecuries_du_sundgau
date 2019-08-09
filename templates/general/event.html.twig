@@ -46,20 +46,22 @@
         
         <event class="card mb-3 event-info">
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
-              <div class="card-subtitle bg-event-date event-corners">
-                <div class="corners">
-                  <img class="corner-top-left" src="/images/resources/corner_top_left.png">
-                  <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
-                </div>
-                <ul class="event-date-layout">
-                  {% for date in event.dates %}
-                      <li class="event-text"><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'd MMMM') }}</div>, <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div>-<div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
-                  {% endfor %}
-                </ul>
-                <div class="corners bg-event-date event-corners">
-                  <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
-                  <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
-                </div>
+            {% if date((event.dates | first).dateLimitRegistration) > date('+0hours', 'Europe/Paris') %}
+            {% endif %}
+            <div class="card-subtitle bg-event-date">
+              <div class="corners">
+                <img class="corner-top-left" src="/images/resources/corner_top_left.png">
+                <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
+              </div>
+              <ul class="event-date-layout">
+                {% for date in event.dates %}
+                    <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
+                {% endfor %}
+                {{ dump(event.dates)}}
+              </ul>
+              <div class="corners">
+                <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
+                <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
               </div>
             <div class="card-body">
                 <div class="tarifs-galops-container bg-secondary">
@@ -150,7 +152,8 @@
               {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
 
                 <div>Il n'y a plus de place restante pour cet évènement.</div>
-
+              {% elseif date((event.dates | first).dateLimitRegistration) < date('+0hours', 'Europe/Paris') %}
+                <div>La date limite d'inscription est dépasser</div>
               {% else %}
 
                 <div>Inscription</div>

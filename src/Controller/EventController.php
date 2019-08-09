@@ -75,7 +75,9 @@ class EventController extends AbstractController
                 'formDelete' => $formDelete->createView(),
             ]);  
         }
-
+        $now = new \DateTime('now');
+        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->d);
+        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->h);
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
         $formCancel = $this->createFormBuilder()
@@ -385,9 +387,15 @@ class EventController extends AbstractController
             $event->setDivers(false);                
             $manager->persist($event);
             $manager->flush();
+            $message;
+            if($create == false){
+                $message= 'Votre évènement a bien été modifié .';
+            }else{
+                $message='Votre évènement a bien été crée .';
+            }
             $this->addFlash(
                 'notice',
-                'Votre évènement a bien été crée .'
+                $message
             );
             return $this->redirectToRoute('home');
         }
@@ -415,14 +423,8 @@ class EventController extends AbstractController
     {
         $event = new Event();
         $formEventDiversCreate = $this->createForm(EventDiversCreateType::class, $event);
-       
-
-        $formDate = $this->createFormBuilder();
-        $formDate->add('date', DateTimeType::class, ['data' => new \DateTime("now"),'label' => 'Date']);
-        $formDate->getForm();
         
         $formEventDiversCreate->handleRequest($request);
-       // $formDate->handleRequest($request);
         if ($formEventDiversCreate->isSubmitted() && $formEventDiversCreate->isValid()) { 
            
             $event->setDivers(true);
@@ -431,7 +433,7 @@ class EventController extends AbstractController
             $event->addGalop($galop);
             $galop->addEvenement($event);
 
-            $date= $formDate->get("date")->getData();
+            $date= $event->getDateDivers();
             $dateEvenement = new DatesEvenements();
             $dateEvenement->setDateDebut($date);
             $dateEvenement->setDateFin($date);
@@ -468,8 +470,7 @@ class EventController extends AbstractController
         }    
         return $this->render('/event/createEventsDivers.html.twig', [
         'controller_name' => 'EventController',
-        'formEventDiversCreate' => $formEventDiversCreate->createView(),
-        'formDate' => $formDate->createView()
+        'formEventDiversCreate' => $formEventDiversCreate->createView()
         ]);
 
     }

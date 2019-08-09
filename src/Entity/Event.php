@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
@@ -121,6 +122,10 @@ class Event
 
     private $signataire='';
 
+    /**
+     */
+    private $dateDivers='';
+
     public function __construct()
     {
         $this->dates = new ArrayCollection();
@@ -136,6 +141,7 @@ class Event
         $this->tarifPlusDe12=0.0;
         $this->tarifProprietaire=0.0;
         $this->nbMaxParticipants=0;
+        $this->dateDivers= new \DateTime('now');
     }
 
     function __clone()
@@ -488,6 +494,17 @@ class Event
         return $this;
     }
 
+    public function getDateDivers()
+    {
+        return $this->dateDivers;
+    }
+
+    public function setDateDivers($dateDivers)
+    {
+        $this->dateDivers = $dateDivers;
+        return $this;
+    }
+    
     public function getAttributMoyenPaiement(): ?AttributMoyenPaiements
     {
         return $this->attributMoyenPaiement;

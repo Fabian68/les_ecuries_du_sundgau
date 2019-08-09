@@ -32,19 +32,13 @@
    
     <container class="container-creer-event">
       <div class="card mb-3 creer-event-layout">
-
-      {{ form_start(formDate) }}
-      {{ form_row(formDate.date, { 'attr' : { 'class' : 'form-control' }}) }}
-      {{ form_end(formDate) }}
       
       {{ form_start(formEventDiversCreate) }}
 
       {{ form_row(formEventDiversCreate.titre, { 'attr' : { 'class' : 'form-control' }}) }}
+      {{ form_row(formEventDiversCreate.dateDivers, { 'attr' : { 'class' : 'form-control' }}) }}
+      {{ form_row(formEventDiversCreate.texte, { 'attr' : { 'class' : 'form-control' }}) }}
 
-        {{ form_row(formEventDiversCreate.texte, { 'attr' : { 'class' : 'form-control' }}) }}
-
-        
-      
         <ul id="image-fields-list"
           data-prototype="{{ form_widget(formEventDiversCreate.images.vars.prototype)|e }}"
           data-widget-tags="{{ '<li></li>'|e }}"
