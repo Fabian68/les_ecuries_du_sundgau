@@ -50,6 +50,14 @@ class DatesEvenements
         return $this->dateDebut;
     }
 
+    public function getDateLimitRegistration(): ?\DateTimeInterface
+    {
+        $date = new \DateTime(($this->getDateDebut())->format('Y-m-d H:i:s'));
+        $date = date_sub($date,date_interval_create_from_date_string('1 days'));
+        $date->setTime(12,00,00);
+        return $date;
+    }
+
     public function setDateDebut(\DateTimeInterface $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
@@ -80,5 +88,6 @@ class DatesEvenements
 
         return $this;
     }
+
 
 }

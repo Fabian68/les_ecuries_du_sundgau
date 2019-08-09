@@ -66,7 +66,9 @@ class EventController extends AbstractController
                 'event' => $event,
             ]);  
         }
-
+        $now = new \DateTime('now');
+        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->d);
+        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->h);
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
         $formCancel = $this->createFormBuilder()
@@ -383,9 +385,15 @@ class EventController extends AbstractController
             $event->setDivers(false);                
             $manager->persist($event);
             $manager->flush();
+            $message;
+            if($create == false){
+                $message= 'Votre évènement a bien été modifié .';
+            }else{
+                $message='Votre évènement a bien été crée .';
+            }
             $this->addFlash(
                 'notice',
-                'Votre évènement a bien été crée .'
+                $message
             );
             return $this->redirectToRoute('home');
         }

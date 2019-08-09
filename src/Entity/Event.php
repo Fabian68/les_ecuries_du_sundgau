@@ -123,9 +123,8 @@ class Event
     private $signataire='';
 
     /**
-     * @var \DateTime
      */
-    private $dateDivers;
+    private $dateDivers='';
 
     public function __construct()
     {
