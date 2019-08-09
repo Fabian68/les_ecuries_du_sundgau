@@ -48,7 +48,7 @@
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
             {% if date((event.dates | first).dateLimitRegistration) > date('+0hours', 'Europe/Paris') %}
             {% endif %}
-            <div class="card-subtitle bg-event-date">
+            <div class="card-subtitle event-corner bg-event-date">
               <div class="corners">
                 <img class="corner-top-left" src="/images/resources/corner_top_left.png">
                 <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
@@ -57,12 +57,12 @@
                 {% for date in event.dates %}
                     <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                 {% endfor %}
-                {{ dump(event.dates)}}
               </ul>
               <div class="corners">
                 <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
                 <img class="corner-bottom-right" src="/images/resources/corner_bottom_right.png">
               </div>
+            </div>
             <div class="card-body">
                 <div class="tarifs-galops-container bg-secondary">
                     <table class="tarifs-layout">
