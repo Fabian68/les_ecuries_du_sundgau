@@ -60,6 +60,11 @@ class EventController extends AbstractController
         $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
+        if($event == NULL){
+            return $this->render('event/eventWhoNotExist.html.twig', [
+                'controller_name' => 'EventController',
+        ]);  
+        }
 
         $formDelete = $this->createFormBuilder()
         ->getForm();
@@ -508,7 +513,7 @@ class EventController extends AbstractController
      /**
      * @Route("/admin/evenement/{idEvent}/supprimer_image/{idImage}", name="security_delete_image")
      */
-    public function deleteImage($id,ObjectManager $manager)
+    public function deleteImage($idEvent,$idImage,ObjectManager $manager)
     {
         $image = $manager->getRepository(Images::class)->findOneById($idImage);
         $manager->remove($image); 
@@ -517,7 +522,7 @@ class EventController extends AbstractController
             'notice',
             'Votre image a bien été supprimer'
         );
-        return $this->redirectToRoute('event',['id'=>$idevent]);
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
 
      /**
@@ -607,5 +612,33 @@ class EventController extends AbstractController
                 'event'=>$event
         ]);  
     }
+
+    /**
+     * @Route("/admin/evenement/{idEvent}/echange_image/{idImage}", name="change_main_image")
+     */
+    public function changeMainImage($idEvent,$idImage, ObjectManager $manager)
+    {
+        $image = $manager->getRepository(Images::class)->findOneById($idImage);
+        $event =$manager->getRepository(Event::class)->findOneById($idEvent);
+        $Array=$event->getImages();  
+        $mainImage=$event->getImages()[0];
+        $idMainImage=$mainImage->getId();
+       
+        $imageName=$image->getImageName();
+        $mainImageName=$mainImage->getImageName();
+        $mainImage->setImageName($imageName);
+        $image->setImageName($mainImageName);
+        //$manager->remove($image); 
+        $manager->persist($image);
+        $manager->persist($mainImage);
+        $manager->persist($event);
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'L\'image principale a bien été modifier.'
+        );
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
+    }
+       
 }
 
