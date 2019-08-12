@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <container class="container-profile">
+  <container class="container-profile general-mobile-text">
   <div class="card border-warning mb-3 profile-card">
     <div class="card-header"><h2>Profil</h2></div>
     <div class="card-body profile-layout">
@@ -9,10 +9,10 @@
           <div>Vous devez vous connecter pour accèder a cet page ! </div>
       {% else %}
       <div class="profile-info">
-        <div class="profile-inner">
         {% if user.imageName is not null %}
         <img class="profile-image" src="/images/profile/{{ user.imageName }}">
         {% endif %}
+        <div class="profile-inner">
           <div>Nom : </div>
           <fieldset class="profile-data">
               <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ user.nom }}" readonly="">
@@ -53,13 +53,13 @@
   </div>
 
   <div class="profile-modifs">
-      <div class="card border-info profile-modifs-wrapper">
+      <div class="card border-info profile-modifs-wrapper general-mobile-text">
       {% if app.user == user %}
           <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
           <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
           {% if app.user.verifiedMail != true %}
             {{ form_start(formMailVerification) }}
-            {{ form_row(formMailVerification.mail_verification,{ 'label' : 'Envoyer mail verification compte'}) }}
+            {{ form_row(formMailVerification.mail_verification,{ 'label' : 'Vérifier l\'adresse mail' , 'attr' : { 'class' : 'btn bg-info profile-button general-mobile-text' } }) }}
             {{ form_end(formMailVerification) }}
           {% endif %}
       {% endif %}

@@ -1,13 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+    <div class="divers-container">
+        <event class="card mb-3 event-info ">
+            <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
+            <div class="card-body">
+                </br>
+                  <div class="event-body-text">
+                    {{ event.texte }}
+                  </div>
+                </br>
+                <div class="divers-videos-layout bg-secondary">
+                  {% for video in event.videos %}
+                    <div class=".divers-video">
+                      
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="divers-images-layout">
+                  {% for image in event.images %}
+                    <div class="divers-image">
+                      <img class="divers-thumbnail-image" src="/images/properties/{{ image.imageName }}">
+                    </div>
+                  {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer event-body-text">
+                {% if app.user %}
+                {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                    {{ form_start(formDelete) }}
+                            <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+                    {{ form_end(formDelete) }}
+                    
+                    <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
+                    <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
+                    <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
+            {% endif %}  
+            </div>
+        </event>
+    </div>
+
     {% for video in event.videos %}
         <iframe width="560" height="315" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     {% endfor %}

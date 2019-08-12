@@ -96,10 +96,10 @@
                 font-size: 0.8em !important;
             }
             .event-image{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .event-content{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .layout-pdf{
                 top: 7.5rem !important;
@@ -130,12 +130,13 @@
                 font-size: 1.3em !important;
                 margin-top: -9em !important;
             }
+            .event-body-text{
+                font-size: 1em !important;
+            }
         }
 
         .bg-event-date{
             background-color: #f4f957 !important;
-            display: flex;
-            justify-content: space-between;
         }
         .event-container{
             display: flex;
@@ -206,9 +207,13 @@
             display: flex;
             margin-bottom: 1.3em;
             padding: 0.2em;
+            align-items: center;
+            margin-left: -1.4em;
+            margin-right: -1.4em;
         }
         .tarifs-layout{
-            flex: 2;
+            flex: 4;
+            min-width: 14em !important;
             margin-bottom: 0 !important;
         }
         .date-text{
@@ -224,6 +229,9 @@
             }
         }
         @media screen and (max-width: 850px){
+            .profile-modifs{
+                width: 50% !important;
+            }
             .corner-top-left{
                 height: 40% !important;
                 width: 100% !important;
@@ -241,10 +249,10 @@
                 width: 100% !important;
             }
             .event-image{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .event-content{
-                flex: 1 !important;
+                flex: 3 !important;
             }
             .mobile-layout{
                 font-size: 0.8em;
@@ -334,7 +342,31 @@
                 width: 60% !important;
                 margin-left: 15% !important;
                 margin-right: 15% !important;
-            } 
+            }
+            .arrow{
+                overflow: hidden;
+                width: 0 !important;
+                height: 0 !important;
+            }
+            .event-layout{
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            .event-thumbnail{
+                margin-left: 2em !important;
+                margin: 0 !important;
+                height: 0em !important;
+                border: 0 !important;
+            }
+            .thumbnail-container{
+                height: 0em !important;
+            }
+            .event-controls{
+                margin-right: 2em !important;
+            }
+            .event-layout{
+                margin-top: 4em !important;
+            }
         }
         @media screen and (max-width: 750px){
             .event-element{
@@ -352,6 +384,9 @@
             }
             .map-layout{
                 margin-top: 2em !important;
+            }
+            .date-container-wrapper{
+                max-height: 4.5em;
             }
         }
         .header-custom{
@@ -419,6 +454,12 @@
         }
         .event-date{
             flex: 5;
+            display: flex;
+            justify-content: space-between;
+        }
+        .event-corners{
+            display: flex;
+            justify-content: space-between;
         }
         .event-galops{
             flex: 3;
@@ -437,8 +478,12 @@
         }
         .index-event-title{
             font-size: 2em;
-            padding-top: 0.1em !important;
+            padding-top: 0.2em !important;
             padding-bottom: 0.3em !important;
+        }
+        .index-title-wrapper{
+            max-height: 5.5em !important;
+            margin-bottom: 0.5em !important;
         }
         .index-more-button{
             text-align: right;
@@ -481,8 +526,12 @@
         .galop-layout:hover{
             color: white !important;
         }
+        .event-galops-layout{
+            min-width: 5em;
+            min-height: 7em;
+        }
         .galops-layout{
-            flex: 3;
+            flex: 2;
             display: flex;
             flex-direction: column;
             text-align: left;
@@ -496,8 +545,9 @@
         .galops-inner{
             flex: 3;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
             margin-left: 0.2em;
+            flex-wrap: wrap;
         }
         .index-galops{
             justify-content: left;
@@ -583,7 +633,7 @@
             margin-right: auto;
             display: flex;
             justify-content: center;
-            margin-top: 5em;
+            margin-top: 7em;
             padding: 1em;
         }
         .profile-card{
@@ -602,6 +652,7 @@
             justify-content: center;
             margin: 2em;
             width: 30%;
+            min-width: 10em;
         }
         .profile-button{
             margin: 1em;
@@ -614,6 +665,9 @@
             height: min-content;
         }
         @media screen and (max-width: 475px){
+            .profile-modifs{
+                width: 70% !important;
+            }
             .image-band-layout{
                 margin-top: 8em !important;
             }
@@ -708,7 +762,7 @@
         }
         .profile-image{
             width: 100%;
-            height: 100%;
+            height: auto;
             margin-bottom: 1em;
         }
         .container-creer-event{
@@ -862,7 +916,7 @@
             justify-content: space-between;
             flex: 1;
             margin: 2em;
-            margin-left: -1em;
+            margin-left: -25%;
             transition: all .4s ease-in-out;
         }
         .event-thumbnail-image{
@@ -881,7 +935,7 @@
             justify-content: space-between;
             flex: 1;
             margin: 2em;
-            margin-right: -25%;
+            margin-right: -1em;
             transition: all .4s ease-in-out;
         }
         .arrow-container{
@@ -898,6 +952,78 @@
             font-size: 1.5em;
             color: white;
         }
+        .event-text{
+            font-size: 1.5em !important;
+        }
+        .event-galop-layout{
+            padding: 0.2em;
+            margin-top: auto;
+            margin-bottom: auto;
+            align-self: flex-start !important;
+        }
+        .galop-text{
+            color: white;
+            font-size: 0.8em;
+            margin: auto;
+            border: 0 !important;
+            padding: 0.1em !important;
+        }
+        .event-body-text{
+            font-size: 1.2em;
+        }
+        .clickable-event{
+            text-decoration: none !important;
+        }
+        @media screen and (max-width: 991px){
+            .navtext > ul > li > a{
+                font-size: 2em !important;
+            }
+            .navlogo > ul > li > a > img{
+                width: 1em !important;
+            }   
+            .general-mobile-text div textarea, .general-mobile-text div, .general-mobile-text input, .general-mobile-text div a, .general-mobile-text{
+                font-size: 1.1em;
+            }
+        }
+        .divers-container{
+            margin: auto;
+            margin-top: 9em;
+            max-width: 60rem;
+        }
+        .index-divers-title{
+            flex: 1 !important;
+        }
+        .divers-images-layout{
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .divers-image{
+            position: relative;
+            flex: 50%;
+            padding: 1em;
+        }
+        .divers-thumbnail-image{
+            object-fit: cover;
+            width: 100%;
+        }
+        .divers-thumbnail-image :hover{
+            object-fit: contain;
+        }
+        .divers-videos-layout{
+            diplay: flex;
+            flex-direction: column;
+            margin-left: -1.4em;
+            margin-right: -1.4em;
+        }
+        .divers-video{
+            width: 100%;
+        }
+        .event-corner{
+            display: flex;
+            justify-content: space-between;
+        }
         </style>
         {% block stylesheets %}{% endblock %}
         {% block scripts %}{% endblock %}
@@ -911,7 +1037,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
+        <div class="collapse navbar-collapse navtext navlogo" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item nav-item-custom">
                 <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('home') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/home.png" alt="home"> Accueil<span class="sr-only">(current)</span></a>

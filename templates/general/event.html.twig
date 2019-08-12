@@ -48,7 +48,7 @@
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
             {% if date((event.dates | first).dateLimitRegistration) > date('+0hours', 'Europe/Paris') %}
             {% endif %}
-            <div class="card-subtitle bg-event-date">
+            <div class="card-subtitle event-corner bg-event-date">
               <div class="corners">
                 <img class="corner-top-left" src="/images/resources/corner_top_left.png">
                 <img class="corner-top-right" src="/images/resources/corner_bottom_left.png">
@@ -57,7 +57,6 @@
                 {% for date in event.dates %}
                     <li><div class="date-text">{{ date.dateDebut | localizeddate('none', 'none', null, null, 'EEEE d MMMM Y') }}</div> de <div class="date-text">{{ date.dateDebut | date('H\\Hi') }}</div> à <div class="date-text">{{ date.dateFin | date('H\\Hi') }}</div></li>
                 {% endfor %}
-                {{ dump(event.dates)}}
               </ul>
               <div class="corners">
                 <img class="corner-bottom-left" src="/images/resources/corner_top_right.png">
@@ -77,20 +76,24 @@
                           <td class="bg-secondary">Propriétaire:</td><td class="bg-light"> {{ event.tarifProprietaire }}€ </td>
                         </tr>  
                     </table>
-                    <div class="galops-layout">
+                    <div class="galops-layout event-galops-layout">
                         <div class="bg-secondary galops-text">Galops:</div>
-                        <div class="bg-light galops-inner">
+                        <div class="bg-light galops-inner event-text">
                           {% for galop in event.galops %}
-                            <div class="btn bg-warning galop-layout">{{galop.niveau}}</div>
+                            {% if not (galop.niveau == -1) %}
+                            <div class="event-galop-layout"><p class="btn bg-warning galop-text">{{galop.niveau}}</p></div>
+                            {% endif %}
                           {% endfor %}
                         </div>
                     </div>
                 </div>
                 </br>
-                  {{ event.texte }}
+                  <div class="event-body-text">
+                    {{ event.texte }}
+                  </div>
                 </br>
             </div>
-            <div class="card-footer">
+            <div class="card-footer event-body-text">
                 {% if app.user %}
                 {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
                 <section class="">
@@ -140,7 +143,7 @@
         </event>
         <div id="controls" class="card bg-secondary event-controls">
           <div class="bg-secondary arrow-container" onclick="showControls()"><div class="arrow"><p> < <br> < <br> < </p></div></div>
-          <div class="card-body bg-white">
+          <div class="card-body event-body-text bg-white">
             <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
             {% if not app.user %}
               <div>Connecter vous pour vous inscrire a l'evenement ! </div>

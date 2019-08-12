@@ -60,10 +60,19 @@ class EventController extends AbstractController
         $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
+
+        $formDelete = $this->createFormBuilder()
+        ->getForm();
+        $formDelete->handleRequest($request);
+        if ($formDelete->isSubmitted() && $formDelete->isValid()) {
+            return $this->redirectToRoute('security_delete_event',['id'=>$id]);
+        }
+
         if($event->getDivers()){
             return $this->render('/event/divers.html.twig', [
                 'controller_name' => 'EventController',
                 'event' => $event,
+                'formDelete' => $formDelete->createView(),
             ]);  
         }
         $now = new \DateTime('now');
@@ -241,13 +250,6 @@ class EventController extends AbstractController
             );
         }
 
-        $formDelete = $this->createFormBuilder()
-        ->getForm();
-        $formDelete->handleRequest($request);
-        if ($formDelete->isSubmitted() && $formDelete->isValid()) {
-            return $this->redirectToRoute('security_delete_event',['id'=>$id]);
-        }
-
         $formPrint = $this->createFormBuilder()
         ->add('print', SubmitType::class, ['label' => 'Imprimer'])
         ->getForm();
@@ -316,6 +318,7 @@ class EventController extends AbstractController
             $form = $this->createForm(EventCreateType::class, $event);
         }
         else {
+            $event->setDateDivers(new \DateTime('now'));
             $form = $this->createForm(EventEditType::class, $event);
         }
 
@@ -498,6 +501,21 @@ class EventController extends AbstractController
             'Votre évènement a bien été supprimer.'
         );
         return $this->redirectToRoute('home');
+    }
+
+     /**
+     * @Route("/admin/evenement/{idEvent}/supprimer_image/{idImage}", name="security_delete_image")
+     */
+    public function deleteImage($id,ObjectManager $manager)
+    {
+        $image = $manager->getRepository(Images::class)->findOneById($idImage);
+        $manager->remove($image); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Votre image a bien été supprimer'
+        );
+        return $this->redirectToRoute('event',['id'=>$idevent]);
     }
 
      /**
