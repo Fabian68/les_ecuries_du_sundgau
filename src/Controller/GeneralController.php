@@ -40,6 +40,22 @@ class GeneralController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/admin/supprimer_description/{id}", name="security_delete_description")
+     */
+    public function deleteDescription($id,ObjectManager $manager)
+    {
+        $desc = $manager->getRepository(Description::class)->findOneById($id);
+       
+        $manager->remove($desc); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Votre description a bien été supprimer.'
+        );
+        return $this->redirectToRoute('home');
+    }
+
     /**
      * @Route("/tarif", name="prices")
      */
