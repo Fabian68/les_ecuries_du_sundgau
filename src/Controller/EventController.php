@@ -378,6 +378,7 @@ class EventController extends AbstractController
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
                     $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setLien($videoLien);
                     $video->setEvenement($event);
                    /* $video->setLien($videoLien);
                     $event->addVideo($video);
@@ -455,6 +456,7 @@ class EventController extends AbstractController
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
                     $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setLien($videoLien);
                     $video->setEvenement($event);
                 }
             }
@@ -588,6 +590,7 @@ class EventController extends AbstractController
             foreach ($tmp->getVideos() as $video) {
                 $choix = explode("=",$video->getLien());
                 $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                $video->setLien($videoLien);
                 $video->setEvenement($event);
                 $event->addVideo($video);
                 $video->setEvenement($event); 
