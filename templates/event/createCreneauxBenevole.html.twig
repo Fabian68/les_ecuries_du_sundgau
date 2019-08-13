@@ -30,7 +30,7 @@
   });
   </script>
         {% if app.user %}
-        {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
+        {% if is_granted('ROLE_ADMIN_ASSO') %}
         <container class="container-creer-event card general-layout">
         <h2 class="card-header mobile-title bg-light">Ajouter des créneaux</h2>
             <section class="">

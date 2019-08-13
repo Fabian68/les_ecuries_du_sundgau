@@ -258,10 +258,11 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/creationCreneaux/{id}", name="createCreneaux")
+     * @Route("/asso/creationCreneaux/{id}", name="createCreneaux")
      */
     public function createPdf($id, Request $request,ObjectManager $manager)
     {
+        $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
 
