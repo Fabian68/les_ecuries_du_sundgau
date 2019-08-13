@@ -268,7 +268,7 @@ class SecurityController extends AbstractController
     }
 
      /**
-     * @Route("/ajouter_description",name="security_add_description")
+     * @Route("/admin/ajouter_description",name="security_add_description")
      */
     public function addDescription(ObjectManager $manager,Request $request){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -295,7 +295,7 @@ class SecurityController extends AbstractController
     }
 
      /**
-     * @Route("/description",name="security_description")
+     * @Route("/admin/description",name="security_description")
      */
     public function description(ObjectManager $manager,Request $request){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -333,6 +333,22 @@ class SecurityController extends AbstractController
             'form'=> $form->createView(),
             'description'=> $description
         ]);
+    }
+
+     /**
+     * @Route("/admin/supprimer_description/{id}", name="security_delete_description")
+     */
+    public function deleteDescription($id,ObjectManager $manager)
+    {
+        $desc = $manager->getRepository(Description::class)->findOneById($id);
+       
+        $manager->remove($desc); 
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Votre description a bien été supprimé.'
+        );
+        return $this->redirectToRoute('home');
     }
 
     /**
