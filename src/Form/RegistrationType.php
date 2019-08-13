@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RegistrationType extends AbstractType
 {
@@ -38,7 +39,7 @@ class RegistrationType extends AbstractType
                 'data' => (new \DateTime('1995-05-14')),
                 'years' => range(1850,2024)
             ])
-            ->add('adresse')
+            ->add('adresse',TextareaType::class)
             ->add('telephone')
         ;
     }
