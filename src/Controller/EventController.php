@@ -103,7 +103,7 @@ class EventController extends AbstractController
                 if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
                     $this->addFlash(
                         'Warning',
-                        'Le tarif entrer ne correspond a aucun tarif'
+                        'Le tarif entré ne correspond à aucun tarif'
                     );
                     return $this->render('/general/eventRegistrationTreatment.html.twig', [
                         'controller_name' => 'GeneralController',
@@ -140,7 +140,7 @@ class EventController extends AbstractController
                 $mailer->send($message);
                 $this->addFlash(
                     'notice',
-                    'Vous êtes bien inscrit a l\'évenement'
+                    'Vous êtes bien inscrit a l\'évènement'
                 );
                 $session->clear();          
             }else {
@@ -212,7 +212,7 @@ class EventController extends AbstractController
                 
                 $this->addFlash(
                     'notice',
-                    'Vous êtes bien inscrit a l\'évenement'
+                    'Vous êtes bien inscrit a l\'évènement'
                 );
                 $manager->flush();
             }
@@ -231,7 +231,7 @@ class EventController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Vos créneaux bénévol ont bien été crée'
+                'Vos créneaux bénévole ont bien été créé'
             );
         }
 
@@ -251,7 +251,7 @@ class EventController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Vous vous êtes bien inscrit en tant que bénévole a cet évènement'
+                'Vous vous êtes bien inscrit en tant que bénévole à cet évènement'
             );
         }
 
@@ -286,10 +286,11 @@ class EventController extends AbstractController
         $manager->remove($UtilisateursMoyenPaiementEvent);
 
         $event->removeUtilisateur($user); 
+        $event->removeUtilisateursMange($user);
         $manager->flush();
         $this->addFlash(
             'notice',
-            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer de l\'évènment '  . $event->getTitre()
+            'L\'utilisateur '. $user->getNom() . ' ' . $user->getPrenom() . ' a bien été retiré de l\'évènement '  . $event->getTitre()
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
@@ -306,7 +307,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer du creneau ' 
+            'L\'utilisateur '. $user->getNom() . ' ' . $user->getPrenom() . ' a bien été retiré du créneau' 
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
@@ -342,14 +343,14 @@ class EventController extends AbstractController
                     if($dateDebut>$dateFin){
                         $this->addFlash(
                             'warning',
-                            'La date de début doit être inferieur a la date de fin !'
+                            'La date de début doit être inférieur à la date de fin !'
                         );
                         return $this->redirectToRoute('createEvent');
                     }
                     if($dateDebut->diff($dateFin,true)->days!=0){
                         $this->addFlash(
                             'warning',
-                            'La date de début et la date de fin doivent être sur le même jour !'
+                            'La date de début et la date de fin doivent être le même jour !'
                         );
                         return $this->redirectToRoute('createEvent');                 
                     }
@@ -370,7 +371,7 @@ class EventController extends AbstractController
             if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
-                    'Vous devez ajouter au moins une image ou une video !'
+                    'Vous devez ajouter au moins une image ou une vidéo !'
                 );
                 return $this->redirectToRoute('createEvent');
             }else{
@@ -396,9 +397,9 @@ class EventController extends AbstractController
             $manager->flush();
             $message;
             if($create == false){
-                $message= 'Votre évènement a bien été modifié .';
+                $message= 'Votre évènement a bien été modifié';
             }else{
-                $message='Votre évènement a bien été crée .';
+                $message='Votre évènement a bien été créé';
             }
             $this->addFlash(
                 'notice',
@@ -450,7 +451,7 @@ class EventController extends AbstractController
             if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
-                    'Vous devez ajouter au moins une image ou une video !'
+                    'Vous devez ajouter au moins une image ou une vidéo !'
                 );
                 return $this->redirectToRoute('createEvent');
             }else{    
@@ -472,7 +473,7 @@ class EventController extends AbstractController
             }
             $this->addFlash(
                 'notice',
-                'Votre évènement a bien été crée .'
+                'Votre évènement a bien été créé .'
             );
             return $this->redirectToRoute('home');
         }    
@@ -505,7 +506,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'Votre évènement a bien été supprimer.'
+            'Votre évènement a bien été supprimé.'
         );
         return $this->redirectToRoute('home');
     }
@@ -520,7 +521,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'Votre image a bien été supprimer'
+            'Votre image a bien été supprimé'
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
@@ -628,14 +629,17 @@ class EventController extends AbstractController
         $mainImageName=$mainImage->getImageName();
         $mainImage->setImageName($imageName);
         $image->setImageName($mainImageName);
+        $date = new \DateTime('now');
+        $image->setUpdatedAt($date);
+        $mainImage->setUpdatedAt($date);
         //$manager->remove($image); 
-        $manager->persist($image);
-        $manager->persist($mainImage);
+        //$manager->persist($image);
+        //$manager->persist($mainImage);
         $manager->persist($event);
         $manager->flush();
         $this->addFlash(
             'notice',
-            'L\'image principale a bien été modifier.'
+            'L\'image principale a bien été modifié.'
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }

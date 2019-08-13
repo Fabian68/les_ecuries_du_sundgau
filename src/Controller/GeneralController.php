@@ -51,7 +51,7 @@ class GeneralController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'Votre description a bien été supprimer.'
+            'Votre description a bien été supprimé.'
         );
         return $this->redirectToRoute('home');
     }
@@ -93,7 +93,7 @@ class GeneralController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Pdf envoyé .'
+                'Pdf envoyé'
             );
         }
 
