@@ -218,22 +218,6 @@ class EventController extends AbstractController
             }
         }
         
-        $creneau = $event->getCreneauxBenevoles();
-        $formAsso = $this->createForm(AssoEventType::class,$event);
-        $formAsso->handleRequest($request);
-        if ($formAsso->isSubmitted() && $formAsso->isValid()) {
-            foreach ($event->getCreneauxBenevoles() as $creneaux) {
-                $event->addCreneauxBenevole($creneaux);
-                $creneaux->setEvent($event);
-                $manager->persist($creneaux);
-            }
-            $manager->persist($event);
-            $manager->flush();
-            $this->addFlash(
-                'notice',
-                'Vos créneaux bénévole ont bien été créé'
-            );
-        }
 
         $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
         $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
@@ -267,10 +251,59 @@ class EventController extends AbstractController
             'controller_name' => 'EventController',
             'event' => $event,
             'form'=> $form->createView(),
-            'formAsso' => $formAsso->createView(),
             'formBenevole' => $formBenevole->createView(),
             'formDelete' => $formDelete->createView(),
             'formPrint' => $formPrint->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/asso/creationCreneaux/{id}", name="createCreneaux")
+     */
+    public function createPdf($id, Request $request,ObjectManager $manager)
+    {
+        $user = $this->getUser();
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repo->find($id);
+
+        $creneau = $event->getCreneauxBenevoles();
+        $formAsso = $this->createForm(AssoEventType::class,$event);
+        $formAsso->handleRequest($request);
+        if ($formAsso->isSubmitted() && $formAsso->isValid()) {
+            foreach ($event->getCreneauxBenevoles() as $creneaux) {
+                $dateDebut=$creneaux->getDateDebut();
+                $dateFin=$creneaux->getDateFin();
+                if($dateDebut>$dateFin){
+                    $this->addFlash(
+                        'warning',
+                        'La date de début doit être inferieur a la date de fin !'
+                    );
+                    return $this->redirectToRoute('createCreneaux', ['id'=>$event->getId()]);
+                }
+                if($dateDebut->diff($dateFin,true)->days!=0){
+                    $this->addFlash(
+                        'warning',
+                        'La date de début et la date de fin doivent être sur le même jour !'
+                    );
+                    return $this->redirectToRoute('createCreneaux', ['id'=>$event->getId()]);                 
+                }
+                $event->addCreneauxBenevole($creneaux);
+                $creneaux->setEvent($event);
+                $manager->persist($creneaux);
+            }
+            $manager->persist($event);
+            $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Vos créneaux bénévol ont bien été crée'
+            );
+            return $this->redirectToRoute('event',['id'=>$event->getID()]);
+        }
+
+        return $this->render('/event/createCreneauxBenevole.html.twig', [
+            'controller_name' => 'EventController',
+            'event' => $event,
+            'formAsso' => $formAsso->createView(),
         ]);
     }
 

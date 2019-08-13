@@ -42,11 +42,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/connexion$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/asso, roles: ROLE_ADMIN_ASSO }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profil, roles: ROLE_USER }
-        - { path: ^/admin_of_helper, roles: ROLE_ADMIN_ASSO }
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER,ROLE_ADMIN_ASSO,ROLE_USER_BENEVOLE]
+        ROLE_ADMIN: [ROLE_USER,ROLE_USER_BENEVOLE]
         ROLE_ADMIN_ASSO: [ROLE_USER]
         ROLE_BENEVOLE: [ROLE_USER]
 
