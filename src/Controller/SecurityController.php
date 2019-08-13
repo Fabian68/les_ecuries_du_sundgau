@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
             $user->setImageFile(null);//la valeur doit être vidé car elle ne sert plus et n'est pas serializable
             $this->addFlash(
                 'notice',
-                'Votre compte a bien été crée . '
+                'Votre compte a bien été créé'
             );
 
             $token = $tokenGenerator->generateToken();
@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
                 ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
-                    " Voici le lien pour valdier votre email : " . $url,
+                    " Voici le lien pour valider votre email : " . $url,
                     'text/html'
                 );
 
@@ -122,7 +122,7 @@ class SecurityController extends AbstractController
            
             $this->addFlash(
                 'notice',
-                'Votre compte a bien été modifié .'
+                'Votre compte a bien été modifié'
             );
             $mail = $session->get('mail');
             if($user->getEmail()!=$mail){
@@ -141,12 +141,12 @@ class SecurityController extends AbstractController
                     ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                     ->setTo($user->getEmail())
                     ->setBody(
-                        " Voici le lien pour valdier votre email : " . $url,
+                        " Voici le lien pour valider votre email : " . $url,
                         'text/html'
                     );
                 $mailer->send($message);
     
-                $this->addFlash('notice', 'Mailde verification du nouveau mail envoyer');   
+                $this->addFlash('notice', 'Mail de verification du nouveau mail envoyer');   
             }
             $manager->persist($user);
             $manager->flush();
@@ -188,7 +188,7 @@ class SecurityController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                "Votre mot de passe a bien été modifié !"
+                "Votre mot de passe a bien été modifié"
             );
             return $this->redirectToRoute('security_profile');
             }
@@ -221,10 +221,10 @@ class SecurityController extends AbstractController
             
             if($user->getRoles() == array('ROLE_BENEVOLE')){
                 $user->setRoles(array('ROLE_USER'));
-                $this->addFlash('notice', 'Vous ne pouvez plus vous inscrire en tant que bénévole aux évènements.');
+                $this->addFlash('notice', 'Vous ne pouvez plus vous inscrire en tant que bénévole aux évènements');
             }else{
                 $user->setRoles(array('ROLE_BENEVOLE'));
-                $this->addFlash('notice', 'Vous pouvez désormait vous inscrire en tant que bénévole aux évènements.');           
+                $this->addFlash('notice', 'Vous pouvez désormait vous inscrire en tant que bénévole aux évènements');           
             } 
             $manager->flush(); 
             return $this->redirectToRoute('security_profile'); 
@@ -251,7 +251,7 @@ class SecurityController extends AbstractController
                 ->setFrom('administrateur@les-ecuries-du-sundgau.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
-                    " Voici le lien pour valdier votre email : " . $url,
+                    " Voici le lien pour valider votre email : " . $url,
                     'text/html'
                 );
 
@@ -400,7 +400,7 @@ class SecurityController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Votre mot de passe a bien été modifier . '
+                'Votre mot de passe a bien été modifié '
             );      
             return $this->redirectToRoute('home');
         }else {
@@ -424,12 +424,12 @@ class SecurityController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Votre mail est verifié .'
+                'Votre mail est verifié'
             );
             return $this->redirectToRoute('home');
         }else{
             $this->addFlash(
-                'notice',
+                'warning',
                 'Token introuvable'
             );
         }
@@ -462,7 +462,7 @@ class SecurityController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Utilisateur supprimer.'
+                'Utilisateur supprimé'
             );
             return $this->redirectToRoute('security_show_all_users');
 
