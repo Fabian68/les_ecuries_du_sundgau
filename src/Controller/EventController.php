@@ -678,8 +678,13 @@ class EventController extends AbstractController
        
         $imageName=$image->getImageName();
         $mainImageName=$mainImage->getImageName();
+        $updatedMainImage=$mainImage->getUpdatedAt();
+        $updatedImage=$image->getUpdatedAt();
+
         $mainImage->setImageName($imageName);
         $image->setImageName($mainImageName);
+        $mainImage->setUpdatedAt($updatedImage);
+        $image->setUpdatedAt($updatedMainImage);
         $date = new \DateTime('now');
         $image->setUpdatedAt($date);
         $mainImage->setUpdatedAt($date);
