@@ -494,9 +494,18 @@ class EventController extends AbstractController
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
-                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
-                    $video->setLien($videoLien);
+                   
                     $video->setEvenement($event);
+                    if(sizeof($choix) != 2){
+                        $this->addFlash(
+                            'warning',
+                            'Lien de vidéo invalide'
+                        );
+                        return $this->redirectToRoute('createEvent');
+                    }else {
+                        $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                        $video->setLien($videoLien);
+                    }       
                 }
             }
             $manager->persist($event);
@@ -628,13 +637,22 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($tmp->getVideos() as $video) {
                 $choix = explode("=",$video->getLien());
-                $videoLien="https://www.youtube.com/embed/" . $choix[1];
-                $video->setLien($videoLien);
-                $video->setEvenement($event);
-                $event->addVideo($video);
-                $video->setEvenement($event); 
-                $manager->persist($video);
+                if(sizeof($choix) != 2){
+                    $this->addFlash(
+                        'warning',
+                        'Lien de vidéo invalide'
+                    );
+                    return $this->redirectToRoute('add_video');
+                }else {
+                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setLien($videoLien);
+                    $video->setEvenement($event);
+                    $event->addVideo($video);
+                    $video->setEvenement($event); 
+                    $manager->persist($video);
+                }       
             }
+
             $manager->persist($event);
             $manager->flush();
             return $this->redirectToRoute('event', array('id' => $id));
@@ -660,8 +678,13 @@ class EventController extends AbstractController
        
         $imageName=$image->getImageName();
         $mainImageName=$mainImage->getImageName();
+        $updatedMainImage=$mainImage->getUpdatedAt();
+        $updatedImage=$image->getUpdatedAt();
+
         $mainImage->setImageName($imageName);
         $image->setImageName($mainImageName);
+        $mainImage->setUpdatedAt($updatedImage);
+        $image->setUpdatedAt($updatedMainImage);
         $date = new \DateTime('now');
         $image->setUpdatedAt($date);
         $mainImage->setUpdatedAt($date);
