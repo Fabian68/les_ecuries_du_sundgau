@@ -13,7 +13,7 @@
                 <div class="divers-videos-layout bg-secondary">
                   {% for video in event.videos %}
                     <div class=".divers-video">
-                      
+                      <iframe width="100%" height="auto" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                   {% endfor %}
                 </div>
@@ -40,9 +40,5 @@
             </div>
         </event>
     </div>
-
-    {% for video in event.videos %}
-        <iframe width="560" height="315" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    {% endfor %}
 
 {% endblock %}

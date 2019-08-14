@@ -4,13 +4,15 @@
 
     <script>
     function showControls(){
-        document.getElementById("image").style.setProperty('margin-left', '-25%');
+        document.getElementById("image").style.setProperty('margin-left', '-35%');
         document.getElementById("controls").style.setProperty('margin-right', '-1em');
+        document.getElementById("image-list").style.setProperty('max-height','0em');
     }
 
     function showImage(){
         document.getElementById("image").style.setProperty('margin-left', '-1em');
         document.getElementById("controls").style.setProperty('margin-right', '-25%');
+        document.getElementById("image-list").style.setProperty('max-height','100%');
     }
 
     // add-collection-widget.js
@@ -39,11 +41,22 @@
     </script>
 
     <section class="event-layout">
-        <div id="image" class="card bg-secondary event-thumbnail">
-          <div class="thumbnail-container bg-white"><img class="event-thumbnail-image" src="/images/properties/{{ ((event.images | first).imageName) }}"></div>
-          <div class="bg-secondary arrow-container" onclick="showImage()"><div class="arrow"><p> > <br> > <br> > </p></div></div>
+        <div id="image" class="event-thumbnail">
+          <div class="event-first-image card bg-secondary" onclick="showImage()">
+            <div class="thumbnail-container bg-white"><img class="event-thumbnail-image" src="/images/properties/{{ ((event.images | first).imageName) }}"></div>
+            <div class="bg-secondary arrow-container"><div class="arrow"><p> > <br> > <br> > </p></div></div>
+          </div>
+          <div id="image-list" class="event-image-list {% if event.images|length < 2 %}image-list-empty{% endif %}">
+            {% for image in event.images %}
+            {% if loop.index > 1 %}
+            <div class="divers-image">
+              <img class="divers-thumbnail-image" src="/images/properties/{{ image.imageName }}">
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
         </div>
-        
+        <div class="event-controls-container event-info">
         <event class="card mb-3 event-info">
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
             {% if date((event.dates | first).dateLimitRegistration) > date('+0hours', 'Europe/Paris') %}
@@ -92,6 +105,13 @@
                     {{ event.texte }}
                   </div>
                 </br>
+                  <div class="divers-videos-layout bg-secondary">
+                    {% for video in event.videos %}
+                      <div class=".divers-video">
+                        <iframe width="100%" height="auto" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      </div>
+                    {% endfor %}
+                  </div>
             </div>
             <div class="card-footer event-body-text">
                 {% if app.user %}
@@ -129,20 +149,20 @@
 
             {% if is_granted('ROLE_ADMIN') %}
                     {{ form_start(formDelete) }}
-                            <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+                            <input type="submit" class="btn btn-secondary index-more-button" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
                     {{ form_end(formDelete) }}
 
                     {{ form_start(formPrint) }}
                     {{ form_end(formPrint) }}
                     
-                    <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
-                    <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
-                    <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
             {% endif %}  
             </div>
         </event>
-        <div id="controls" class="card bg-secondary event-controls">
-          <div class="bg-secondary arrow-container" onclick="showControls()"><div class="arrow"><p> < <br> < <br> < </p></div></div>
+        <div id="controls" class="card bg-secondary event-controls" onclick="showControls()">
+          <div class="bg-secondary arrow-container"><div class="arrow"><p> < <br> < <br> < </p></div></div>
           <div class="card-body event-body-text bg-white">
             <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
             {% if not app.user %}
@@ -195,15 +215,17 @@
 
             <div>Inscrit</div>
             {% for utilisateur in event.utilisateurs %}
+              <div class="">
+                <img class="" src="{{ (vich_uploader_asset((utilisateur),'imageFile')) | imagine_filter('profile_thumb') }}">
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sur de supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
                 {% endif %}
-                </br>
+              </div>
+              </br>
             {% endfor %}
-
-                </br>
+              </br>
 
                 
                 {% if app.user.roles[0] == 'ROLE_BENEVOLE' %}
@@ -211,7 +233,7 @@
                 <div>Inscription benevole</div>
 
                     {{ form_start(formBenevole) }}
-                    {{ form_row(formBenevole.creneaux, {'attr' : { 'class' : 'creneaux-container bg-secondary' }}) }}
+                    {{ form_row(formBenevole.creneaux, {'attr' : { 'class' : 'creneaux-container' }}) }}
                     {{ form_end(formBenevole) }}
 
                 {% else %}
@@ -222,6 +244,7 @@
                 {% endif %}
                     </br> 
                 {% for creneaux in event.creneauxBenevoles %}
+                  <div class="bg-secondary">
                     <div>Benevole pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
                     {% for utilisateur in creneaux.utilisateurs %}
                         {{ utilisateur.prenom }}
@@ -231,10 +254,12 @@
                         {% endif %}
                             </br>
                     {% endfor %}
-                    </br>
+                  </div>
+                  </br>
                 {% endfor %}
             {% endif %}           
           </div>  
+        </div>
         </div>
     </section>
 

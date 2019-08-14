@@ -251,7 +251,7 @@ class EventController extends AbstractController
         }
 
         $formPrint = $this->createFormBuilder()
-        ->add('print', SubmitType::class, ['label' => 'Imprimer'])
+        ->add('print', SubmitType::class, ['label' => 'Imprimer', 'attr' => [ 'class' => 'btn btn-secondary index-more-button' ] ])
         ->getForm();
         $formPrint->handleRequest($request);
         if ($formPrint->isSubmitted() && $formPrint->isValid() && 'print' === $formPrint->getClickedButton()->getName()) {      

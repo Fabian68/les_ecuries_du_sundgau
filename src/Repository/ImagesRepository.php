@@ -22,19 +22,19 @@ class ImagesRepository extends ServiceEntityRepository
     // /**
     //  * @return Images[] Returns an array of Images objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByDivers($value)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
+            ->leftJoin('i.evenement', 'e')
+            ->andWhere('e.divers = :val')
             ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('i.updatedAt', 'DESC')
+            ->setMaxResults(100)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Images

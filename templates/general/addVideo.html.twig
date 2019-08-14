@@ -30,8 +30,9 @@
   });
   </script>
     {% if is_granted('ROLE_ADMIN') %}
-    <container class="container-creer-event">
-      <div class="card mb-3 creer-event-layout">
+    <container class="general-window card mb-3">
+      <h2 class="card-header">Ajouter une vidéo</h2>
+      <div class="card-body">
       {{ form_start(formEvent) }}
 
         <ul id="video-fields-list"
@@ -54,7 +55,7 @@
         {{ form_row(formEvent.videos,{ 'label' : false } ) }}
         {{ form_end(formEvent) }}
         
-        <div><a href="{{ path('event', {'id': event.id}) }}">Annuler</a></div>
+        <div><a class="btn btn-secondary" href="{{ path('event', {'id': event.id}) }}">Annuler</a></div>
         
         </div>
       </container>

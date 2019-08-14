@@ -34,7 +34,7 @@
       <div class="carousel-item {% if active == 'active' %}{{ active }}{% set active = '' %}{% endif %}">
       <div class="carousel-pusher"></div>
       {% endif %}
-        <img class="image-thumbnail" src="{{ (vich_uploader_asset((image),'imageFile')) | imagine_filter('my_thumb') }}">
+        <a href="/evenement/{{ image.evenement.id }}"><img class="image-thumbnail" src="{{ (vich_uploader_asset((image),'imageFile')) | imagine_filter('my_thumb') }}"></a>
       {% if var % 5 == 4 %}</div>{% endif %}
       {% set var = var + 1 %}
       {% set var = var % 5 %}

@@ -11,14 +11,19 @@
     <script>
     function display(i){
         var image = document.getElementById("displayScreen");   
+        var text = document.getElementById("facility-text");
         if(i == 1){
             image.src = "/images/resources/facilities/big_area.jpg";
+            text.innerHTML = "Grande piste"
         } else if(i == 2) {
-            image.src = "/images/resources/facilities/front.jpg";
+            image.src = "/images/resources/facilities/petite_piste.jpg";
+            text.innerHTML = "Petite piste"
         } else if(i == 3) {
-            image.src = "/images/resources/facilities/fences.jpg";
+            image.src = "/images/resources/facilities/park_2.jpg";
+            text.innerHTML = "Parc avec abri pour toute l'année (2 hectares)"
         } else {
-            image.src = "/images/resources/facilities/center_to_park.jpg";
+            image.src = "/images/resources/facilities/parking.jpg";
+            text.innerHTML = "Parking"
         }
     }
     </script>
@@ -31,15 +36,18 @@
             <map name="facilities">
                 <area shape="poly" coords="40,80,60,80,60,100,40,100"
                     onclick="display(1)" alt="HTML" />
-                <area shape="poly" coords="200,100,220,100,220,120,200,120"
+                <area shape="poly" coords="130,70,150,70,150,90,130,90"
                     onclick="display(2)" alt="CSS" />
                 <area shape="poly" coords="150,10,170,10,170,30,150,30"
                     onclick="display(3)" alt="JavaScript" />
                 <area shape="poly" coords="30,210,50,210,50,230,30,230"
                     onclick="display(4)" alt="JavaScript" />
             </map>
-            <img class="map-layout" usemap="#facilities" src="/images/resources/facilities/map.jpg" alt="map" />
-            <img class="facility-layout" id="displayScreen" src="/images/resources/facilities/whole_facility.jpg" />
+            <div class="map-and-text">  
+              <img class="map-layout" usemap="#facilities" src="/images/resources/facilities/map.jpg" alt="map" />
+              <h2 id="facility-text" class="text-white facility-image-title">Vue d'ensemble</h2>
+            </div>
+            <img class="facility-layout" id="displayScreen" src="/images/resources/facilities/vue_d_ensemble.jpg" />
         </div>
         <div class="bg-facility"></div>
     </div>

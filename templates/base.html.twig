@@ -48,6 +48,7 @@
             bottom: 0;
             padding-top: 8em;
             display: flex;
+            flex-direction: column;
         }
         .bg-facility{
             position: fixed;
@@ -70,10 +71,8 @@
             margin: 2em;
         }
         .facility-layout{
-            flex: 1;
-            object-fit: contain;
-            overflow: auto;
-            margin-bottom: 12em;
+            width: 100%;
+            height: auto;
         }
         .events-layout{
             display: flex;
@@ -101,11 +100,9 @@
             .event-content{
                 flex: 3 !important;
             }
-            .layout-pdf{
-                top: 7.5rem !important;
-            }
+            
             .image-band-layout{
-                height: 11em !important;
+                height: 7em !important;
             }
             .carousel-pusher{
                 width: 50% !important;
@@ -132,6 +129,9 @@
             }
             .event-body-text{
                 font-size: 1em !important;
+            }
+            .contact{
+                flex-direction: row !important;
             }
         }
 
@@ -215,6 +215,10 @@
             flex: 4;
             min-width: 14em !important;
             margin-bottom: 0 !important;
+            width: 66%;
+        }
+        .tarifs-layout > td {
+            display: block;
         }
         .date-text{
             display: inline;
@@ -225,7 +229,7 @@
         }
         @media screen and (max-width: 991px){
             .layout-pdf{
-                top: 8rem !important;
+                top: 7.3rem !important;
             }
         }
         @media screen and (max-width: 850px){
@@ -290,14 +294,11 @@
                 max-height: 5em !important;
                 width: 5em !important;
             }
-            .image-thumbnail:hover{
-                transform: scale(3.0) translate(0,30%) !important; 
-            }
             .carousel-pusher{
                 margin-left: -13em !important;
             }
             .image-band-layout{
-                height: 6em !important;
+                height: 4.2em !important;
             }
             .galop-layout{
                 margin: 0.2em !important;
@@ -314,15 +315,11 @@
                 right: 0;
                 padding-top: 6em;
             }
-            .facility-layout{
-                margin-bottom: 1em;
-            }
             .bg-facility{
                 right: 0 !important;
                 left: 0 !important;
             }
             .map-layout{
-                align-self: center;
                 margin-top: 4em;
             }
             .registration-layout{
@@ -349,23 +346,33 @@
                 height: 0 !important;
             }
             .event-layout{
-                flex-direction: column !important;
+                flex-direction: column-reverse !important;
                 align-items: center !important;
+                margin-top: 4em !important;
+            }
+            .event-controls-container{
+                flex-direction: column !important;
+                align-items: stretch !important;
             }
             .event-thumbnail{
                 margin-left: 2em !important;
-                margin: 0 !important;
-                height: 0em !important;
-                border: 0 !important;
-            }
-            .thumbnail-container{
-                height: 0em !important;
+                align-self: flex-end !important;
             }
             .event-controls{
                 margin-right: 2em !important;
             }
-            .event-layout{
-                margin-top: 4em !important;
+            .event-image-list{
+                margin-top: -14em !important;
+                padding-top: 16em !important;
+                width: calc(100% + 10em) !important;
+                margin-left: -5em !important;
+                margin-right: -5em !important;
+                padding-left: 5em !important;
+                padding-right: 5em !important;
+                max-height: none !important;
+            }
+            .layout-pdf{
+                top: 4.5rem !important; 
             }
         }
         @media screen and (max-width: 750px){
@@ -379,14 +386,14 @@
             .event-history{
                 margin-top: 8em !important;
             }
-            .layout-pdf{
-                top: 6.3rem !important; 
-            }
             .map-layout{
                 margin-top: 2em !important;
             }
             .date-container-wrapper{
                 max-height: 4.5em;
+            }
+            .facility-image-title{
+                font-size: 1.5em;
             }
         }
         .header-custom{
@@ -505,7 +512,7 @@
         }
         .layout-pdf{
             position: absolute;
-            top: 7.5rem;
+            top: 6.9rem;
             left: 0;
             right: 0;
             bottom: 0;
@@ -536,6 +543,7 @@
             flex-direction: column;
             text-align: left;
             align-content: center;
+            width: auto;
         }
         .galops-text{
             flex: 1;
@@ -564,7 +572,7 @@
         .image-band-layout{
             background-color: #77d1bd;
             width: 100%;
-            height: 8em;
+            height: 5.5em;
             margin-top: 1em;
             padding-top: 0.5em;
             margin-bottom: -5em;
@@ -609,7 +617,7 @@
             transition: all .2s ease-in-out;
         }
         .image-thumbnail:hover{
-            transform: scale(2.0) translate(0,23%);
+            transform: scale(1.1);
         }
         .image-container{
         }
@@ -677,7 +685,6 @@
             }
             .image-thumbnail:hover{
                 max-width: 30% !important;
-                transform: scale(4.0) translate(0,30%) !important;
             }
             .carousel-pusher{
                 margin-left: -10.5em !important;
@@ -708,6 +715,12 @@
             .event-history-item{
                 flex: 43% !important;
             }
+            .facility-image-title{
+                font-size: 1.1em !important;
+            }
+            .map-and-text{
+                flex-direction: column !important;
+            }
         }
         .navbar-logo-custom{
             margin-right: 0.2em !important;
@@ -727,7 +740,7 @@
             justify-content: space-between;
         }
         .registration-layout{
-            margin-top: 7em;
+            margin-top: 9em;
             margin-left: auto;
             margin-right: auto;
             width: 50%;
@@ -761,9 +774,11 @@
             width: 7em;
         }
         .profile-image{
-            width: 100%;
+            width: 40%;
             height: auto;
             margin-bottom: 1em;
+            margin-left: auto;
+            margin-right: auto;
         }
         .container-creer-event{
             width: 70%;
@@ -810,8 +825,8 @@
             margin-top: 0.65em;
         }
         .contact-layout{
-            flex: auto;
-            margin: 3em;
+            margin-left: 3em;
+            margin-right: 3em;
             color: white;
         }
         .google-map-layout{
@@ -876,7 +891,8 @@
             margin-top: 13em;
             margin-left: auto;
             margin-right: auto;
-            max-width: 20em;
+            max-width: 30em;
+            overflow: hidden;
         }
         .pres-image-container{
             width: 100%;
@@ -911,13 +927,35 @@
         }
         .event-thumbnail{
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: stretch;
             justify-content: space-between;
             flex: 1;
             margin: 2em;
-            margin-left: -25%;
+            margin-left: -35%;
             transition: all .4s ease-in-out;
+        }
+        .event-first-image{
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            margin: 0;
+        }
+        .event-image-list{
+            display: flex;
+            flex-direction: column;
+            padding: 1em;
+            margin: 0;
+            width: 75%;
+            background-color: #3d3f40;
+            margin-bottom: -2em;
+            overflow: hidden;
+            transition: all .4s ease-in-out;
+            max-height: 0;
+        }
+        .event-image-list > img{
+            object-fit: contain;
         }
         .event-thumbnail-image{
             object-fit: contain;
@@ -1023,6 +1061,35 @@
         .event-corner{
             display: flex;
             justify-content: space-between;
+        }
+        .event-controls-container{
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            margin: 0em;
+        }
+        .image-list-empty{
+            padding: 0 !important;
+        }
+        .map-and-text{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .facility-image-title{
+            margin: 0.5em;
+            text-align: right;
+        }
+        .contact{
+            display: flex;
+            flex-direction: column;
+        }
+        .mb1{
+            margin-bottom: 1em !important;
+        }
+        .mt8{
+            margin-top: 8em !important;
         }
         </style>
         {% block stylesheets %}{% endblock %}
