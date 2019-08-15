@@ -425,6 +425,8 @@ class EventController extends AbstractController
                     }else {
                         $videoLien="https://www.youtube.com/embed/" . $choix[1];
                         $video->setLien($videoLien);
+                        $video->setEvenement($event); 
+                        $event->addVideo($video);
                     }       
                    /* $video->setLien($videoLien);
                     $event->addVideo($video);
@@ -512,6 +514,8 @@ class EventController extends AbstractController
                     }else {
                         $videoLien="https://www.youtube.com/embed/" . $choix[1];
                         $video->setLien($videoLien);
+                        $video->setEvenement($event); 
+                        $event->addVideo($video);
                     }       
                 }
             }
@@ -655,7 +659,6 @@ class EventController extends AbstractController
                     $video->setLien($videoLien);
                     $video->setEvenement($event);
                     $event->addVideo($video);
-                    $video->setEvenement($event); 
                     $manager->persist($video);
                 }       
             }

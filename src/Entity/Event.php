@@ -118,7 +118,7 @@ class Event
      */
     private $utilisateurMoyenPaiementEvents;
 
-    private $choixPrix=0;
+    private $choixPrix=0.0;
 
     private $signataire='';
 
