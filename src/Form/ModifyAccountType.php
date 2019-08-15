@@ -22,7 +22,7 @@ class ModifyAccountType extends AbstractType
             ->add('dateNaissance',DateType::class,[
                 'years' => range(1850,2024)
             ])
-            ->add('adresse')
+            ->add('adresse',TextareaType::class)
             ->add('telephone')
             ->add('galop', EntityType::class, [
                 'class'=> Galops::class,

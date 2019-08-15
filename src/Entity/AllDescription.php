@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\DescriptionRepository")
  * @Vich\Uploadable
  */
 class AllDescription

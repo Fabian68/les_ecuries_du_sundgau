@@ -60,6 +60,11 @@ class EventController extends AbstractController
         $user = $this->getUser();
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
+        if($event == NULL){
+            return $this->render('event/eventWhoNotExist.html.twig', [
+                'controller_name' => 'EventController',
+        ]);  
+        }
 
         $formDelete = $this->createFormBuilder()
         ->getForm();
@@ -98,7 +103,7 @@ class EventController extends AbstractController
                 if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
                     $this->addFlash(
                         'Warning',
-                        'Le tarif entrer ne correspond a aucun tarif'
+                        'Le tarif entré ne correspond à aucun tarif'
                     );
                     return $this->render('/general/eventRegistrationTreatment.html.twig', [
                         'controller_name' => 'GeneralController',
@@ -135,7 +140,7 @@ class EventController extends AbstractController
                 $mailer->send($message);
                 $this->addFlash(
                     'notice',
-                    'Vous êtes bien inscrit a l\'évenement'
+                    'Vous êtes bien inscrit a l\'évènement'
                 );
                 $session->clear();          
             }else {
@@ -207,28 +212,12 @@ class EventController extends AbstractController
                 
                 $this->addFlash(
                     'notice',
-                    'Vous êtes bien inscrit a l\'évenement'
+                    'Vous êtes bien inscrit a l\'évènement'
                 );
                 $manager->flush();
             }
         }
         
-        $creneau = $event->getCreneauxBenevoles();
-        $formAsso = $this->createForm(AssoEventType::class,$event);
-        $formAsso->handleRequest($request);
-        if ($formAsso->isSubmitted() && $formAsso->isValid()) {
-            foreach ($event->getCreneauxBenevoles() as $creneaux) {
-                $event->addCreneauxBenevole($creneaux);
-                $creneaux->setEvent($event);
-                $manager->persist($creneaux);
-            }
-            $manager->persist($event);
-            $manager->flush();
-            $this->addFlash(
-                'notice',
-                'Vos créneaux bénévol ont bien été crée'
-            );
-        }
 
         $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
         $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
@@ -246,7 +235,7 @@ class EventController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Vous vous êtes bien inscrit en tant que bénévole a cet évènement'
+                'Vous vous êtes bien inscrit en tant que bénévole à cet évènement'
             );
         }
 
@@ -262,10 +251,59 @@ class EventController extends AbstractController
             'controller_name' => 'EventController',
             'event' => $event,
             'form'=> $form->createView(),
-            'formAsso' => $formAsso->createView(),
             'formBenevole' => $formBenevole->createView(),
             'formDelete' => $formDelete->createView(),
             'formPrint' => $formPrint->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/asso/creationCreneaux/{id}", name="createCreneaux")
+     */
+    public function createPdf($id, Request $request,ObjectManager $manager)
+    {
+        $user = $this->getUser();
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repo->find($id);
+
+        $creneau = $event->getCreneauxBenevoles();
+        $formAsso = $this->createForm(AssoEventType::class,$event);
+        $formAsso->handleRequest($request);
+        if ($formAsso->isSubmitted() && $formAsso->isValid()) {
+            foreach ($event->getCreneauxBenevoles() as $creneaux) {
+                $dateDebut=$creneaux->getDateDebut();
+                $dateFin=$creneaux->getDateFin();
+                if($dateDebut>$dateFin){
+                    $this->addFlash(
+                        'warning',
+                        'La date de début doit être inferieur a la date de fin !'
+                    );
+                    return $this->redirectToRoute('createCreneaux', ['id'=>$event->getId()]);
+                }
+                if($dateDebut->diff($dateFin,true)->days!=0){
+                    $this->addFlash(
+                        'warning',
+                        'La date de début et la date de fin doivent être sur le même jour !'
+                    );
+                    return $this->redirectToRoute('createCreneaux', ['id'=>$event->getId()]);                 
+                }
+                $event->addCreneauxBenevole($creneaux);
+                $creneaux->setEvent($event);
+                $manager->persist($creneaux);
+            }
+            $manager->persist($event);
+            $manager->flush();
+            $this->addFlash(
+                'notice',
+                'Vos créneaux bénévol ont bien été crée'
+            );
+            return $this->redirectToRoute('event',['id'=>$event->getID()]);
+        }
+
+        return $this->render('/event/createCreneauxBenevole.html.twig', [
+            'controller_name' => 'EventController',
+            'event' => $event,
+            'formAsso' => $formAsso->createView(),
         ]);
     }
 
@@ -281,10 +319,11 @@ class EventController extends AbstractController
         $manager->remove($UtilisateursMoyenPaiementEvent);
 
         $event->removeUtilisateur($user); 
+        $event->removeUtilisateursMange($user);
         $manager->flush();
         $this->addFlash(
             'notice',
-            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer de l\'évènment '  . $event->getTitre()
+            'L\'utilisateur '. $user->getNom() . ' ' . $user->getPrenom() . ' a bien été retiré de l\'évènement '  . $event->getTitre()
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
@@ -301,7 +340,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'L\'utilisateur'. $user->getNom() . ' ' . $user->getPrenom() . 'a bien été retirer du creneau ' 
+            'L\'utilisateur '. $user->getNom() . ' ' . $user->getPrenom() . ' a bien été retiré du créneau' 
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
@@ -337,14 +376,14 @@ class EventController extends AbstractController
                     if($dateDebut>$dateFin){
                         $this->addFlash(
                             'warning',
-                            'La date de début doit être inferieur a la date de fin !'
+                            'La date de début doit être inférieur à la date de fin !'
                         );
                         return $this->redirectToRoute('createEvent');
                     }
                     if($dateDebut->diff($dateFin,true)->days!=0){
                         $this->addFlash(
                             'warning',
-                            'La date de début et la date de fin doivent être sur le même jour !'
+                            'La date de début et la date de fin doivent être le même jour !'
                         );
                         return $this->redirectToRoute('createEvent');                 
                     }
@@ -365,7 +404,7 @@ class EventController extends AbstractController
             if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
-                    'Vous devez ajouter au moins une image ou une video !'
+                    'Vous devez ajouter au moins une image ou une vidéo !'
                 );
                 return $this->redirectToRoute('createEvent');
             }else{
@@ -377,8 +416,16 @@ class EventController extends AbstractController
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
-                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
-                    $video->setEvenement($event);
+                    if(sizeof($choix) != 2){
+                        $this->addFlash(
+                            'warning',
+                            'Lien de vidéo invalide'
+                        );
+                        return $this->redirectToRoute('createEvent');
+                    }else {
+                        $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                        $video->setLien($videoLien);
+                    }       
                    /* $video->setLien($videoLien);
                     $event->addVideo($video);
                      
@@ -390,9 +437,9 @@ class EventController extends AbstractController
             $manager->flush();
             $message;
             if($create == false){
-                $message= 'Votre évènement a bien été modifié .';
+                $message= 'Votre évènement a bien été modifié';
             }else{
-                $message='Votre évènement a bien été crée .';
+                $message='Votre évènement a bien été créé';
             }
             $this->addFlash(
                 'notice',
@@ -444,7 +491,7 @@ class EventController extends AbstractController
             if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
-                    'Vous devez ajouter au moins une image ou une video !'
+                    'Vous devez ajouter au moins une image ou une vidéo !'
                 );
                 return $this->redirectToRoute('createEvent');
             }else{    
@@ -454,8 +501,18 @@ class EventController extends AbstractController
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
-                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                   
                     $video->setEvenement($event);
+                    if(sizeof($choix) != 2){
+                        $this->addFlash(
+                            'warning',
+                            'Lien de vidéo invalide'
+                        );
+                        return $this->redirectToRoute('createEvent');
+                    }else {
+                        $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                        $video->setLien($videoLien);
+                    }       
                 }
             }
             $manager->persist($event);
@@ -465,7 +522,7 @@ class EventController extends AbstractController
             }
             $this->addFlash(
                 'notice',
-                'Votre évènement a bien été crée .'
+                'Votre évènement a bien été créé .'
             );
             return $this->redirectToRoute('home');
         }    
@@ -498,7 +555,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'Votre évènement a bien été supprimer.'
+            'Votre évènement a bien été supprimé.'
         );
         return $this->redirectToRoute('home');
     }
@@ -506,16 +563,16 @@ class EventController extends AbstractController
      /**
      * @Route("/admin/evenement/{idEvent}/supprimer_image/{idImage}", name="security_delete_image")
      */
-    public function deleteImage($id,ObjectManager $manager)
+    public function deleteImage($idEvent,$idImage,ObjectManager $manager)
     {
         $image = $manager->getRepository(Images::class)->findOneById($idImage);
         $manager->remove($image); 
         $manager->flush();
         $this->addFlash(
             'notice',
-            'Votre image a bien été supprimer'
+            'Votre image a bien été supprimé'
         );
-        return $this->redirectToRoute('event',['id'=>$idevent]);
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
 
      /**
@@ -587,12 +644,22 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($tmp->getVideos() as $video) {
                 $choix = explode("=",$video->getLien());
-                $videoLien="https://www.youtube.com/embed/" . $choix[1];
-                $video->setEvenement($event);
-                $event->addVideo($video);
-                $video->setEvenement($event); 
-                $manager->persist($video);
+                if(sizeof($choix) != 2){
+                    $this->addFlash(
+                        'warning',
+                        'Lien de vidéo invalide'
+                    );
+                    return $this->redirectToRoute('add_video');
+                }else {
+                    $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                    $video->setLien($videoLien);
+                    $video->setEvenement($event);
+                    $event->addVideo($video);
+                    $video->setEvenement($event); 
+                    $manager->persist($video);
+                }       
             }
+
             $manager->persist($event);
             $manager->flush();
             return $this->redirectToRoute('event', array('id' => $id));
@@ -604,5 +671,41 @@ class EventController extends AbstractController
                 'event'=>$event
         ]);  
     }
+
+    /**
+     * @Route("/admin/evenement/{idEvent}/echange_image/{idImage}", name="change_main_image")
+     */
+    public function changeMainImage($idEvent,$idImage, ObjectManager $manager)
+    {
+        $image = $manager->getRepository(Images::class)->findOneById($idImage);
+        $event =$manager->getRepository(Event::class)->findOneById($idEvent);
+        $Array=$event->getImages();  
+        $mainImage=$event->getImages()[0];
+        $idMainImage=$mainImage->getId();
+       
+        $imageName=$image->getImageName();
+        $mainImageName=$mainImage->getImageName();
+        $updatedMainImage=$mainImage->getUpdatedAt();
+        $updatedImage=$image->getUpdatedAt();
+
+        $mainImage->setImageName($imageName);
+        $image->setImageName($mainImageName);
+        $mainImage->setUpdatedAt($updatedImage);
+        $image->setUpdatedAt($updatedMainImage);
+        $date = new \DateTime('now');
+        $image->setUpdatedAt($date);
+        $mainImage->setUpdatedAt($date);
+        //$manager->remove($image); 
+        //$manager->persist($image);
+        //$manager->persist($mainImage);
+        $manager->persist($event);
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'L\'image principale a bien été modifié.'
+        );
+        return $this->redirectToRoute('event',['id'=>$idEvent]);
+    }
+       
 }
 

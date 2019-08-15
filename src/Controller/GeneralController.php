@@ -77,7 +77,7 @@ class GeneralController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Pdf envoyé .'
+                'Pdf envoyé'
             );
         }
 

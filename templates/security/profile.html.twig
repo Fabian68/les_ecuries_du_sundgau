@@ -10,7 +10,7 @@
       {% else %}
       <div class="profile-info">
         {% if user.imageName is not null %}
-        <img class="profile-image" src="/images/profile/{{ user.imageName }}">
+        <img class="profile-image" src="{{ (vich_uploader_asset((user),'imageFile')) | imagine_filter('profile_thumb') }}">
         {% endif %}
         <div class="profile-inner">
           <div>Nom : </div>

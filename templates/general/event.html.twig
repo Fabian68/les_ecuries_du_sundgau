@@ -114,37 +114,11 @@
                   </div>
             </div>
             <div class="card-footer event-body-text">
-                {% if app.user %}
-                {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
-                <section class="">
-                    <div class="">
-                    {{ form_start(formAsso) }}
-                    
-                    <ul id="creneaux-fields-list"
-                            data-prototype="{{ form_widget(formAsso.creneauxBenevoles.vars.prototype)|e }}"
-                            data-widget-tags="{{ '<li></li>'|e }}"
-                            data-widget-counter="{{ formAsso.children|length }}">
-                        {% for NbBenevole in formAsso.creneauxBenevoles %}
-                            <li>
-                                {{ form_errors(NbBenevole) }}
-                                {{ form_widget(NbBenevole) }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    
-                    <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#creneaux-fields-list">Add another date</button>
-
-                    </br>
-                    <button type="submit" class="btn btn-success index-more-button">Enregistrer</button>
-
-                    {{ form_row(formAsso.creneauxBenevoles,{ 'label' : false } ) }}
-
-                    {{ form_end(formAsso) }}
-                    </div>
-                </section>
-                {% endif %}
+            
+            {% if app.user %}
+              {% if app.user.roles[0] == 'ROLE_ADMIN_ASSO' %}
+                  <div><a href="{{ path('createCreneaux', {'id': event.id}) }}">Ajouter un créneau</a></div>
+              {% endif %}
             {% endif %}
 
             {% if is_granted('ROLE_ADMIN') %}
@@ -228,7 +202,7 @@
               </br>
 
                 
-                {% if app.user.roles[0] == 'ROLE_BENEVOLE' %}
+                {% if app.user.roles[0] == 'ROLE_BENEVOLE' and formBenevole.creneaux | length > 0 %}
 
                 <div>Inscription benevole</div>
 
