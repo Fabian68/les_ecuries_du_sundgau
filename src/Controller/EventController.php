@@ -360,7 +360,7 @@ class EventController extends AbstractController
             $event->setDateDivers(new \DateTime('now'));
             $form = $this->createForm(EventEditType::class, $event);
         }
-
+        $event->setChoixPrix(0.0);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {           
             if(count($event->getDates()) == 0 ){
@@ -473,7 +473,7 @@ class EventController extends AbstractController
     {
         $event = new Event();
         $formEventDiversCreate = $this->createForm(EventDiversCreateType::class, $event);
-        
+        $event->setChoixPrix(0.0);
         $formEventDiversCreate->handleRequest($request);
         if ($formEventDiversCreate->isSubmitted() && $formEventDiversCreate->isValid()) { 
            
