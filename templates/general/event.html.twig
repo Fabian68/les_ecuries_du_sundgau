@@ -123,7 +123,7 @@
 
             {% if is_granted('ROLE_ADMIN') %}
                     {{ form_start(formDelete) }}
-                            <input type="submit" class="btn btn-secondary index-more-button" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+                            <input type="submit" class="btn btn-secondary index-more-button" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sûr de vouloir supprimer cet évènement ?')"/>
                     {{ form_end(formDelete) }}
 
                     {{ form_start(formPrint) }}
@@ -140,14 +140,14 @@
           <div class="card-body event-body-text bg-white">
             <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
             {% if not app.user %}
-              <div>Connecter vous pour vous inscrire a l'evenement ! </div>
+              <div>Connectez-vous pour vous inscrire à l'événement ! </div>
             {% else %}
               </br>
               {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
 
-                <div>Il n'y a plus de place restante pour cet évènement.</div>
+                <div>Il n'y a plus de places restantes pour cet évènement.</div>
               {% elseif date((event.dates | first).dateLimitRegistration) < date('+0hours', 'Europe/Paris') %}
-                <div>La date limite d'inscription est dépasser</div>
+                <div>La date limite d'inscription est dépassée</div>
               {% else %}
 
                 <div>Inscription</div>
@@ -172,7 +172,7 @@
                     {% if not inscrit %}
                         
                         {{ form_start(form) }}
-                            <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sur de vous inscrire pour cet évènement ?')"/>
+                            <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
                         {{ form_end(form) }}  
 
                     {% else %}
@@ -187,17 +187,16 @@
 
             </br>
 
-            <div>Inscrit</div>
+            <div>Inscrits:</div>
             {% for utilisateur in event.utilisateurs %}
               <div class="">
-                <img class="" src="{{ (vich_uploader_asset((utilisateur),'imageFile')) | imagine_filter('profile_thumb') }}">
+                <img class="mini-thumb" src="{{ asset(('/images/profile/' ~ utilisateur.imageName)) | imagine_filter('profile_thumb') }}">
                 {{ utilisateur.prenom }}
                 {{ utilisateur.nom}}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sur de supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
+                    <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sûr de vouloir supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
                 {% endif %}
               </div>
-              </br>
             {% endfor %}
               </br>
 
@@ -218,13 +217,14 @@
                 {% endif %}
                     </br> 
                 {% for creneaux in event.creneauxBenevoles %}
-                  <div class="bg-secondary">
-                    <div>Benevole pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
+                  <div class="bg-light">
+                    <div>Bénévoles pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
+                    reste {{creneaux.nbBenevoles - creneaux.utilisateurs|length}} places</br>
                     {% for utilisateur in creneaux.utilisateurs %}
                         {{ utilisateur.prenom }}
                         {{ utilisateur.nom}}
                         {% if is_granted('ROLE_ADMIN_ASSO') %}
-                            <a href={{ path('remove_user_on_creneau',{'idCreneau' : creneaux.id ,'idUser' : utilisateur.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de supprimer cet bénévole de ce créneaux')">Retirer cet utilisateur</a>
+                            <a href={{ path('remove_user_on_creneau',{'idCreneau' : creneaux.id ,'idUser' : utilisateur.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de supprimer ce bénévole de ce créneau?')">Retirer cet utilisateur</a>
                         {% endif %}
                             </br>
                     {% endfor %}
