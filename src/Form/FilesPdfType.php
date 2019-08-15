@@ -14,7 +14,8 @@ class FilesPdfType extends AbstractType
     {
         $builder
         ->add('pdfFile',FileType::class,[
-            'required' =>false
+            'label' => 'fichier pdf ',
+            'required' => false
         ])
         ;
     }

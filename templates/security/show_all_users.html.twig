@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="general-window mt8">
     <div><a class=" btn bg-info profile-button" href="{{ path('security_profile') }}">Retourner sur la page de profil</a></div>
     {% for user in users %}
-        <div>Utilisateur : {{ user.nom }} {{user.prenom}} Mail : {{ user.email }} Date de Naissance : {{ user.dateNaissance|date }}  Adresse : {{ user.adresse }} Numero de téléphone : {{ user.telephone }} Galop : {{ user.galop.niveau }} </div>
+      <div class="card card-body mb1">
+        <div>
+            Utilisateur : {{ user.nom }} {{user.prenom}} <br> 
+            Mail : {{ user.email }} <br> 
+            Date de Naissance : {{ user.dateNaissance|date }} <br> 
+            Adresse : {{ user.adresse }} <br> 
+            Numero de téléphone : {{ user.telephone }} <br> 
+            Galop : {{ user.galop.niveau }} <br> 
+        </div>
         {% if user.verifiedMail == true %}
             <div>Mail vérifié</div>
         {% else %}
@@ -21,9 +21,9 @@
         <div>Participe a {{ user.participe|length }} evenements </div>
         <div>Benevole a {{ user.benevolat|length }} evenements </div>
       
-      
-        <a href={{ path('security_delete_user',{'id' : user.id }) }} onclick="return confirm('Etes vous sur de supprimer cet utilisateur ?')">Supprimer cet utilisateur</a>
         <br>
-        
+        <a class="btn btn-secondary" href={{ path('security_delete_user',{'id' : user.id }) }} onclick="return confirm('Etes vous sur de supprimer cet utilisateur ?')">Supprimer cet utilisateur</a>
+      </div>
     {% endfor %}
+</div>
 {% endblock %}

@@ -30,9 +30,9 @@
   });
   </script>
     {% if is_granted('ROLE_ADMIN') %}
-    <container class="container-creer-event">
-      <div class="card mb-3 creer-event-layout">
-    <h1 class="h3 font-weight-normal card-header text-primary">Ajouter des images</h1>
+    <container class="general-window card mb-3">
+      <h2 class="card-header">Ajouter des images</h2>
+      <div class="card-body">
       {{ form_start(formEvent) }}
 
         <ul id="image-fields-list"
@@ -55,7 +55,7 @@
         {{ form_row(formEvent.images,{ 'label' : false } ) }}
         {{ form_end(formEvent) }}
         
-        <div><a href="{{ path('event', {'id': event.id}) }}">Annuler</a></div>
+        <div><a class="btn btn-secondary" href="{{ path('event', {'id': event.id}) }}">Annuler</a></div>
         
         </div>
       </container>

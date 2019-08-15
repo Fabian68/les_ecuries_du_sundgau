@@ -1,15 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<br>
-<br>
-<br>
-<br>
-    <div>Ajouter pdf ( contact.pdf ou localisation.pdf ou tarif.pdf)</div>
-    {{ form_start(formPdf) }}
-    
-
-    <button type="submit" class="btn btn-success">Enregistrer</button>
-    {{ form_end(formPdf) }}   
+  <div class="card general-window">
+    <h2 class="card-header">Ajouter/Modifier le pdf de la page contact</h2>
+    <div class="card-body">
+      {{ form_start(formPdf) }}
+      {{ form_end(formPdf) }}  
+      <button type="submit" class="btn btn-success">Enregistrer</button> 
+    </div>
+  </div>
 {% endblock %}

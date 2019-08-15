@@ -31,9 +31,9 @@
   </script>
         {% if app.user %}
         {% if is_granted('ROLE_ADMIN_ASSO') %}
-        <container class="container-creer-event card general-layout">
-        <h2 class="card-header mobile-title bg-light">Ajouter des créneaux</h2>
-            <section class="">
+        <container class="card general-window">
+        <h2 class="card-header">Ajouter des créneaux</h2>
+            <section class="card-body">
                     <div class="">
                     {{ form_start(formAsso) }}
                     
@@ -60,7 +60,7 @@
 
                     {{ form_end(formAsso) }}
                     
-                    <div><a href="{{ path('event', {'id': event.id}) }}">Annuler</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('event', {'id': event.id}) }}">Annuler</a></div>
 
                     </div>
                 </section>
