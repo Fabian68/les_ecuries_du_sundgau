@@ -565,7 +565,7 @@ class EventController extends AbstractController
     }
 
      /**
-     * @Route("/admin/evenement/{idEvent}/supprimer_image/{idImage}", name="security_delete_image")
+     * @Route("/admin/evenement/{idEvent}/supprimer_image/{idImage}", name="event_delete_image")
      */
     public function deleteImage($idEvent,$idImage,ObjectManager $manager)
     {

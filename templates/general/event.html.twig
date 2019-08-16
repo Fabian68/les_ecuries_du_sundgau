@@ -49,9 +49,13 @@
           <div id="image-list" class="event-image-list {% if event.images|length < 2 %}image-list-empty{% endif %}">
             {% for image in event.images %}
             {% if loop.index > 1 %}
-            <div class="divers-image">
-              <img class="divers-thumbnail-image" src="/images/properties/{{ image.imageName }}">
-            </div>
+              <div class="divers-image">
+                <img class="divers-thumbnail-image" src="/images/properties/{{ image.imageName }}">
+              </div>
+              {% if is_granted('ROLE_ADMIN_ASSO') %}
+                <a href={{ path('event_delete_image',{'idImage' : image.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de supprimer cet image ?')">Supprimer cet image</a>
+                <a href={{ path('change_main_image',{'idImage' : image.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de remplacer l'image principale ?')">Rendre cet image principale</a>
+              {% endif %}
             {% endif %}
             {% endfor %}
           </div>
