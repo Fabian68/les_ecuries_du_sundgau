@@ -30,12 +30,12 @@
                 {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                     {{ form_start(formDelete) }}
-                            <input type="submit" class="btn" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
+                            <input type="submit" class="btn btn-warning index-more-button" name="delete" value="Supprimer cet évènement" onclick="return confirm('Etes vous sur de supprimer cet évènement ?')"/>
                     {{ form_end(formDelete) }}
                     
-                    <div><a href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
-                    <div><a href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
-                    <div><a href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('editEvent', {'id': event.id}) }}">modifier</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('add_pictures', {'id': event.id}) }}">ajouter une image</a></div>
+                    <div><a class="btn btn-secondary index-more-button" href="{{ path('add_video', {'id': event.id}) }}">ajouter une video</a></div>
             {% endif %}  
             </div>
         </event>

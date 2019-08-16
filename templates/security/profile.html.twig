@@ -55,8 +55,8 @@
   <div class="profile-modifs">
       <div class="card border-info profile-modifs-wrapper general-mobile-text">
       {% if app.user == user %}
-          <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier profil</a></div>
-          <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier mot de passe</a></div>
+          <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify') }}">Modifier le profil</a></div>
+          <div><a class=" btn bg-info profile-button" href="{{ path('security_profile_modify_password') }}">Modifier le mot de passe</a></div>
           {% if app.user.verifiedMail != true %}
             {{ form_start(formMailVerification) }}
             {{ form_row(formMailVerification.mail_verification,{ 'label' : 'Vérifier l\'adresse mail' , 'attr' : { 'class' : 'btn bg-info profile-button general-mobile-text' } }) }}
@@ -64,10 +64,10 @@
           {% endif %}
       {% endif %}
           {% if is_granted('ROLE_ADMIN') %}
-              <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Creation evenement</a></div>
-              <div><a class=" btn bg-info profile-button" href="{{ path('createEventDivers') }}">Création évènement divers</a></div>
+              <div><a class=" btn bg-info profile-button" href="{{ path('createEvent') }}">Créer un événement</a></div>
+              <div><a class=" btn bg-info profile-button" href="{{ path('createEventDivers') }}">Créer un évènement divers</a></div>
               <div><a class=" btn bg-info profile-button" href="{{ path('security_add_description') }}">Ajouter description</a></div>
-              <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier description</a></div>
+              <div><a class=" btn bg-info profile-button" href="{{ path('security_description') }}">Modifier les descriptions</a></div>
               <div><a class=" btn bg-info profile-button" href="{{ path('createPdf') }}">Modifier les PDF</a></div
               <div><a class=" btn bg-info profile-button" href="{{ path('security_show_all_users') }}">Liste des utilisateurs</a></div>    
           {% endif %}
