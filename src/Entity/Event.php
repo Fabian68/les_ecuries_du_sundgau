@@ -118,9 +118,6 @@ class Event
      */
     private $utilisateurMoyenPaiementEvents;
 
-    /**
-     * @float 
-     */
     private $choixPrix=0.0;
 
     private $signataire='';
