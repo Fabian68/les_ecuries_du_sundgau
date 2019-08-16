@@ -53,9 +53,9 @@
               <div class="divers-image">
                 <img class="divers-thumbnail-image" src="/images/properties/{{ image.imageName }}">
               </div>
-              {% if is_granted('ROLE_ADMIN_ASSO') %}
-                <a href={{ path('event_delete_image',{'idImage' : image.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de supprimer cet image ?')">Supprimer cet image</a>
-                <a href={{ path('change_main_image',{'idImage' : image.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sur de remplacer l'image principale ?')">Rendre cet image principale</a>
+              {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-secondary index-more-button" href={{ path('event_delete_image',{'idImage' : image.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sûr de supprimer cette image ?')">Supprimer cette image</a>
+                <a class="btn btn-secondary index-more-button" href={{ path('change_main_image',{'idImage' : image.id,'idEvent' : event.id }) }} onclick="return confirm('Etes vous sûr de remplacer l'image principale ?')">Rendre cette image principale</a>
               {% endif %}
             {% endif %}
             {% endfor %}
