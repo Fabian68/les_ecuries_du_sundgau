@@ -118,6 +118,9 @@ class Event
      */
     private $utilisateurMoyenPaiementEvents;
 
+    /**
+     * @float 
+     */
     private $choixPrix=0.0;
 
     private $signataire='';
@@ -471,12 +474,12 @@ class Event
         return $this;
     }
 
-    public function getChoixPrix(): ?int
+    public function getChoixPrix(): ?float
     {
         return $this->choixPrix;
     }
 
-    public function setChoixPrix(int $choixPrix): self
+    public function setChoixPrix(float $choixPrix): self
     {
         $this->choixPrix = $choixPrix;
 
