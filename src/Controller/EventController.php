@@ -103,7 +103,7 @@ class EventController extends AbstractController
                 if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
                     $this->addFlash(
                         'Warning',
-                        'Le tarif entré ne correspond à aucun tarif'
+                        'Le tarif entré ne correspond à aucun tarifs'
                     );
                     return $this->render('/general/eventRegistrationTreatment.html.twig', [
                         'controller_name' => 'GeneralController',
@@ -295,7 +295,7 @@ class EventController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'notice',
-                'Vos créneaux bénévol ont bien été crée'
+                'Vos créneaux bénévoles ont bien été créés'
             );
             return $this->redirectToRoute('event',['id'=>$event->getID()]);
         }
@@ -574,7 +574,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'Votre image a bien été supprimé'
+            'Votre image a bien été supprimée'
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
@@ -705,7 +705,7 @@ class EventController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'notice',
-            'L\'image principale a bien été modifié.'
+            'L\'image principale a bien été modifiée.'
         );
         return $this->redirectToRoute('event',['id'=>$idEvent]);
     }
