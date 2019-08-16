@@ -62,7 +62,9 @@
         <div class="event-outer">
           <div class="event-image">
             <div class="index-img-layout bg-secondary">
+            {% if not (event.images|length < 1) %}
               <img class="event-image-inner" src="{{ (vich_uploader_asset((event.images | first),'imageFile')) | imagine_filter('my_thumb') }}">
+            {% endif %}
             </div>
           </div>
           <div class="event-content bg-light {% if event.divers %}index-divers-title{% endif %}">

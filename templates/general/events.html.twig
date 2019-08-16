@@ -4,7 +4,7 @@
   <section class="event-history">
     {% for event in events %}
       <a href="{{ path('event', {'id': event.id}) }}" class="event-history-item bg-custom-dark">
-        <img class="history-item-img" src="{{ (vich_uploader_asset((event.images | first),'imageFile')) | imagine_filter('my_thumb') }}"></img>
+        <img class="history-item-img" {% if event.images|length > 0 %}src="{{ (vich_uploader_asset((event.images | first),'imageFile')) | imagine_filter('my_thumb') }}"{% endif %}></img>
           <div class="history-item-txt">
               {{ event.titre }}
           </div>

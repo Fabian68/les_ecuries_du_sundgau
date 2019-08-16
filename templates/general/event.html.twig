@@ -41,6 +41,7 @@
     </script>
 
     <section class="event-layout">
+      {% if event.images|length > 0 %}
         <div id="image" class="event-thumbnail">
           <div class="event-first-image card bg-secondary" onclick="showImage()">
             <div class="thumbnail-container bg-white"><img class="event-thumbnail-image" src="/images/properties/{{ ((event.images | first).imageName) }}"></div>
@@ -56,6 +57,7 @@
             {% endfor %}
           </div>
         </div>
+      {% endif %}
         <div class="event-controls-container event-info">
         <event class="card mb-3 event-info">
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
@@ -107,8 +109,8 @@
                 </br>
                   <div class="divers-videos-layout bg-secondary">
                     {% for video in event.videos %}
-                      <div class=".divers-video">
-                        <iframe width="100%" height="auto" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      <div class="divers-video">
+                        <iframe class="video" src={{ video.lien }} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                       </div>
                     {% endfor %}
                   </div>
