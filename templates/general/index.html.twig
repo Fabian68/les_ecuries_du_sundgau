@@ -13,10 +13,10 @@
     <div class="pres-image">
       <img class="pres-thumbnail" src="/images/description/{{ desc.imageName }}">
       <div class="presentation">{{ desc.texte }}</div>
-    </div>
       {% if is_granted('ROLE_ADMIN') %}
-        <div><a href="{{ path('security_delete_description', {'id': desc.id}) }}">supprimer</a></div>
+        <div><a class="btn btn-success x-btn" href="{{ path('security_delete_description', {'id': desc.id}) }}">x</a></div>
       {% endif %}
+    </div>
     {% endfor %}
   </div>
   <div id="myCarousel" class="carousel slide image-band-layout" data-ride="carousel">
