@@ -49,7 +49,7 @@ class SecurityController extends AbstractController
             $user->setRoles(array('ROLE_USER'));
             $manager->persist($user);
             $manager->flush();
-            $user->setImageFile(null);//la valeur doit être vidé car elle ne sert plus et n'est pas serializable
+            $user->setImageFile(null);
             $this->addFlash(
                 'notice',
                 'Votre compte a bien été créé'
@@ -79,7 +79,7 @@ class SecurityController extends AbstractController
             $this->addFlash('notice', 'Mail de verification envoyé');  
             return $this->redirectToRoute('security_login');
         }
-         $user->setImageFile(null);//si le formulaire est invalide la valeur doit aussi être vidé
+         $user->setImageFile(null);
 
         return $this->render('security/registration.html.twig', [
             'form'=> $form->createView()
@@ -91,9 +91,8 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {   
-        // get the login error if there is one
+        
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
@@ -157,7 +156,6 @@ class SecurityController extends AbstractController
             if($session->has('mail')==false){
             $mail=$user->getEmail();
             $session->set('mail', $mail);
-            dump($mail);
             }
         }
         $user->setImageFile(null);
@@ -174,11 +172,8 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
     
-        if($form->isSubmitted() && $form->isValid()) { 
-                
-        // !password_verify( $user->confirm_oldMotDePasse ,$user->oldMotDePasse) ancienne manniere 
+        if($form->isSubmitted() && $form->isValid()) {
             if(!$encoder->isPasswordValid($user, $user->confirm_oldMotDePasse)){
-                // Gérer l'erreur
                 $form->get('confirm_oldMotDePasse')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
             }else{
             $hash = $encoder->encodePassword($user,$user->nouveau_motDePasse);
@@ -301,7 +296,6 @@ class SecurityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $desc = new AllDescription();
-        // Pour avoir qu'une seule iteration d'inscription dans la BdD
         $description = $manager->getRepository(Description::class)->findAll();
         if($description ==null){
             $descrip = new Description();
@@ -361,7 +355,6 @@ class SecurityController extends AbstractController
             $email = $request->request->get('email');
  
             $user = $manager->getRepository(Utilisateur::class)->findOneByEmail($email);
-            /* @var $user User */
  
             if ($user === null) {
                 $this->addFlash('danger', 'Email Inconnu');
@@ -467,7 +460,7 @@ class SecurityController extends AbstractController
      */
     public function deleteUser($id,ObjectManager $manager){
         $user = $manager->getRepository(Utilisateur::class)->findOneById($id); 
-        dump($user);
+      
         if($user==null){
             $this->addFlash(
                 'warning',

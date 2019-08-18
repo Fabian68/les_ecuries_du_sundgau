@@ -81,8 +81,6 @@ class EventController extends AbstractController
             ]);  
         }
         $now = new \DateTime('now');
-        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->d);
-        dump($now->diff($event->getDates()[0]->getDateDebut(),false)->h);
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
         $formCancel = $this->createFormBuilder()
@@ -91,7 +89,6 @@ class EventController extends AbstractController
         $formCancel->handleRequest($request);
         if($session->has('paiement')){
             $paiement = $session->get('paiement');
-            dump($paiement);
             $userPayEvent = $session->get('userPayEvent');
             $choixRepas = $session->get('choixRepas');
            
@@ -99,7 +96,7 @@ class EventController extends AbstractController
                 $session->clear();                  
             }elseif($formEventRegistrationTreatment->isSubmitted() && $formEventRegistrationTreatment->isValid()) {
                 $choixPrix=$event->getChoixPrix();
-                //dump($choixPrix);
+
                 if($choixPrix!=$event->getTarifMoinsDe12() && $choixPrix!=$event->getTarifPlusDe12() && $choixPrix!=$event->getTarifProprietaire()){
                     $this->addFlash(
                         'Warning',
@@ -176,7 +173,6 @@ class EventController extends AbstractController
                              ->getRepository(AttributMoyenPaiements::class)
                              ->find($idpaiement);
             $userPayEvent = new UtilisateurMoyenPaiementEvent();
-            dump($paiement);
             if  ($event->getRepasPossible() == 1 ) {
                 $choixRepas = $form->get("ChoixRepas")->getData();
                 if( $choixRepas == true ) {
@@ -315,7 +311,6 @@ class EventController extends AbstractController
         $event = $manager->getRepository(Event::class)->findOneById($idEvent);
         $user = $manager->getRepository(Utilisateur::class)->findOneById($idUser);
         $UtilisateursMoyenPaiementEvent = $manager->getRepository(UtilisateurMoyenPaiementEvent::class)->findOneBy(array('event'=>$event,'utilisateur'=>$user));
-        dump($UtilisateursMoyenPaiementEvent);
         $manager->remove($UtilisateursMoyenPaiementEvent);
 
         $event->removeUtilisateur($user); 
@@ -388,31 +383,16 @@ class EventController extends AbstractController
                         return $this->redirectToRoute('createEvent');                 
                     }
                 }
-                /*
-                foreach ($event->getDates() as $date) {
-                    $event->addDate($date);
-                    $date->setEvent($event);
-                    $manager->persist($date);
-                }*/
             }
-            /*
-            foreach ($event->getGalops() as $galop) {
-                $event->addGalops($galop);
-               // $galop->addEvenement($event);
-                $manager->persist($galop);
-            }*/
             if((count($event->getImages()) == 0)&&(count($event->getVideos()) == 0) ){
                 $this->addFlash(
                     'warning',
                     'Vous devez ajouter au moins une image ou une vidéo !'
                 );
                 return $this->redirectToRoute('createEvent');
-            }else{
-                
+            }else{ 
                 foreach ($event->getImages() as $image) {
-                   // $event->addImage($image);
                     $image->setEvenement($event); 
-                    //$manager->persist($image);
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
@@ -428,10 +408,6 @@ class EventController extends AbstractController
                         $video->setEvenement($event); 
                         $event->addVideo($video);
                     }       
-                   /* $video->setLien($videoLien);
-                    $event->addVideo($video);
-                     
-                    $manager->persist($video);*/
                 }
             }
             $event->setDivers(false);                
@@ -499,7 +475,6 @@ class EventController extends AbstractController
             }else{    
                 foreach ($event->getImages() as $image) {
                     $image->setEvenement($event);
-                    //$image->setImageFile(null); 
                 }
                 foreach ($event->getVideos() as $video) {
                     $choix = explode("=",$video->getLien());
@@ -548,13 +523,6 @@ class EventController extends AbstractController
         foreach($UtilisateursMoyenPaiementEvent as $UMPE){
             $manager->remove($UMPE);
         }
-        /*
-        foreach ($event->getDates() as $date) {
-            $manager->remove($date); 
-        }
-        foreach ($event->getCreneauxBenevoles() as $creneaux) {
-            $manager->remove($creneaux); 
-        }*/
         $manager->remove($event); 
         $manager->flush();
         $this->addFlash(
@@ -698,9 +666,6 @@ class EventController extends AbstractController
         $date = new \DateTime('now');
         $image->setUpdatedAt($date);
         $mainImage->setUpdatedAt($date);
-        //$manager->remove($image); 
-        //$manager->persist($image);
-        //$manager->persist($mainImage);
         $manager->persist($event);
         $manager->flush();
         $this->addFlash(
