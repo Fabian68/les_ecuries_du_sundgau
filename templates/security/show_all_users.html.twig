@@ -11,7 +11,7 @@
             Date de Naissance : {{ user.dateNaissance|date }} <br> 
             Adresse : {{ user.adresse }} <br> 
             Numero de téléphone : {{ user.telephone }} <br> 
-            Galop : {{ user.galop.niveau }} <br> 
+            Galop : {{ user.galop.displayNiveau() }} <br> 
         </div>
         {% if user.verifiedMail == true %}
             <div>Mail vérifié</div>
