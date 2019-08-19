@@ -87,6 +87,11 @@ class EventController extends AbstractController
         ->add('annuler', SubmitType::class)
         ->getForm();
         $formCancel->handleRequest($request);
+        if($session->has('event')){
+            if(($session->get('event')->getId())!=$event->getId()){
+                $session->clear();
+            }
+        }
         if($session->has('paiement')){
             $paiement = $session->get('paiement');
             $userPayEvent = $session->get('userPayEvent');
@@ -186,6 +191,7 @@ class EventController extends AbstractController
                 $session->set('paiement', $paiement);
                 $session->set('userPayEvent', $userPayEvent);
                 $session->set('choixRepas', $choixRepas);
+                $session->set('event',$event);
  
                 return $this->render('/general/eventRegistrationTreatment.html.twig', [
                     'controller_name' => 'EventController',
