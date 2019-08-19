@@ -156,6 +156,7 @@ class EventController extends AbstractController
             $form->add('ChoixRepas', ChoiceType::class, array(
                 "mapped" => false,
                 "multiple" => false,
+                'label' => 'Prendre le repas?',
                 "attr" => array(
                     'class' => "form-control"
                 ),
@@ -251,6 +252,26 @@ class EventController extends AbstractController
             'formDelete' => $formDelete->createView(),
             'formPrint' => $formPrint->createView()
         ]);
+    }
+
+    /**
+     * @Route("/evenement/{id}/participants", name="eventUserList")
+     */
+    public function userList($id, Request $request,ObjectManager $manager)
+    {
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repo->find($id);
+        if($event == NULL){
+            return $this->render('event/eventWhoNotExist.html.twig', [
+                'controller_name' => 'EventController',
+            ]);  
+        } else {
+            return $this->render('event/userList.html.twig', [
+                'event' => $event,
+            ]);  
+        }
+
+
     }
 
     /**

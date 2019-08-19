@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div id="userlist" class="card card-body general-window userlist-layout">
+  {% if event.utilisateurs|length < 1 %}Il n'y a pas encore de participants{% endif %}
+  {% for utilisateur in event.utilisateurs %}
+    <div>
+      <img class="mini-thumb" src="{{ asset(('/images/profile/' ~ utilisateur.imageName)) | imagine_filter('profile_thumb') }}">
+      {{ utilisateur.prenom }}
+      {{ utilisateur.nom}}
+      {% if is_granted('ROLE_ADMIN') %}
+          <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sûr de vouloir supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <a class="x-hide x-btn btn btn-success" href="{{ path('event', {'id': event.id}) }}">Retour</a>
+</div>
+
+{% endblock %}

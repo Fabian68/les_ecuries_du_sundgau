@@ -176,10 +176,9 @@
                         {% endif %}
                     {% endfor %}
                     {% if not inscrit %}
-                        
-                        {{ form_start(form) }}
-                            <input type="submit" class="btn" value="S'inscrire" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
-                        {{ form_end(form) }}  
+                        {{ form_start(form, {'attr' : { 'class' : 'inscri' } }) }}
+                            <input type="submit" class="save-button btn btn-success" value="S'inscrire" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
+                        {{ form_end(form) }}
 
                     {% else %}
                         <div>Vous êtes inscrit pour cet évènement.</div>
@@ -193,17 +192,8 @@
 
             </br>
 
-            <div>Inscrits:</div>
-            {% for utilisateur in event.utilisateurs %}
-              <div class="">
-                <img class="mini-thumb" src="{{ asset(('/images/profile/' ~ utilisateur.imageName)) | imagine_filter('profile_thumb') }}">
-                {{ utilisateur.prenom }}
-                {{ utilisateur.nom}}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href={{ path('remove_user_on_event',{'idEvent' : event.id ,'idUser' : utilisateur.id}) }} onclick="return confirm('Etes vous sûr de vouloir supprimer cet utilisateur de l\'évènement ?')">Retirer cet utilisateur</a>
-                {% endif %}
-              </div>
-            {% endfor %}
+            <a class="btn btn-light" href="{{ path('eventUserList', {'id': event.id}) }}">Liste des inscrits</a>
+            
               </br>
 
                 

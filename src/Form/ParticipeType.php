@@ -32,13 +32,7 @@ class ParticipeType extends AbstractType
                     'class' => 'form-control event-choice'
                 ),
                 'class' => AttributMoyenPaiements::class,
-                ])
-                ->add('save', SubmitType::class, 
-                    [
-                        'label' => 'S\'inscrire',
-                        'attr' => array('class' => 'save-button')
-                    ]
-                );
+                ]);
         ;
     }
 

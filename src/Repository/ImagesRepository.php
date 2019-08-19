@@ -23,12 +23,13 @@ class ImagesRepository extends ServiceEntityRepository
     //  * @return Images[] Returns an array of Images objects
     //  */
     
-    public function findByDivers($value)
+    public function findByDivers()
     {
         return $this->createQueryBuilder('i')
             ->leftJoin('i.evenement', 'e')
-            ->andWhere('e.divers = :val')
-            ->setParameter('val', $value)
+            ->leftJoin('e.dates', 'd')
+            ->andWhere('d.dateDebut <= :val')
+            ->setParameter('val', new \DateTime("now"))
             ->orderBy('i.updatedAt', 'DESC')
             ->setMaxResults(100)
             ->getQuery()

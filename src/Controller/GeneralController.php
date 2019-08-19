@@ -28,7 +28,7 @@ class GeneralController extends AbstractController
 
         $events = $repo->findFutureEvents();
 
-        $images = $repo2->findByDivers(true);
+        $images = $repo2->findByDivers();
 
         $descs = $repo3->findAll();
 
