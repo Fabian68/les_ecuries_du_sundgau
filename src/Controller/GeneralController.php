@@ -41,6 +41,16 @@ class GeneralController extends AbstractController
     }
 
     /**
+     *  @Route("/regles-confidentialite-application", name="app_rules")
+     */
+    public function appRules()
+    {
+        return $this->render('/general/appRules.html.twig', [
+            'controller_name' => 'GeneralController',
+        ]);
+    }
+
+    /**
      * @Route("/tarif", name="prices")
      */
     public function prices()

@@ -26,6 +26,7 @@ class ParticipeType extends AbstractType
 
         $builder->add('Paiement', EntityType::class, [
                 'choice_label' => 'Libelle',
+                'label' => 'Quel mode de paiement choisissez-vous?',
                 'multiple' => false,
                 'mapped' => false,
                 'attr' => array(

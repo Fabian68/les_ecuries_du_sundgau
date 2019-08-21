@@ -3,11 +3,11 @@
 {% block body %}
 <div class="card general-window">
   <div class="card-body">
-    <div>En soummettant ce formulaire, vous acceptez d'être prélevé pour le montant écris.</div>
-    <div>Tarifs:<br> 1-12 ans: {{event.tarifMoinsDe12}}€, 12 ans+: {{event.tarifPlusDe12}}€, propriétaire: {{event.tarifProprietaire}}€</div>
-        {{ form_start(formEventRegistrationTreatment) }}
-        <div>Je soussigné  {{ form_row(formEventRegistrationTreatment.signataire,{'label': ''}) }}accepte de payer  {{ form_row(formEventRegistrationTreatment.choixPrix,{'label': ''}) }} montant par prélèvement.</div>   
-        <button type="submit" class="btn btn-success">Enregistrer</button>
+    <div>En soumettant ce formulaire, vous acceptez d'être prélevé pour le montant vous correspondant.</div><br>
+    <div>Tarifs:<br> <table class="bg-light"><tr><td>1-12 ans</td> <td>{{event.tarifMoinsDe12}}€</td></tr> <tr><td>12 ans+</td> <td>{{event.tarifPlusDe12}}€</td></tr> <tr><td>propriétaire</td> <td>{{event.tarifProprietaire}}€</td></tr></table></div>
+        {{ form_start(formEventRegistrationTreatment, { 'attr' : { 'class' : 'event-inscri' } }) }}
+        <div>Je soussigné  {{ form_row(formEventRegistrationTreatment.signataire,{'label' : ' '}) }}accepte de payer  {{ form_row(formEventRegistrationTreatment.choixPrix,{'label' : ' '}) }}€ par prélèvement.</div><br>   
+        <button type="submit" class="btn btn-success save-button">Enregistrer</button>
         {{ form_end(formEventRegistrationTreatment) }}
 
         {{ form_start(formCancel) }}

@@ -1,0 +1,3 @@
+L'application des Ecuries du Sundgau ne récolte aucune information personnelle sur son utilisateur. 
+Elle n'utilise que la connexion Internet pour effectuer des redirections à la demande de l'utilisateur. 
+L'application n'utilise des fichiers internes que pour détecter les changements sur le site des Ecuries du Sundgau. 

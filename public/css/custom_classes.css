@@ -811,6 +811,7 @@ td{
     display: flex;
     flex-direction: row;
     padding: 1em;
+    padding-top: 0;
     flex-wrap: wrap;
 }
 .creneaux-container label{
@@ -1124,4 +1125,8 @@ td{
 }
 .validate{
     order: 4;
+    width: 100%;
+}
+.event-inscri div div{
+    display: contents;
 }

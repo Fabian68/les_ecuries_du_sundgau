@@ -84,7 +84,9 @@ class EventController extends AbstractController
         $formEventRegistrationTreatment= $this->createForm(EventRegistrationTreatmentType::class,$event);
         $formEventRegistrationTreatment->handleRequest($request);
         $formCancel = $this->createFormBuilder()
-        ->add('annuler', SubmitType::class)
+        ->add('annuler', SubmitType::class, [ 'attr' => array(
+            'class' => 'btn btn-success save-button'
+        )])
         ->getForm();
         $formCancel->handleRequest($request);
         if($session->has('event')){
@@ -161,7 +163,7 @@ class EventController extends AbstractController
             $form->add('ChoixRepas', ChoiceType::class, array(
                 "mapped" => false,
                 "multiple" => false,
-                'label' => 'Prendre le repas?',
+                'label' => 'Prenez-vous le repas sur place?',
                 "attr" => array(
                     'class' => "form-control"
                 ),
@@ -223,7 +225,7 @@ class EventController extends AbstractController
         
 
         $formBenevole = $this->createForm(BenevoleType::class, null, array( 'id' => $id ));
-        $formBenevole->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
+        $formBenevole->add('save', SubmitType::class, ['label' => 'VALIDER', 'attr' => [ 'class' => 'btn btn-success validate' ]]);
         $formBenevole->handleRequest($request);
         if ($formBenevole->isSubmitted() && $formBenevole->isValid()) {
             $creneauxData = $formBenevole->get('creneaux')->getData();
