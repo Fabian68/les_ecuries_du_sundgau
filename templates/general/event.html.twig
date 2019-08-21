@@ -197,7 +197,7 @@
               </br>
 
                 
-                {% if app.user.roles[0] == 'ROLE_BENEVOLE' and formBenevole.creneaux | length > 0 %}
+                {% if (app.user.roles[0] == 'ROLE_BENEVOLE' or is_granted('ROLE_ADMIN_ASSO')) and formBenevole.creneaux | length > 0 %}
 
                 <div>Inscription benevole</div>
 
