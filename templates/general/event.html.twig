@@ -65,8 +65,6 @@
         <div class="event-controls-container event-info">
         <event class="card mb-3 event-info">
             <h2 class="card-header mobile-title bg-light">{{ event.titre }}</h2>
-            {% if date((event.dates | first).dateLimitRegistration) > date('+0hours', 'Europe/Paris') %}
-            {% endif %}
             <div class="card-subtitle event-corner bg-event-date">
               <div class="corners">
                 <img class="corner-top-left" src="/images/resources/corner_top_left.png">
@@ -144,8 +142,10 @@
         <div id="controls" class="card bg-secondary event-controls" onclick="showControls()">
           <div class="bg-secondary arrow-container"><div class="arrow"><p> < <br> < <br> < </p></div></div>
           <div class="card-body event-body-text bg-white">
+            <div class="h2">Inscription</div>
             <div> Places restantes : {{ event.nbMaxParticipants - event.utilisateurs|length }}</div>
             {% if not app.user %}
+              </br>
               <div>Connectez-vous pour vous inscrire à l'événement ! </div>
             {% else %}
               </br>
@@ -155,8 +155,6 @@
               {% elseif date((event.dates | first).dateLimitRegistration) < date('+0hours', 'Europe/Paris') %}
                 <div>La date limite d'inscription est dépassée</div>
               {% else %}
-
-                <div>Inscription</div>
 
               {% set bonGalop = false %}
 
@@ -177,9 +175,8 @@
                     {% endfor %}
                     {% if not inscrit %}
                         {{ form_start(form, {'attr' : { 'class' : 'inscri' } }) }}
-                            <input type="submit" class="save-button btn btn-success" value="S'inscrire" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
+                            <input type="submit" class="save-button btn btn-success validate" value="Valider" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
                         {{ form_end(form) }}
-
                     {% else %}
                         <div>Vous êtes inscrit pour cet évènement.</div>
                     {% endif %}
@@ -195,23 +192,17 @@
             <a class="btn btn-light" href="{{ path('eventUserList', {'id': event.id}) }}">Liste des inscrits</a>
             
               </br>
-
+              <hr style="height : 1px">
                 
                 {% if app.user.roles[0] == 'ROLE_BENEVOLE' and formBenevole.creneaux | length > 0 %}
-
-                <div>Inscription benevole</div>
+                
+                <div class="h2">Inscription benevole</div>
 
                     {{ form_start(formBenevole) }}
                     {{ form_row(formBenevole.creneaux, {'attr' : { 'class' : 'creneaux-container' }}) }}
                     {{ form_end(formBenevole) }}
 
-                {% else %}
-                    {% for creneaux in event.creneauxBenevoles %}
-                        <div> {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} reste {{creneaux.nbBenevoles - creneaux.utilisateurs|length}} places </div>
-                        </br>
-                    {% endfor %}
                 {% endif %}
-                    </br> 
                 {% for creneaux in event.creneauxBenevoles %}
                   <div class="bg-light">
                     <div>Bénévoles pour le {{ creneaux.dateDebut |date ('d/m/Y') }} de {{ creneaux.dateDebut |date ('H:i') }} à {{ creneaux.dateFin |date ('H:i') }} </div>
@@ -227,7 +218,7 @@
                   </div>
                   </br>
                 {% endfor %}
-            {% endif %}           
+            {% endif %}
           </div>  
         </div>
         </div>

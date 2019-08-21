@@ -9,7 +9,9 @@
           <div>Vous devez vous connecter pour accèder a cet page ! </div>
       {% else %}
       <div class="profile-info">
-        {% if user.imageName is not null %}
+        {% if(user.imageName == null) %}
+        <img class="profile-image" src="{{ asset(('/images/profile/default.png')) | imagine_filter('profile_thumb') }}">
+        {% else %}
         <img class="profile-image" src="{{ asset(('/images/profile/' ~ user.imageName)) | imagine_filter('profile_thumb') }}">
         {% endif %}
         <div class="profile-inner">

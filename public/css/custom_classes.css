@@ -618,8 +618,6 @@ td{
 .image-thumbnail:hover{
     transform: scale(1.1);
 }
-.image-container{
-}
 .carousel-custom{
     overflow: visible;
     white-space: nowrap;
@@ -770,7 +768,8 @@ td{
     margin-top: 1em;
 }
 .event-choice{
-    width: 7em;
+    width: 100%;
+    margin-bottom: 1em;
 }
 .profile-image{
     width: 40%;
@@ -1112,7 +1111,7 @@ td{
 }
 .inscri{
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 .x-hide{
     margin-bottom: -1em !important;
@@ -1121,5 +1120,8 @@ td{
 }
 .userlist-event{
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+}
+.validate{
+    order: 4;
 }

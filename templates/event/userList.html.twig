@@ -6,7 +6,11 @@
   {% if event.utilisateurs|length < 1 %}Il n'y a pas encore de participants{% endif %}
   {% for utilisateur in event.utilisateurs %}
     <div>
+      {% if(utilisateur.imageName == null) %}
+      <img class="mini-thumb" src="{{ asset(('/images/profile/default.png')) | imagine_filter('profile_thumb') }}">
+      {% else %}
       <img class="mini-thumb" src="{{ asset(('/images/profile/' ~ utilisateur.imageName)) | imagine_filter('profile_thumb') }}">
+      {% endif %}
       {{ utilisateur.prenom }}
       {{ utilisateur.nom}}
       {% if is_granted('ROLE_ADMIN') %}
