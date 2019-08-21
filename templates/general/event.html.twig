@@ -149,7 +149,9 @@
               <div>Connectez-vous pour vous inscrire à l'événement ! </div>
             {% else %}
               </br>
-              {% if (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
+              {% if app.user.verifiedMail == false %}
+                <div>Vous dever verifier votre mail pour vous inscrire</div>
+              {% elseif (event.nbMaxParticipants - event.utilisateurs|length) == 0 %}
 
                 <div>Il n'y a plus de places restantes pour cet évènement.</div>
               {% elseif date((event.dates | first).dateLimitRegistration) < date('+0hours', 'Europe/Paris') %}
@@ -175,7 +177,7 @@
                     {% endfor %}
                     {% if not inscrit %}
                         {{ form_start(form, {'attr' : { 'class' : 'inscri' } }) }}
-                            <input type="submit" class="save-button btn btn-success validate" value="Valider" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
+                            <input type="submit" class="save-button btn btn-success validate" value="VALIDER" onclick="return confirm('Etes vous sûr de vouloir vous inscrire pour cet évènement ?')"/>
                         {{ form_end(form) }}
                     {% else %}
                         <div>Vous êtes inscrit pour cet évènement.</div>
@@ -194,13 +196,14 @@
               </br>
               <hr style="height : 1px">
                 
-                {% if app.user.roles[0] == 'ROLE_BENEVOLE' and formBenevole.creneaux | length > 0 %}
-                
+                {% if (app.user.roles[0] == 'ROLE_BENEVOLE' or is_granted('ROLE_ADMIN_ASSO')) and formBenevole.creneaux | length > 0 %}
+
                 <div class="h2">Inscription benevole</div>
 
                     {{ form_start(formBenevole) }}
-                    {{ form_row(formBenevole.creneaux, {'attr' : { 'class' : 'creneaux-container' }}) }}
+                    {{ form_row(formBenevole.creneaux, { 'label' : 'Créneaux:' , 'attr' : { 'class' : 'creneaux-container' }}) }}
                     {{ form_end(formBenevole) }}
+                    <br>
 
                 {% endif %}
                 {% for creneaux in event.creneauxBenevoles %}
