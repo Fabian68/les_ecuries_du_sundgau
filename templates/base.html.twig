@@ -23,32 +23,32 @@
         <div class="collapse navbar-collapse navtext navlogo" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('home') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/home.png" alt="home"> Accueil<span class="sr-only">(current)</span></a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('home') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/home.png" alt="home"> Accueil<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('events') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/events.png" alt="events"> Évènements</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('events') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/events.png" alt="events"> Évènements</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('prices') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/prices.png" alt="prices"> Tarif</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('prices') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/prices.png" alt="prices"> Tarif</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('contact') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/contact.png" alt="contact"> Contact</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('contact') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/contact.png" alt="contact"> Contact</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('facilities') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/installations.png" alt="facilities"> Les Installations </a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('facilities') }}"><img class="navbar-logo-custom" src="/images/resources/navbar/installations.png" alt="facilities"> Les Installations </a>
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
             {% if not app.user %}
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_login') }}">Se Connecter</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('security_login') }}">Se Connecter</a>
             </li>
             {% else %}
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_profile') }}">Profil</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('security_profile') }}">Profil</a>
             </li>
             <li class="nav-item nav-item-custom">
-                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-success" href="{{ path('security_logout') }}">Se Deconnecter</a>
+                <a class="nav-link navbar-text-custom bg-button-custom btn btn-outline-info" href="{{ path('security_logout') }}">Se Deconnecter</a>
             </li>
             {% endif %}
             </ul>
@@ -69,10 +69,14 @@
             {% endfor %}
             
         {% endfor %}
-        {% block userlist %}{% endblock %}
         </div>
 
         {% block body %}{% endblock %}
+        <br>
+        <br>
+        {% block footer %}
+             <div class="footer-custom"><a style="color: white; margin-left: 3em;" href="{{ path('legal_mention') }}">Mentions légales</a></div>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -8,6 +8,7 @@
 {% set active = 'active' %}
 
 <div class="pres-image-container">
+  <hr style="width: 100%">
   <div class="custom-container">
     {% for desc in descs %}
     <div class="pres-image">
@@ -19,6 +20,8 @@
     </div>
     {% endfor %}
   </div>
+  <br>
+  <hr style="width: 100%">  
   <div id="myCarousel" class="carousel slide image-band-layout" data-ride="carousel">
     <ol class="carousel-indicators carousel-indic-custom">
       {% for image in images %}

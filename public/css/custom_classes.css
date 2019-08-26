@@ -6,7 +6,6 @@ body {
     background-color: #434B38;
     background-image: url('/images/resources/fond.png');
     background-attachment: fixed;
-    background-size: cover;
 }
 .navbar-text-custom {
     color: #f4f270 !important;
@@ -14,7 +13,7 @@ body {
     font-weight: bold;
 }
 .bg-navbar-custom{
-    background-color: #3fc6b7;
+    background-color: #1a5ca3;
 }
 .navbar-custom{
     padding: 0rem 0rem;
@@ -24,7 +23,7 @@ body {
     padding: 0.2rem 0.4rem;
 }
 .bg-button-custom{
-    background-color: #35a89b;
+    background-color: #154170;
 }
 h1{
     COLOR: white;
@@ -141,7 +140,7 @@ h1{
 .title-pres{
     display: flex;
     justify-content: space-between;
-    background-color: #77d1bd;
+    background-color: #618bb8;
 }
 .corners{
     display: flex;
@@ -232,7 +231,7 @@ td{
         width: 50% !important;
     }
     .pres-image-container{
-        padding-top: 6em !important;
+        padding-top: 5em !important;
     }
     .corner-top-left{
         height: 40% !important;
@@ -372,6 +371,9 @@ td{
     .layout-pdf{
         top: 4.5rem !important; 
     }
+    .pres-image{
+        flex: 100% !important;
+    }
 }
 @media screen and (max-width: 750px){
     .event-element{
@@ -414,9 +416,9 @@ td{
     padding-right: 0.5em;
     margin: 0;
     text-align: left;
-    background-color: #77d1bd;
+    background-color: #618bb8;
     font-family: titleFont;
-    color: #e8de4f;
+    color: #fff454;
 }
 .bg-transparent-blue{
     background-color: #418aa2;
@@ -569,7 +571,7 @@ td{
     flex: 1;
 }
 .image-band-layout{
-    background-color: #77d1bd;
+    background-color: #618bb8;
     width: 100%;
     height: 5.5em;
     margin-top: 1em;
@@ -897,15 +899,15 @@ td{
 }
 .pres-image-container{
     width: 100%;
-    background-color: #77d1bd;
+    background-color: #618bb8;
     padding-left: 3em;
     padding-right: 3em;
-    padding-top: 9em;
+    padding-top: 8em;
 }
 .pres-image{
     display: flex;
+    flex: 50%;
     height: 6em;
-    max-width: 25em;
     margin-top: 1em;
 }
 .pres-thumbnail{
@@ -915,6 +917,8 @@ td{
     overflow: auto;
     padding-left: 0.5em;
     padding-right: 1em;
+    overflow-y: hidden;
+    font-size: 1.4em;
 }
 .event-layout{
     width: 100%;
@@ -1129,4 +1133,19 @@ td{
 }
 .event-inscri div div{
     display: contents;
+}
+@media screen and (min-width: 750px){
+    .mentions{
+        max-width: 30em !important;
+    }
+}
+.footer-custom{
+    position: fixed;
+    bottom: 0;
+    padding: 0.5em;
+    width: 100%;
+    background-color: #163352;
+    color: white;
+    margin-top: 3em;
+    z-index: 10;
 }
