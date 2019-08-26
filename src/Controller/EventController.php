@@ -423,19 +423,22 @@ class EventController extends AbstractController
                 foreach ($event->getImages() as $image) {
                     $image->setEvenement($event); 
                 }
-                foreach ($event->getVideos() as $video) {
-                    $choix = explode("=",$video->getLien());
-                    if(sizeof($choix) != 2){
-                        $this->addFlash(
-                            'warning',
-                            'Lien de vidéo invalide'
-                        );
-                        return $this->redirectToRoute('createEvent');
-                    }else {
-                        $videoLien="https://www.youtube.com/embed/" . $choix[1];
-                        $video->setLien($videoLien);
-                        $video->setEvenement($event); 
-                        $event->addVideo($video);
+                if($create == true){
+                    foreach ($event->getVideos() as $video) {
+                    
+                        $choix = explode("=",$video->getLien());
+                        if(sizeof($choix) != 2){
+                            $this->addFlash(
+                                'warning',
+                                'Lien de vidéo invalide'
+                            );
+                            return $this->redirectToRoute('createEvent');
+                        }else {
+                            $videoLien="https://www.youtube.com/embed/" . $choix[1];
+                            $video->setLien($videoLien);
+                            $video->setEvenement($event); 
+                            $event->addVideo($video);
+                        }
                     }       
                 }
             }
