@@ -50,6 +50,16 @@ class GeneralController extends AbstractController
         ]);
     }
 
+     /**
+     *  @Route("/mentions_legales", name="legal_mention")
+     */
+    public function legalMention()
+    {
+        return $this->render('/general/mentions_legales.html.twig', [
+            'controller_name' => 'GeneralController',
+        ]);
+    }
+
     /**
      * @Route("/tarif", name="prices")
      */
@@ -89,6 +99,7 @@ class GeneralController extends AbstractController
                 'notice',
                 'Pdf envoyé'
             );
+            return $this->redirectToRoute('security_profile');
         }
 
         return $this->render('/general/createPdf.html.twig', [
