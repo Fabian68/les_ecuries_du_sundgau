@@ -75,11 +75,11 @@
           {% endif %}
             {% if app.user.roles == ['ROLE_BENEVOLE'] %}
                 {{ form_start(form) }}
-                  {{ form_row(form.benevole,{ 'label' : 'Se retirer de la liste des bénévoles'}) }} 
+                  {{ form_row(form.benevole,{ 'label' : 'Se retirer de la liste des bénévoles' , 'attr' : { 'class' : 'btn bg-info profile-button general-mobile-text' }}) }} 
                 {{ form_end(form) }}   
             {% elseif app.user.roles == ['ROLE_USER'] %}
                 {{ form_start(form) }}
-                {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles'}) }}
+                {{ form_row(form.benevole,{ 'label' : 'S\'ajouter a la liste des bénévoles' , 'attr' : { 'class' : 'btn bg-info profile-button general-mobile-text' }}) }}
                 {{ form_end(form) }}
             {% endif %}    
       {% endif %}
