@@ -25,6 +25,7 @@ class NbBenevoleType extends AbstractType
                     'label' => 'Horaire de fin',
                 ])
                 ->add('nbBenevoles')
+                ->add('texte')
         ;
     }
 

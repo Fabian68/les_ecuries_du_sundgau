@@ -48,6 +48,11 @@ class CreneauxBenevoles
      */
     private $utilisateurs;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $texte;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
@@ -69,7 +74,7 @@ class CreneauxBenevoles
     public function getCreneauxFormatted()
     {
         $nbBenevoleRestant = $this->nbBenevoles - $this->utilisateurs->count();
-        $string = ' Le ' . $this->dateDebut->format( 'd/m/Y' ) . ' de ' . $this->dateDebut->format( 'H:i' ) .' à '. $this->dateFin->format( 'H:i' ) . ' reste ' . $nbBenevoleRestant . ' places ';
+        $string = $this->texte . PHP_EOL . 'Le ' . $this->dateDebut->format( 'd/m/Y' ) . ' de ' . $this->dateDebut->format( 'H:i' ) .' à '. $this->dateFin->format( 'H:i' ) . ' reste ' . $nbBenevoleRestant . ' places ';
         return $string;
     }
 
@@ -140,6 +145,18 @@ class CreneauxBenevoles
     public function setNbBenevoles(int $nbBenevoles): self
     {
         $this->nbBenevoles = $nbBenevoles;
+
+        return $this;
+    }
+
+    public function getTexte(): ?string
+    {
+        return $this->texte;
+    }
+
+    public function setTexte(?string $texte): self
+    {
+        $this->texte = $texte;
 
         return $this;
     }
